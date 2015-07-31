@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="qZ6QKE" name="AlkamistSidechainCompressor" projectType="audioplug"
+              version="1.0.0" bundleIdentifier="com.yourcompany.AlkamistSidechainCompressor"
+              includeBinaryInAppConfig="1" buildVST="1" buildVST3="1" buildAU="0"
+              buildRTAS="0" buildAAX="0" pluginName="AlkamistSidechainCompressor"
+              pluginDesc="AlkamistSidechainCompressor" pluginManufacturer="yourcompany"
+              pluginManufacturerCode="Manu" pluginCode="Plug" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
+              pluginSilenceInIsSilenceOut="1" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="AlkamistSidechainCompressorAU" pluginRTASCategory=""
+              aaxIdentifier="com.yourcompany.AlkamistSidechainCompressor" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
+              jucerVersion="3.2.0">
+  <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
+    <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
+      <FILE id="ZrADFG" name="AHREnvelopeGenerator.cpp" compile="1" resource="0"
+            file="Source/AHREnvelopeGenerator.cpp"/>
+      <FILE id="gXO0xR" name="AHREnvelopeGenerator.h" compile="0" resource="0"
+            file="Source/AHREnvelopeGenerator.h"/>
+      <FILE id="sEY1Qy" name="FloatParameter.cpp" compile="1" resource="0"
+            file="Source/FloatParameter.cpp"/>
+      <FILE id="qNorVS" name="FloatParameter.h" compile="0" resource="0"
+            file="Source/FloatParameter.h"/>
+      <FILE id="EK1Ie4" name="MainEditorWindow.cpp" compile="1" resource="0"
+            file="Source/MainEditorWindow.cpp"/>
+      <FILE id="G5U2dz" name="MainEditorWindow.h" compile="0" resource="0"
+            file="Source/MainEditorWindow.h"/>
+      <FILE id="gjlkkB" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="LgfgfY" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="xTWocG" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="IMwlcc" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <VS2010 targetFolder="Builds/VisualStudio2010" vstFolder="c:\SDKs\vstsdk2.4"
+            vst3Folder="c:\SDKs\VST3 SDK">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="AlkamistSidechainCompressor"
+                       postbuildCommand="copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;$(OutDir)\$(TargetName).vst&quot;&#10;copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(TargetFileName)&quot;"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="2" targetName="AlkamistSidechainCompressor"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_events" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_graphics" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_data_structures" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_cryptography" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_video" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_opengl" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_audio_basics" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="..\..\Programming Documents\JUCE-master\modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="..\..\Programming Documents\JUCE-master\modules"/>
+      </MODULEPATHS>
+    </VS2010>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULES id="juce_video" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+</JUCERPROJECT>
