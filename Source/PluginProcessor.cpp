@@ -8,8 +8,6 @@
   ==============================================================================
 */
 
-#include <vector>
-
 #include "PluginEditor.h"
 #include "FloatParameter.h"
 #include "AHREnvelopeGenerator.h"

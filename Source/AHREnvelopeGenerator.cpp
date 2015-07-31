@@ -43,9 +43,16 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 
     // Set the output.
     mScaleFactor = logarithmicVelocity;
+
+    /*String title ("Ayy");
+    String message (velocity);
+    AlertWindow::AlertIconType alertIconType = AlertWindow::NoIcon;
+    AlertWindow::showMessageBox(alertIconType, title, message);*/
 }
 
-float AHREnvelopeGenerator::calculateMultiplier(float startLevel, float endLevel, int lengthInSamples)
+float AHREnvelopeGenerator::calculateMultiplier(float startLevel, 
+                                                float endLevel, 
+                                                int lengthInSamples)
 {
     float minimumValue = 0.0001f;
 
@@ -78,15 +85,14 @@ void AHREnvelopeGenerator::processEnvelope()
             case 0:
                 mNextStageSampleIndex = mAttackTime * 0.001f * mSampleRate;
                 mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                                   0.001f, 
-                                                   mNextStageSampleIndex
-                                                   );
+                                                   mScaleFactor, 
+                                                   mNextStageSampleIndex);
                 break;
 
             // Hold
             case 1:
                 mNextStageSampleIndex = mHoldTime * 0.001f * mSampleRate;
-                mEnvelopeOutput = 0.001f;
+                mEnvelopeOutput = mScaleFactor;
                 mMultiplier = 1.0f;
                 break;
 
@@ -95,8 +101,7 @@ void AHREnvelopeGenerator::processEnvelope()
                 mNextStageSampleIndex = mReleaseTime * 0.001f * mSampleRate - 1;
                 mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                                    1.0f, 
-                                                   mNextStageSampleIndex
-                                                   );
+                                                   mNextStageSampleIndex);
                 break;
         }
     }
