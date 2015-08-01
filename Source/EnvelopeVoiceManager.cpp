@@ -15,19 +15,24 @@
 EnvelopeVoiceManager::EnvelopeVoiceManager()
     : mOutput (1.0f),
       mListOfEnvelopes (2)
-{}
+{
+    for (int index = 0; index < mListOfEnvelopes.size(); ++index)
+    {
+        mListOfEnvelopes[index] = new AHREnvelopeGenerator();
+    }
+}
 
 // This function returns a pointer to the envelope that has the
 // smallest output.
 AHREnvelopeGenerator* findSmallestEnvelopeOutput (std::vector<AHREnvelopeGenerator*> inputVector)
 {
     float smallestOutput = 1.0f;
-    AHREnvelopeGenerator* envelopeWithSmallestOutput = nullptr;
+    AHREnvelopeGenerator* envelopeWithSmallestOutput;
 
     for (int index = 0; index < inputVector.size(); ++index)
     {
         inputVector[index]->processEnvelope();
-        if (inputVector[index]->getOutput() < smallestOutput)
+        if (inputVector[index]->getOutput() <= smallestOutput)
         {
             smallestOutput = inputVector[index]->getOutput();
             envelopeWithSmallestOutput = inputVector[index];
@@ -53,11 +58,11 @@ void EnvelopeVoiceManager::process()
 AHREnvelopeGenerator* findCloseToOrCompletedEnvelope (std::vector<AHREnvelopeGenerator*> inputVector)
 {
     int largestEnvelopeIndex = 0;
-    AHREnvelopeGenerator* mostCompleteEnvelope = nullptr;
+    AHREnvelopeGenerator* mostCompleteEnvelope;
 
     for (int index = 0; index < inputVector.size(); ++index)
     {
-        if (inputVector[index]->getEnvelopeSampleIndex() > largestEnvelopeIndex)
+        if (inputVector[index]->getEnvelopeSampleIndex() >= largestEnvelopeIndex)
         {
             largestEnvelopeIndex = inputVector[index]->getEnvelopeSampleIndex();
             mostCompleteEnvelope = inputVector[index];
