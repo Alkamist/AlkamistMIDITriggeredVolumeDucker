@@ -11,11 +11,11 @@
 #ifndef ENVELOPEVOICEMANAGER_H_INCLUDED
 #define ENVELOPEVOICEMANAGER_H_INCLUDED
 
-#include <vector>
-
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class AHREnvelopeGenerator;
+
+const int maxNumberOfVoices = 1;
 
 class EnvelopeVoiceManager
 {
@@ -36,7 +36,7 @@ public:
 private:
     float mOutput;
 
-    std::vector<AHREnvelopeGenerator*> mListOfEnvelopes;
+    AHREnvelopeGenerator* mListOfEnvelopes[maxNumberOfVoices];
 };
 
 #endif  // ENVELOPEVOICEMANAGER_H_INCLUDED
