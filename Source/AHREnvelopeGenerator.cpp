@@ -14,11 +14,13 @@ AHREnvelopeGenerator::AHREnvelopeGenerator()
       mNextStageSampleIndex (0),
       mCurrentStage (3),
       mMultiplier (1.0f),
-      mScaleFactor (1.0f)
+      mScaleFactor (1.0f),
+      mEnvelopeSampleIndex (0)
 {}
 
 void AHREnvelopeGenerator::restartEnvelope()
 {
+    mEnvelopeSampleIndex = 0;
     mCurrentStageSampleIndex = 0;
     mNextStageSampleIndex = 0;
     mCurrentStage = -1;
@@ -43,11 +45,6 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 
     // Set the output.
     mScaleFactor = logarithmicVelocity;
-
-    /*String title ("Ayy");
-    String message (velocity);
-    AlertWindow::AlertIconType alertIconType = AlertWindow::NoIcon;
-    AlertWindow::showMessageBox(alertIconType, title, message);*/
 }
 
 float AHREnvelopeGenerator::calculateMultiplier(float startLevel, 
@@ -117,5 +114,6 @@ void AHREnvelopeGenerator::processEnvelope()
     {
         mEnvelopeOutput *= mMultiplier;
         ++mCurrentStageSampleIndex;
+        ++mEnvelopeSampleIndex;
     }
 }

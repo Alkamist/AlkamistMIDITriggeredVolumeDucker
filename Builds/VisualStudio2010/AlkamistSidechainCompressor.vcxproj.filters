@@ -322,6 +322,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
@@ -1593,6 +1596,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>

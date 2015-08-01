@@ -10,7 +10,7 @@
 
 #include "PluginEditor.h"
 #include "FloatParameter.h"
-#include "AHREnvelopeGenerator.h"
+#include "EnvelopeVoiceManager.h"
 
 #include "PluginProcessor.h"
 
@@ -22,12 +22,12 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time")); 
     addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time"));
 
-    mAHREnvelopeGenerator = new AHREnvelopeGenerator();
-    mAHREnvelopeGenerator->setSampleRate(getSampleRate());
-    mAHREnvelopeGenerator->setHoldLevel (holdLevel->getUnNormalizedValue());
-    mAHREnvelopeGenerator->setAttackTime (attackTime->getUnNormalizedValue());
-    mAHREnvelopeGenerator->setHoldTime (holdTime->getUnNormalizedValue());
-    mAHREnvelopeGenerator->setReleaseTime (releaseTime->getUnNormalizedValue());
+    mEnvelopeVoiceManager = new EnvelopeVoiceManager();
+    mEnvelopeVoiceManager->setSampleRate(getSampleRate());
+    mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
+    mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedValue());
+    mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedValue());
+    mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedValue());
 }
 
 AlkamistSidechainCompressorAudioProcessor::~AlkamistSidechainCompressorAudioProcessor()
@@ -89,7 +89,7 @@ void AlkamistSidechainCompressorAudioProcessor::prepareToPlay (double sampleRate
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 
-    mAHREnvelopeGenerator->setSampleRate(sampleRate);
+    mEnvelopeVoiceManager->setSampleRate(sampleRate);
 }
 
 void AlkamistSidechainCompressorAudioProcessor::releaseResources()
@@ -119,14 +119,13 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
             if (currentMidiMessage.isNoteOn() 
                 && midiMessageSamplePosition == sample)
             {
-                mAHREnvelopeGenerator->restartEnvelope();
-                mAHREnvelopeGenerator->setVelocityScaleFactor (currentMidiMessage.getVelocity());
+                mEnvelopeVoiceManager->startEnvelopeUsingAvailableVoice (currentMidiMessage);
             }
         }
  
-        mAHREnvelopeGenerator->processEnvelope();
+        mEnvelopeVoiceManager->process();
 
-        float temporaryGain = mAHREnvelopeGenerator->getOutput();
+        float temporaryGain = mEnvelopeVoiceManager->getOutput();
 
         leftChannel[sample] = temporaryGain;
         rightChannel[sample] = temporaryGain;
@@ -158,19 +157,19 @@ void AlkamistSidechainCompressorAudioProcessor::parameterChange (FloatParameter*
 {
     if (parameterThatWasChanged == holdLevel)
     {
-        mAHREnvelopeGenerator->setHoldLevel (holdLevel->getUnNormalizedValue());
+        mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
     }
     if (parameterThatWasChanged == attackTime)
     {
-        mAHREnvelopeGenerator->setAttackTime (attackTime->getUnNormalizedValue());
+        mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedValue());
     }
     if (parameterThatWasChanged == holdTime)
     {
-        mAHREnvelopeGenerator->setHoldTime (holdTime->getUnNormalizedValue());
+        mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedValue());
     }
     if (parameterThatWasChanged == releaseTime)
     {
-        mAHREnvelopeGenerator->setReleaseTime (releaseTime->getUnNormalizedValue());
+        mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedValue());
     }
 }
 

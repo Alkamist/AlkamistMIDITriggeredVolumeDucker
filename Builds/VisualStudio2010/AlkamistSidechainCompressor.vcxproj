@@ -131,6 +131,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp"/>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp"/>
     <ClCompile Include="..\..\Source\FloatParameter.cpp"/>
     <ClCompile Include="..\..\Source\MainEditorWindow.cpp"/>
@@ -1268,6 +1269,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     <ClCompile Include="..\..\..\..\Programming Documents\JUCE-master\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h"/>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h"/>
     <ClInclude Include="..\..\Source\FloatParameter.h"/>
     <ClInclude Include="..\..\Source\MainEditorWindow.h"/>

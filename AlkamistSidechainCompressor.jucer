@@ -13,6 +13,10 @@
               jucerVersion="3.2.0">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
+      <FILE id="GwTI4t" name="EnvelopeVoiceManager.cpp" compile="1" resource="0"
+            file="Source/EnvelopeVoiceManager.cpp"/>
+      <FILE id="m8mVpW" name="EnvelopeVoiceManager.h" compile="0" resource="0"
+            file="Source/EnvelopeVoiceManager.h"/>
       <FILE id="ZrADFG" name="AHREnvelopeGenerator.cpp" compile="1" resource="0"
             file="Source/AHREnvelopeGenerator.cpp"/>
       <FILE id="gXO0xR" name="AHREnvelopeGenerator.h" compile="0" resource="0"

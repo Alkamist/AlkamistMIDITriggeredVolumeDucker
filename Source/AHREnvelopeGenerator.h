@@ -15,14 +15,15 @@ public:
 
     // Getters
     inline float getOutput() { return mEnvelopeOutput; };
+    inline int getEnvelopeSampleIndex() { return mEnvelopeSampleIndex; };
 
     // Setters
-    inline void setHoldLevel(float input)           { mHoldLevel = input; };
-    inline void setAttackTime(float input)          { mAttackTime = input; };
-    inline void setHoldTime(float input)            { mHoldTime = input; };
-    inline void setReleaseTime(float input)         { mReleaseTime = input; };
-    inline void setVelocitySensitivity(float input) { mVelocitySensitivity = input; };
-    inline void setSampleRate(float input)          { mSampleRate = input; };
+    inline void setHoldLevel (float input)           { mHoldLevel = input; };
+    inline void setAttackTime (float input)          { mAttackTime = input; };
+    inline void setHoldTime (float input)            { mHoldTime = input; };
+    inline void setReleaseTime (float input)         { mReleaseTime = input; };
+    inline void setVelocitySensitivity (float input) { mVelocitySensitivity = input; };
+    inline void setSampleRate (float input)          { mSampleRate = input; };
 private:
     // Controls
     float mHoldLevel;
@@ -39,6 +40,7 @@ private:
     int mCurrentStage;
     float mMultiplier;
     float mScaleFactor;
+    int mEnvelopeSampleIndex;
 };
 
 #endif
