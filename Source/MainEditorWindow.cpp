@@ -42,6 +42,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     holdLevelSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
     holdLevelSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     holdLevelSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
+    holdLevelSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
     holdLevelSlider->addListener (this);
 
     addAndMakeVisible (attackTimeSlider = new Slider ("Attack Time Slider"));
@@ -51,6 +52,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     attackTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
     attackTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     attackTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
+    attackTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
     attackTimeSlider->addListener (this);
 
     addAndMakeVisible (holdTimeSlider = new Slider ("Hold Time Slider"));
@@ -60,6 +62,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     holdTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
     holdTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     holdTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
+    holdTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
     holdTimeSlider->addListener (this);
 
     addAndMakeVisible (releaseTimeSlider = new Slider ("Release Time Slider"));
@@ -69,6 +72,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     releaseTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
     releaseTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     releaseTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
+    releaseTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
     releaseTimeSlider->addListener (this);
 
     addAndMakeVisible (holdLevelLabel = new Label ("Hold Level Label",
@@ -324,24 +328,27 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff323232"/>
   <SLIDER name="Hold Level Slider" id="840f7ca9f9570c56" memberName="holdLevelSlider"
           virtualName="" explicitFocusOrder="0" pos="0 40 104 208" thumbcol="ff909090"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" min="-60" max="0"
-          int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
+          min="-60" max="0" int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack Time Slider" id="21744834f18397a5" memberName="attackTimeSlider"
           virtualName="" explicitFocusOrder="0" pos="128 40 88 208" thumbcol="ff909090"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" min="0.10000000000000001"
-          max="200" int="0.10000000000000001" style="LinearVertical" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
+          min="0.10000000000000001" max="200" int="0.10000000000000001"
+          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Hold Time Slider" id="88e6d901167994f4" memberName="holdTimeSlider"
           virtualName="" explicitFocusOrder="0" pos="216 40 88 208" thumbcol="ff909090"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" min="0.10000000000000001"
-          max="200" int="0.10000000000000001" style="LinearVertical" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
+          min="0.10000000000000001" max="200" int="0.10000000000000001"
+          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Release Time Slider" id="9a3aaeae16ed6240" memberName="releaseTimeSlider"
           virtualName="" explicitFocusOrder="0" pos="304 40 88 208" thumbcol="ff909090"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" min="0.10000000000000001"
-          max="200" int="0.10000000000000001" style="LinearVertical" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
+          min="0.10000000000000001" max="200" int="0.10000000000000001"
+          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Hold Level Label" id="5e33c499a463e95f" memberName="holdLevelLabel"
          virtualName="" explicitFocusOrder="0" pos="0 0 104 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Hold&#10;Level (dB)"

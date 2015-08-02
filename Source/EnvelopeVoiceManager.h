@@ -15,7 +15,7 @@
 
 class AHREnvelopeGenerator;
 
-const int maxNumberOfVoices = 1;
+const int kMaxNumberOfVoices = 32;
 
 class EnvelopeVoiceManager
 {
@@ -36,7 +36,7 @@ public:
 private:
     float mOutput;
 
-    AHREnvelopeGenerator* mListOfEnvelopes[maxNumberOfVoices];
+    AHREnvelopeGenerator* mListOfEnvelopes[kMaxNumberOfVoices];
 };
 
 #endif  // ENVELOPEVOICEMANAGER_H_INCLUDED

@@ -51,17 +51,6 @@ float AHREnvelopeGenerator::calculateMultiplier(float startLevel,
                                                 float endLevel, 
                                                 int lengthInSamples)
 {
-    float minimumValue = 0.0001f;
-
-    if (startLevel < minimumValue)
-    {
-        startLevel = minimumValue;
-    }
-    if (endLevel < minimumValue)
-    {
-        endLevel = minimumValue;
-    }
-
     return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
 }
 
@@ -70,6 +59,7 @@ void AHREnvelopeGenerator::processEnvelope()
     // Should we enter a stage?
     if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
     {
+        float msToSeconds = 0.001f;
         ++mCurrentStage;
         mCurrentStageSampleIndex = 0;
 
@@ -80,7 +70,7 @@ void AHREnvelopeGenerator::processEnvelope()
 
             // Attack
             case 0:
-                mNextStageSampleIndex = mAttackTime * 0.001f * mSampleRate;
+                mNextStageSampleIndex = mAttackTime * msToSeconds * mSampleRate;
                 mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                                    mScaleFactor, 
                                                    mNextStageSampleIndex);
@@ -88,14 +78,14 @@ void AHREnvelopeGenerator::processEnvelope()
 
             // Hold
             case 1:
-                mNextStageSampleIndex = mHoldTime * 0.001f * mSampleRate;
+                mNextStageSampleIndex = mHoldTime * msToSeconds * mSampleRate;
                 mEnvelopeOutput = mScaleFactor;
                 mMultiplier = 1.0f;
                 break;
 
             // Release
             case 2:
-                mNextStageSampleIndex = mReleaseTime * 0.001f * mSampleRate - 1;
+                mNextStageSampleIndex = mReleaseTime * msToSeconds * mSampleRate - 1;
                 mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                                    1.0f, 
                                                    mNextStageSampleIndex);
