@@ -18,6 +18,7 @@
 AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProcessor()
 {
     addParameter (holdLevel  = new FloatParameter (this, 1.0f, -60.0f, 0.0f, "Hold Level"));
+    addParameter (velocitySensitivity  = new FloatParameter (this, 100.0f, 0.0f, 100.0f, "Velocity Sensitivity"));
     addParameter (attackTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Attack Time"));
     addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time")); 
     addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time"));
@@ -25,6 +26,7 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     mEnvelopeVoiceManager = new EnvelopeVoiceManager();
     mEnvelopeVoiceManager->setSampleRate(getSampleRate());
     mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
+    mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedValue());
     mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedValue());
     mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedValue());
     mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedValue());
@@ -158,6 +160,10 @@ void AlkamistSidechainCompressorAudioProcessor::parameterChange (FloatParameter*
     if (parameterThatWasChanged == holdLevel)
     {
         mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
+    }
+    if (parameterThatWasChanged == velocitySensitivity)
+    {
+        mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedValue());
     }
     if (parameterThatWasChanged == attackTime)
     {

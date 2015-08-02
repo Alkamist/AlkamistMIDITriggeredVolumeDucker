@@ -37,7 +37,7 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     float invertedVelocity = 1 - scaledVelocity;
 
     // Scale the velocity by the velocity sensitivity.
-    float adjustedVelocity = invertedVelocity * mVelocitySensitivity;
+    float adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01f;
 
     // Convert the floating point velocity to logarithmic
     // scale.

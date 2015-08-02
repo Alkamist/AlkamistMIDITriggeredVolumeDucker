@@ -67,6 +67,7 @@ public:
     //==============================================================================
 
     FloatParameter* holdLevel;
+    FloatParameter* velocitySensitivity;
     FloatParameter* attackTime;
     FloatParameter* holdTime;
     FloatParameter* releaseTime;

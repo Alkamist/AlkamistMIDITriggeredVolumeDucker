@@ -78,6 +78,8 @@ private:
     ScopedPointer<Label> attackTimeLabel;
     ScopedPointer<Label> holdTimeLabel;
     ScopedPointer<Label> releaseTimeLabel;
+    ScopedPointer<Slider> velocitySensitivitySlider;
+    ScopedPointer<Label> velocitySensitivityLabel;
 
 
     //==============================================================================

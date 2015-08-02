@@ -115,18 +115,41 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     releaseTimeLabel->setColour (TextEditor::textColourId, Colours::black);
     releaseTimeLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (velocitySensitivitySlider = new Slider ("Velocity Sensitivity Slider"));
+    velocitySensitivitySlider->setRange (0, 100, 0.1);
+    velocitySensitivitySlider->setSliderStyle (Slider::LinearVertical);
+    velocitySensitivitySlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
+    velocitySensitivitySlider->setColour (Slider::thumbColourId, Colour (0xff909090));
+    velocitySensitivitySlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
+    velocitySensitivitySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
+    velocitySensitivitySlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
+    velocitySensitivitySlider->addListener (this);
+
+    addAndMakeVisible (velocitySensitivityLabel = new Label ("Velocity Sensitivity Label",
+                                                             TRANS("Velocity\n"
+                                                             "Sensitivity (%)")));
+    velocitySensitivityLabel->setFont (Font (15.00f, Font::plain));
+    velocitySensitivityLabel->setJustificationType (Justification::centred);
+    velocitySensitivityLabel->setEditable (false, false, false);
+    velocitySensitivityLabel->setColour (Label::textColourId, Colour (0xffdddddd));
+    velocitySensitivityLabel->setColour (TextEditor::textColourId, Colours::black);
+    velocitySensitivityLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
 
     //[UserPreSize]
     setAllSliderRanges();
     //[/UserPreSize]
 
-    setSize (400, 250);
+    setSize (492, 250);
 
 
     //[Constructor] You can add your own custom stuff here..
 
     holdLevelSlider->setVelocityModeParameters(0.45, 1, 0.05, true);
     holdLevelSlider->setDoubleClickReturnValue(true, 0.0);
+
+    velocitySensitivitySlider->setVelocityModeParameters(0.45, 1, 0.05, true);
+    velocitySensitivitySlider->setDoubleClickReturnValue(true, 100.0);
 
     attackTimeSlider->setVelocityModeParameters(0.45, 1, 0.05, true);
     attackTimeSlider->setDoubleClickReturnValue(true, 0.1);
@@ -157,6 +180,8 @@ MainEditorWindow::~MainEditorWindow()
     attackTimeLabel = nullptr;
     holdTimeLabel = nullptr;
     releaseTimeLabel = nullptr;
+    velocitySensitivitySlider = nullptr;
+    velocitySensitivityLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -181,13 +206,15 @@ void MainEditorWindow::resized()
     //[/UserPreResize]
 
     holdLevelSlider->setBounds (0, 40, 104, 208);
-    attackTimeSlider->setBounds (128, 40, 88, 208);
-    holdTimeSlider->setBounds (216, 40, 88, 208);
-    releaseTimeSlider->setBounds (304, 40, 88, 208);
+    attackTimeSlider->setBounds (224, 40, 88, 208);
+    holdTimeSlider->setBounds (312, 40, 88, 208);
+    releaseTimeSlider->setBounds (400, 40, 88, 208);
     holdLevelLabel->setBounds (0, 0, 104, 32);
-    attackTimeLabel->setBounds (128, 0, 88, 32);
-    holdTimeLabel->setBounds (216, 0, 88, 32);
-    releaseTimeLabel->setBounds (304, 0, 88, 32);
+    attackTimeLabel->setBounds (224, 0, 88, 32);
+    holdTimeLabel->setBounds (312, 0, 88, 32);
+    releaseTimeLabel->setBounds (400, 0, 88, 32);
+    velocitySensitivitySlider->setBounds (96, 40, 88, 208);
+    velocitySensitivityLabel->setBounds (88, 0, 108, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -218,6 +245,11 @@ void MainEditorWindow::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_releaseTimeSlider] -- add your slider handling code here..
         //[/UserSliderCode_releaseTimeSlider]
     }
+    else if (sliderThatWasMoved == velocitySensitivitySlider)
+    {
+        //[UserSliderCode_velocitySensitivitySlider] -- add your slider handling code here..
+        //[/UserSliderCode_velocitySensitivitySlider]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -240,6 +272,7 @@ void MainEditorWindow::setSliderRange (Slider* slider)
 void MainEditorWindow::setAllSliderRanges()
 {
     setSliderRange (holdLevelSlider);
+    setSliderRange (velocitySensitivitySlider);
     setSliderRange (attackTimeSlider);
     setSliderRange (holdTimeSlider);
     setSliderRange (releaseTimeSlider);
@@ -265,6 +298,7 @@ void MainEditorWindow::updateSliderValue(Slider* slider)
 void MainEditorWindow::updateAllSliderValues()
 {
     updateSliderValue (holdLevelSlider);
+    updateSliderValue (velocitySensitivitySlider);
     updateSliderValue (attackTimeSlider);
     updateSliderValue (holdTimeSlider);
     updateSliderValue (releaseTimeSlider);
@@ -296,6 +330,9 @@ FloatParameter* MainEditorWindow::getParameterFromSlider (const Slider* slider) 
     if (slider == holdLevelSlider)
         return mParentProcessor->holdLevel;
 
+    if (slider == velocitySensitivitySlider)
+        return mParentProcessor->velocitySensitivity;
+
     if (slider == attackTimeSlider)
         return mParentProcessor->attackTime;
 
@@ -324,7 +361,7 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component, public Timer" constructorParams="AlkamistSidechainCompressorAudioProcessor&amp; inputProcessor"
                  variableInitialisers="mParentProcessor (&amp;inputProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="400" initialHeight="250">
+                 fixedSize="1" initialWidth="492" initialHeight="250">
   <BACKGROUND backgroundColour="ff323232"/>
   <SLIDER name="Hold Level Slider" id="840f7ca9f9570c56" memberName="holdLevelSlider"
           virtualName="" explicitFocusOrder="0" pos="0 40 104 208" thumbcol="ff909090"
@@ -332,19 +369,19 @@ BEGIN_JUCER_METADATA
           min="-60" max="0" int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack Time Slider" id="21744834f18397a5" memberName="attackTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="128 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="224 40 88 208" thumbcol="ff909090"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
           style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Hold Time Slider" id="88e6d901167994f4" memberName="holdTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="216 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="312 40 88 208" thumbcol="ff909090"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
           style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Release Time Slider" id="9a3aaeae16ed6240" memberName="releaseTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="304 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="400 40 88 208" thumbcol="ff909090"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
           style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
@@ -355,18 +392,29 @@ BEGIN_JUCER_METADATA
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Attack Time Label" id="e19faf81366d6dbe" memberName="attackTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="128 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="224 0 88 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Attack&#10;Time (ms)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Hold Time Label" id="b454a4d7a5c910a1" memberName="holdTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="216 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="312 0 88 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Hold &#10;Time (ms)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Release Time Label" id="c8bb41d45518e62c" memberName="releaseTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="304 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="400 0 88 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Release &#10;Time (ms)"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
+  <SLIDER name="Velocity Sensitivity Slider" id="251d2e1cb79c769a" memberName="velocitySensitivitySlider"
+          virtualName="" explicitFocusOrder="0" pos="96 40 88 208" thumbcol="ff909090"
+          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
+          min="0" max="100" int="0.10000000000000001" style="LinearVertical"
+          textBoxPos="TextBoxAbove" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="Velocity Sensitivity Label" id="afa0301e5e3991a1" memberName="velocitySensitivityLabel"
+         virtualName="" explicitFocusOrder="0" pos="88 0 108 32" textCol="ffdddddd"
+         edTextCol="ff000000" edBkgCol="0" labelText="Velocity&#10;Sensitivity (%)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
