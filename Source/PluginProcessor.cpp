@@ -17,11 +17,14 @@
 //==============================================================================
 AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProcessor()
 {
-    addParameter (holdLevel  = new FloatParameter (this, 1.0f, -60.0f, 0.0f, "Hold Level"));
-    addParameter (velocitySensitivity  = new FloatParameter (this, 100.0f, 0.0f, 100.0f, "Velocity Sensitivity"));
-    addParameter (attackTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Attack Time"));
-    addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time")); 
-    addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time"));
+    double sampleRate = getSampleRate();
+    int blockSize = getBlockSize();
+
+    addParameter (holdLevel  = new FloatParameter (this, 1.0f, -60.0f, 0.0f, "Hold Level", sampleRate, blockSize));
+    addParameter (velocitySensitivity  = new FloatParameter (this, 100.0f, 0.0f, 100.0f, "Velocity Sensitivity", sampleRate, blockSize));
+    addParameter (attackTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Attack Time", sampleRate, blockSize));
+    addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time", sampleRate, blockSize)); 
+    addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time", sampleRate, blockSize));
 
     mEnvelopeVoiceManager = new EnvelopeVoiceManager();
     mEnvelopeVoiceManager->setSampleRate(getSampleRate());
@@ -86,12 +89,13 @@ double AlkamistSidechainCompressorAudioProcessor::getTailLengthSeconds() const
 }
 
 //==============================================================================
-void AlkamistSidechainCompressorAudioProcessor::prepareToPlay (double sampleRate, int /*samplesPerBlock*/)
+void AlkamistSidechainCompressorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 
     mEnvelopeVoiceManager->setSampleRate(sampleRate);
+    holdLevel->initializeParameterSmoother (sampleRate, samplesPerBlock);
 }
 
 void AlkamistSidechainCompressorAudioProcessor::releaseResources()
@@ -127,7 +131,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
  
         mEnvelopeVoiceManager->process();
 
-        float temporaryGain = mEnvelopeVoiceManager->getOutput();
+        float temporaryGain = holdLevel->getValue();
 
         leftChannel[sample] = temporaryGain;
         rightChannel[sample] = temporaryGain;

@@ -322,6 +322,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LinearSmoothedValue.cpp">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
@@ -1596,6 +1599,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LinearSmoothedValue.h">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>

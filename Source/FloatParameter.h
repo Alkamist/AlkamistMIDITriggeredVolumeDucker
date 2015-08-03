@@ -12,6 +12,7 @@
 #define FLOATPARAMETER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "LinearSmoothedValue.h"
 
 class AlkamistSidechainCompressorAudioProcessor;
 
@@ -22,13 +23,19 @@ public:
                     float defaultParameterValue,
                     float minimumParameterValue,
                     float maximumParameterValue,
-                    const String& parameterName);
+                    const String& parameterName,
+                    float inputSampleRate,
+                    int inputBlockSize);
 
     inline float getDefaultValue() const override                         { return mDefaultValue; };
     inline String getName (int /*maximumStringLength*/) const override    { return mName; };
     inline String getLabel() const override                               { return String(); };
     inline float getValueForText (const String& text) const override      { return text.getFloatValue(); };
-    inline float getValue() const override                                { return mValue; };
+    inline float getValue() const override                                
+    { 
+        mValue.processNextValue();
+        return mValue.getCurrentValue(); 
+    };
 
     inline float getMinimum() { return mMinimumValue; };
     inline float getMaximum() { return mMaximumValue; };
@@ -36,16 +43,19 @@ public:
     String getText() override;
     void setValue (float newValue) override; 
 
+    void initializeParameterSmoother (float inputSampleRate, int inputBlockSize);
+
     float getUnNormalizedValue();
     void setNormalizedValue (float nonNormalizedValue);
 private:
     AlkamistSidechainCompressorAudioProcessor* mParentProcessor;
     float mDefaultValue;
-    float mValue;
+    LinearSmoothedValue mValue;
     String mName;
 
     float mMinimumValue;
     float mMaximumValue;
+    float mSampleRate;
 
     NormalisableRange<float> mNormalizableRange;
 };

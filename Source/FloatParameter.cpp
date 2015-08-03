@@ -16,7 +16,9 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
                                 float defaultParameterValue,
                                 float minimumParameterValue,
                                 float maximumParameterValue,
-                                const String& parameterName)
+                                const String& parameterName,
+                                float inputSampleRate,
+                                int inputBlockSize)
     : mParentProcessor (inputProcessor),
       mDefaultValue (defaultParameterValue),
       mValue (defaultParameterValue),
@@ -24,11 +26,13 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
       mMinimumValue (minimumParameterValue),
       mMaximumValue (maximumParameterValue),
       mNormalizableRange (mMinimumValue, mMaximumValue)
-{}
+{
+    initializeParameterSmoother (inputSampleRate, inputBlockSize);
+}
 
 String FloatParameter::getText()
 {
-    float outputValue = mNormalizableRange.convertFrom0to1 (mValue);
+    float outputValue = 0.0f;
     String outputString (outputValue);
 
     return outputString;
@@ -36,14 +40,14 @@ String FloatParameter::getText()
 
 void FloatParameter::setValue (float newValue)                   
 { 
-    mValue = newValue;
+    mValue.setValue(newValue);
 
     mParentProcessor->parameterChange(this);
 }
 
 float FloatParameter::getUnNormalizedValue()
 {
-    float newValue = mNormalizableRange.convertFrom0to1 (mValue);
+    float newValue = 0.0f;
 
     return newValue;
 }
@@ -53,4 +57,10 @@ void FloatParameter::setNormalizedValue (float nonNormalizedValue)
     float newValue = mNormalizableRange.convertTo0to1 (nonNormalizedValue);
 
     this->setValueNotifyingHost (newValue);
+}
+
+void FloatParameter::initializeParameterSmoother (float inputSampleRate, int inputBlockSize)
+{
+    float smoothingTimeInSeconds = (float) inputBlockSize / inputSampleRate;
+    this->mValue.reset(inputSampleRate, smoothingTimeInSeconds);
 }
