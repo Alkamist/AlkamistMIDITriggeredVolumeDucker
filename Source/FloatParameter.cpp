@@ -25,7 +25,8 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
       mName (parameterName),
       mMinimumValue (minimumParameterValue),
       mMaximumValue (maximumParameterValue),
-      mNormalizableRange (mMinimumValue, mMaximumValue)
+      mNormalizableRange (mMinimumValue, mMaximumValue),
+      mSimpleOnePoleFilter(0.98f)
 {
     initializeParameterSmoother (inputSampleRate, inputBlockSize);
 }

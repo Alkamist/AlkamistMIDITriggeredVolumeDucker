@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LinearSmoothedValue.h"
+#include "SimpleOnePoleFilter.h"
 
 class AlkamistSidechainCompressorAudioProcessor;
 
@@ -34,7 +35,8 @@ public:
     inline float getValue() const override                                
     { 
         mValue.processNextValue();
-        return mValue.getCurrentValue(); 
+        float output = mSimpleOnePoleFilter.getOutput(mValue.getCurrentValue());
+        return output;
     };
 
     inline float getMinimum() { return mMinimumValue; };
@@ -56,6 +58,8 @@ private:
     float mMinimumValue;
     float mMaximumValue;
     float mSampleRate;
+
+    SimpleOnePoleFilter mSimpleOnePoleFilter;
 
     NormalisableRange<float> mNormalizableRange;
 };

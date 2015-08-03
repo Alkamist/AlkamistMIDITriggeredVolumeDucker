@@ -13,6 +13,10 @@
               jucerVersion="3.2.0">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
+      <FILE id="TRDslN" name="SimpleOnePoleFilter.cpp" compile="1" resource="0"
+            file="Source/SimpleOnePoleFilter.cpp"/>
+      <FILE id="N75OLx" name="SimpleOnePoleFilter.h" compile="0" resource="0"
+            file="Source/SimpleOnePoleFilter.h"/>
       <FILE id="i7tMu8" name="LinearSmoothedValue.cpp" compile="1" resource="0"
             file="Source/LinearSmoothedValue.cpp"/>
       <FILE id="bqbKEW" name="LinearSmoothedValue.h" compile="0" resource="0"
