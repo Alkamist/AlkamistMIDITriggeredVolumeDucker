@@ -57,6 +57,7 @@ public:
     //==============================================================================
 
     void reset();
+    inline void signalForParameterChange() { mParameterChangeFlag = true; };
 
     FloatParameter* holdLevel;
     FloatParameter* velocitySensitivity;
@@ -64,6 +65,10 @@ public:
     FloatParameter* holdTime;
     FloatParameter* releaseTime;
 private:
+    void handleParameterChanges();
+    void clearParameterChanges();
+    bool mParameterChangeFlag;
+
     EnvelopeVoiceManager* mEnvelopeVoiceManager;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlkamistSidechainCompressorAudioProcessor)

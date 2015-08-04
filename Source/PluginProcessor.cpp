@@ -6,6 +6,7 @@
 
 //==============================================================================
 AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProcessor()
+    : mParameterChangeFlag (false)
 {
     double sampleRate = getSampleRate();
     int samplesPerBlock = getBlockSize();
@@ -113,28 +114,22 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
                 mEnvelopeVoiceManager->startEnvelopeUsingAvailableVoice (currentMidiMessage);
             }
         }
- 
-        // Parameters
-        holdLevel->processPerSample();
-        attackTime->processPerSample();
-        holdTime->processPerSample();
-        releaseTime->processPerSample();
-        velocitySensitivity->processPerSample();
 
-        /*mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
-        mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedValue());
-        mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedValue());
-        mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedValue());
-        mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedValue());*/
+        if (mParameterChangeFlag == true)
+        {
+            handleParameterChanges();
+        }
 
         mEnvelopeVoiceManager->processPerSample();
 
-        //float temporaryGain = mEnvelopeVoiceManager->getOutput();
-        float temporaryGain = holdLevel->getValue();
+        float temporaryGain = mEnvelopeVoiceManager->getOutput();
 
         leftChannel[sample] = temporaryGain;
         rightChannel[sample] = temporaryGain;
     }
+
+    clearParameterChanges();
+    mParameterChangeFlag = false;
 }
 
 //==============================================================================
@@ -215,27 +210,44 @@ void AlkamistSidechainCompressorAudioProcessor::setStateInformation (const void*
 }
 
 //==============================================================================
-void AlkamistSidechainCompressorAudioProcessor::parameterChange (FloatParameter* parameterThatWasChanged)
+void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
 {
-    if (parameterThatWasChanged == holdLevel)
+    holdLevel->clearParameterChangeFlag();
+    attackTime->clearParameterChangeFlag();
+    holdTime->clearParameterChangeFlag();
+    releaseTime->clearParameterChangeFlag();
+    velocitySensitivity->clearParameterChangeFlag();
+}
+
+void AlkamistSidechainCompressorAudioProcessor::handleParameterChanges()
+{
+    if (holdLevel->needsToChange())  
     {
-        mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedValue());
+        holdLevel->processPerSample();
+        mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedSmoothedValue());
     }
-    if (parameterThatWasChanged == velocitySensitivity)
+    if (attackTime->needsToChange())  
     {
-        mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedValue());
+        attackTime->processPerSample();
+        mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedSmoothedValue());
     }
-    if (parameterThatWasChanged == attackTime)
+      
+    if (holdTime->needsToChange())  
     {
-        mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedValue());
+        holdTime->processPerSample();
+        mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedSmoothedValue());
     }
-    if (parameterThatWasChanged == holdTime)
+
+    if (releaseTime->needsToChange()) 
     {
-        mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedValue());
+        releaseTime->processPerSample();
+        mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedSmoothedValue());
     }
-    if (parameterThatWasChanged == releaseTime)
+
+    if (velocitySensitivity->needsToChange())   
     {
-        mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedValue());
+        velocitySensitivity->processPerSample();
+        mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedSmoothedValue());
     }
 }
 

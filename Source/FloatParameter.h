@@ -20,17 +20,20 @@ public:
 
     void processPerSample();
     void reset (float inputSampleRate, int inputBlockSize);
+    inline void clearParameterChangeFlag() { mParameterChangeFlag = false; };
 
     // Getters
     inline float getDefaultValue() const override                         { return mDefaultValue; };
     inline String getName (int /*maximumStringLength*/) const override    { return mName; };
     inline String getLabel() const override                               { return String(); };
     inline float getValueForText (const String& text) const override      { return text.getFloatValue(); };
-    inline float getValue() const override                                { return mLinearlySmoothedFloat.getCurrentValue(); };
+    inline float getValue() const override                                { return mUnSmoothedParameterValue; };
     inline float getMinimum() const                                       { return mMinimumValue; };
     inline float getMaximum() const                                       { return mMaximumValue; };
-    float getUnNormalizedValue();
+    inline bool needsToChange() const                                     { return mParameterChangeFlag; };
+    float getUnNormalizedSmoothedValue();
     float getUnNormalizedUnSmoothedValue();
+    float getNormalizedSmoothedValue();
     String getText() override;
 
     // Setters
@@ -48,6 +51,7 @@ private:
     String mName;
 
     float mSampleRate;
+    bool mParameterChangeFlag;
 
     LinearlySmoothedFloat mLinearlySmoothedFloat;
     NormalisableRange<float> mNormalizableRange;

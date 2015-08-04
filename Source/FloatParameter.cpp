@@ -16,52 +16,48 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
       mMaximumValue (maximumParameterValue),
       mName (parameterName),
       mNormalizableRange (mMinimumValue, mMaximumValue),
-      mLinearlySmoothedFloat (defaultParameterValue)
+      mLinearlySmoothedFloat (defaultParameterValue),
+      mParameterChangeFlag (false)
 {
     reset (inputSampleRate, inputBlockSize);
 }
 
 String FloatParameter::getText()
 {
-    float currentValue = mLinearlySmoothedFloat.getCurrentValue();
-
-    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (mUnSmoothedParameterValue);
     String outputString (unNormalizedValue);
-
     return outputString;
 }
 
 void FloatParameter::setValue (float inputValue)
 {
-    mLinearlySmoothedFloat.setValue (inputValue);
-
     mUnSmoothedParameterValue = inputValue;
-
-    mParentProcessor->parameterChange (this);
+    mLinearlySmoothedFloat.setValue (inputValue);
+    mParentProcessor->signalForParameterChange();
+    this->mParameterChangeFlag = true;
 }
 
-float FloatParameter::getUnNormalizedValue()
+float FloatParameter::getUnNormalizedSmoothedValue()
 {
     float currentValue = mLinearlySmoothedFloat.getCurrentValue();
-
     float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
-
     return unNormalizedValue;
 }
 
 float FloatParameter::getUnNormalizedUnSmoothedValue()
 {
-    float currentValue = mUnSmoothedParameterValue;
-
-    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
-
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (mUnSmoothedParameterValue);
     return unNormalizedValue;
+}
+
+float FloatParameter::getNormalizedSmoothedValue()
+{
+    return mLinearlySmoothedFloat.getCurrentValue();
 }
 
 void FloatParameter::setNormalizedValue (float nonNormalizedValue)
 {
     float newValue = mNormalizableRange.convertTo0to1 (nonNormalizedValue);
-
     this->setValueNotifyingHost (newValue);
 }
 
