@@ -15,7 +15,7 @@
 
 class AHREnvelopeGenerator;
 
-const int kMaxNumberOfVoices = 32;
+const int kMaxNumberOfVoices = 64;
 
 class EnvelopeVoiceManager
 {
