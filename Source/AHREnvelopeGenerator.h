@@ -6,6 +6,7 @@
 class AHREnvelopeGenerator
 {
 public:
+
     AHREnvelopeGenerator();
 
     void restartEnvelope();
@@ -24,7 +25,9 @@ public:
     inline void setReleaseTime (double input)         { mReleaseTime = input; };
     inline void setVelocitySensitivity (double input) { mVelocitySensitivity = input; };
     inline void setSampleRate (double input)          { mSampleRate = input; };
+
 private:
+
     // Controls
     double mHoldLevel;
     double mAttackTime;
@@ -41,6 +44,7 @@ private:
     double mMultiplier;
     double mScaleFactor;
     int mEnvelopeSampleIndex;
+
 };
 
 #endif

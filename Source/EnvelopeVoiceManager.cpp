@@ -1,12 +1,3 @@
-/*
-  ==============================================================================
-
-    EnvelopeVoiceManager.cpp
-    Created: 31 Jul 2015 3:36:25pm
-    Author:  Corey
-
-  ==============================================================================
-*/
 #include "AHREnvelopeGenerator.h"
 
 #include "EnvelopeVoiceManager.h"

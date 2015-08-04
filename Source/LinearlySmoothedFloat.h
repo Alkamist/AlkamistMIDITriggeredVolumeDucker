@@ -6,6 +6,7 @@
 class LinearlySmoothedFloat
 {
 public:
+
     LinearlySmoothedFloat(double defaultValue);
 
     void reset (double sampleRate, double fadeLengthSeconds);
@@ -16,7 +17,9 @@ public:
 
     // Setters
     void setValue (double newValue);
+
 private:
+
     mutable double mCurrentValue;
     mutable double mTarget;
     mutable double mStep;
@@ -24,6 +27,7 @@ private:
     mutable int mStepsToTarget;
 
     JUCE_DECLARE_NON_COPYABLE (LinearlySmoothedFloat)
+
 };
 
 #endif  // LINEARSMOOTHEDVALUE_H_INCLUDED
