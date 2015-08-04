@@ -325,7 +325,7 @@
     <ClCompile Include="..\..\Source\SimpleOnePoleFilter.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\LinearSmoothedValue.cpp">
+    <ClCompile Include="..\..\Source\LinearlySmoothedFloat.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp">
@@ -1605,7 +1605,7 @@
     <ClInclude Include="..\..\Source\SimpleOnePoleFilter.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\LinearSmoothedValue.h">
+    <ClInclude Include="..\..\Source\LinearlySmoothedFloat.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h">

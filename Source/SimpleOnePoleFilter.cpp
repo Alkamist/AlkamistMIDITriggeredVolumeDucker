@@ -8,16 +8,26 @@
   ==============================================================================
 */
 
+#include <cmath>
+
 #include "SimpleOnePoleFilter.h"
 
-SimpleOnePoleFilter::SimpleOnePoleFilter(float coefficient) 
-  : mCoefficient(coefficient),
-    mHistory (0.0f)
+SimpleOnePoleFilter::SimpleOnePoleFilter(double inputCutoffFrequency) 
+  : mCoefficient (0.0),
+    mHistory (0.0),
+    mCutoffFrequency (inputCutoffFrequency)
 {}
 
-float SimpleOnePoleFilter::getOutput(float inputValue) const
+const double SimpleOnePoleFilter::kPI (3.141592653589793);
+
+double SimpleOnePoleFilter::getOutput(double inputValue) const
 {
-    float result = inputValue + mCoefficient * (mHistory - inputValue);
+    double result = inputValue + mCoefficient * (mHistory - inputValue);
     mHistory = result;
     return result;
+}
+
+void SimpleOnePoleFilter::reset(double inputSampleRate)
+{
+    mCoefficient = std::exp(-2.0 * kPI * mCutoffFrequency/inputSampleRate);
 }

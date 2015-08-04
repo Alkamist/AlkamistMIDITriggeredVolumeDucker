@@ -14,12 +14,16 @@
 class SimpleOnePoleFilter
 {
 public:
-    SimpleOnePoleFilter(float coefficient);
+    SimpleOnePoleFilter(double inputCutoffFrequency);
 
-    float getOutput(float inputValue) const;   
+    double getOutput(double inputValue) const;
+    void reset(double inputSampleRate);
 private:
-    mutable float mHistory;
-    mutable float mCoefficient;
+    mutable double mHistory;
+    mutable double mCoefficient;
+    mutable double mCutoffFrequency;
+
+    static const double kPI;
 };
 
 

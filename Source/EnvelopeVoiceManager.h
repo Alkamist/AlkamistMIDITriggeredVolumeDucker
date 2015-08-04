@@ -22,19 +22,20 @@ class EnvelopeVoiceManager
 public:
     EnvelopeVoiceManager();
 
-    void process();
+    void processPerSample();
     void startEnvelopeUsingAvailableVoice (const MidiMessage& inputMidiMessage);
 
-    inline float getOutput() { return mOutput; };
+    inline double getOutput() { return mOutput; };
 
-    void setHoldLevel (float input);
-    void setAttackTime (float input);
-    void setHoldTime (float input);
-    void setReleaseTime (float input);
-    void setVelocitySensitivity (float input);
-    void setSampleRate (float input);
+    void setHoldLevel (double input);
+    void setAttackTime (double input);
+    void setHoldTime (double input);
+    void setReleaseTime (double input);
+    void setVelocitySensitivity (double input);
+
+    void reset (double inputSampleRate);
 private:
-    float mOutput;
+    double mOutput;
 
     AHREnvelopeGenerator* mListOfEnvelopes[kMaxNumberOfVoices];
 };

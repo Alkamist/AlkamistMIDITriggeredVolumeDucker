@@ -1,18 +1,8 @@
-/*
-  ==============================================================================
-
-    FloatParameter.cpp
-    Created: 29 Jul 2015 2:36:34pm
-    Author:  Corey
-
-  ==============================================================================
-*/
-
 #include "PluginProcessor.h"
 
 #include "FloatParameter.h"
 
-FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* inputProcessor, 
+FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* inputProcessor,
                                 float defaultParameterValue,
                                 float minimumParameterValue,
                                 float maximumParameterValue,
@@ -20,37 +10,52 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
                                 float inputSampleRate,
                                 int inputBlockSize)
     : mParentProcessor (inputProcessor),
+      mUnSmoothedParameterValue (defaultParameterValue),
       mDefaultValue (defaultParameterValue),
-      mValue (defaultParameterValue),
-      mName (parameterName),
       mMinimumValue (minimumParameterValue),
       mMaximumValue (maximumParameterValue),
+      mName (parameterName),
       mNormalizableRange (mMinimumValue, mMaximumValue),
-      mSimpleOnePoleFilter(0.98f)
+      mLinearlySmoothedFloat (defaultParameterValue)
 {
-    initializeParameterSmoother (inputSampleRate, inputBlockSize);
+    reset (inputSampleRate, inputBlockSize);
 }
 
 String FloatParameter::getText()
 {
-    float outputValue = 0.0f;
-    String outputString (outputValue);
+    float currentValue = mLinearlySmoothedFloat.getCurrentValue();
+
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
+    String outputString (unNormalizedValue);
 
     return outputString;
 }
 
-void FloatParameter::setValue (float newValue)                   
-{ 
-    mValue.setValue(newValue);
+void FloatParameter::setValue (float inputValue)
+{
+    mLinearlySmoothedFloat.setValue (inputValue);
 
-    mParentProcessor->parameterChange(this);
+    mUnSmoothedParameterValue = inputValue;
+
+    mParentProcessor->parameterChange (this);
 }
 
 float FloatParameter::getUnNormalizedValue()
 {
-    float newValue = 0.0f;
+    float currentValue = mLinearlySmoothedFloat.getCurrentValue();
 
-    return newValue;
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
+
+    return unNormalizedValue;
+}
+
+float FloatParameter::getUnNormalizedUnSmoothedValue()
+{
+    float currentValue = mUnSmoothedParameterValue;
+
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
+
+    return unNormalizedValue;
 }
 
 void FloatParameter::setNormalizedValue (float nonNormalizedValue)
@@ -60,8 +65,14 @@ void FloatParameter::setNormalizedValue (float nonNormalizedValue)
     this->setValueNotifyingHost (newValue);
 }
 
-void FloatParameter::initializeParameterSmoother (float inputSampleRate, int inputBlockSize)
+void FloatParameter::processPerSample()
 {
+    mLinearlySmoothedFloat.processPerSample();
+}
+
+void FloatParameter::reset (float inputSampleRate, int inputBlockSize)
+{
+    // Linear Parameter Ramp
     float smoothingTimeInSeconds = (float) inputBlockSize / inputSampleRate;
-    this->mValue.reset(inputSampleRate, smoothingTimeInSeconds);
+    this->mLinearlySmoothedFloat.reset (inputSampleRate, smoothingTimeInSeconds);
 }

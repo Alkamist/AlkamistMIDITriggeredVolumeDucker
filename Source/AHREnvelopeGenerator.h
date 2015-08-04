@@ -11,35 +11,35 @@ public:
     void restartEnvelope();
     void processEnvelope();
     void setVelocityScaleFactor (uint8 velocity);
-    float calculateMultiplier(float startLevel, float endLevel, int lengthInSamples);
+    double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
 
     // Getters
-    inline float getOutput() { return mEnvelopeOutput; };
+    inline double getOutput() { return mEnvelopeOutput; };
     inline int getEnvelopeSampleIndex() { return mEnvelopeSampleIndex; };
 
     // Setters
-    inline void setHoldLevel (float input)           { mHoldLevel = input; };
-    inline void setAttackTime (float input)          { mAttackTime = input; };
-    inline void setHoldTime (float input)            { mHoldTime = input; };
-    inline void setReleaseTime (float input)         { mReleaseTime = input; };
-    inline void setVelocitySensitivity (float input) { mVelocitySensitivity = input; };
-    inline void setSampleRate (float input)          { mSampleRate = input; };
+    inline void setHoldLevel (double input)           { mHoldLevel = input; };
+    inline void setAttackTime (double input)          { mAttackTime = input; };
+    inline void setHoldTime (double input)            { mHoldTime = input; };
+    inline void setReleaseTime (double input)         { mReleaseTime = input; };
+    inline void setVelocitySensitivity (double input) { mVelocitySensitivity = input; };
+    inline void setSampleRate (double input)          { mSampleRate = input; };
 private:
     // Controls
-    float mHoldLevel;
-    float mAttackTime;
-    float mHoldTime;
-    float mReleaseTime;
-    float mVelocitySensitivity;
-    float mEnvelopeOutput;
+    double mHoldLevel;
+    double mAttackTime;
+    double mHoldTime;
+    double mReleaseTime;
+    double mVelocitySensitivity;
+    double mEnvelopeOutput;
 
     // Members
     int mSampleRate;
     int mCurrentStageSampleIndex;
     int mNextStageSampleIndex;
     int mCurrentStage;
-    float mMultiplier;
-    float mScaleFactor;
+    double mMultiplier;
+    double mScaleFactor;
     int mEnvelopeSampleIndex;
 };
 

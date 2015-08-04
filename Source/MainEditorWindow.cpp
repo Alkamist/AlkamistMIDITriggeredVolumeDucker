@@ -222,7 +222,7 @@ void MainEditorWindow::resized()
 void MainEditorWindow::sliderValueChanged (Slider* sliderThatWasMoved)
 {
     //[UsersliderValueChanged_Pre]
-    setNormalizedValueFromSlider(sliderThatWasMoved);
+    setNormalizedValueFromSlider (sliderThatWasMoved);
     //[/UsersliderValueChanged_Pre]
 
     if (sliderThatWasMoved == holdLevelSlider)
@@ -280,16 +280,17 @@ void MainEditorWindow::setAllSliderRanges()
 
 void MainEditorWindow::setNormalizedValueFromSlider(Slider* slider)
 {
-    FloatParameter* parameter = getParameterFromSlider(slider);
-
-    parameter->setNormalizedValue (slider->getValue());
+    if (FloatParameter* parameter = getParameterFromSlider(slider))
+    {
+        parameter->setNormalizedValue (slider->getValue());
+    }
 }
 
 void MainEditorWindow::updateSliderValue(Slider* slider)
 {
     if (FloatParameter* parameter = getParameterFromSlider(slider))
     {
-        float unNormalizedParameterValue = parameter->getUnNormalizedValue();
+        float unNormalizedParameterValue = parameter->getUnNormalizedUnSmoothedValue();
 
         slider->setValue (unNormalizedParameterValue);
     }

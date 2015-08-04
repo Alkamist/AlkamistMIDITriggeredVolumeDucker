@@ -7,7 +7,6 @@
 
   ==============================================================================
 */
-
 #include "AHREnvelopeGenerator.h"
 
 #include "EnvelopeVoiceManager.h"
@@ -26,12 +25,12 @@ EnvelopeVoiceManager::EnvelopeVoiceManager()
 AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (AHREnvelopeGenerator* inputArray[])
 {
     AHREnvelopeGenerator* envelopeWithSmallestOutput;
-    float smallestOutput = 1.1f;
+    double smallestOutput = 1.1f;
 
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
         inputArray[index]->processEnvelope();
-        float currentArrayOutput = inputArray[index]->getOutput();
+        double currentArrayOutput = inputArray[index]->getOutput();
 
         if (currentArrayOutput <= smallestOutput)
         {
@@ -46,7 +45,7 @@ AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (AHREnvelopeGenerator* inpu
 // This function finds the envelope with the smallest output,
 // and then sets the voice manager's output to that
 // envelope's output.
-void EnvelopeVoiceManager::process()
+void EnvelopeVoiceManager::processPerSample()
 {  
     AHREnvelopeGenerator* envelopeWithSmallestOutput = findEnvelopeWithSmallestOutput (mListOfEnvelopes);
 
@@ -62,7 +61,7 @@ AHREnvelopeGenerator* findMostCompleteEnvelope (AHREnvelopeGenerator* inputArray
 
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
-        float currentEnvelopeSampleIndex = inputArray[index]->getEnvelopeSampleIndex();
+        double currentEnvelopeSampleIndex = inputArray[index]->getEnvelopeSampleIndex();
 
         if (currentEnvelopeSampleIndex >= largestEnvelopeSampleIndex)
         {
@@ -88,7 +87,7 @@ void EnvelopeVoiceManager::startEnvelopeUsingAvailableVoice (const MidiMessage& 
 
 //=============================================================
 
-void EnvelopeVoiceManager::setHoldLevel (float input)
+void EnvelopeVoiceManager::setHoldLevel (double input)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
@@ -96,7 +95,7 @@ void EnvelopeVoiceManager::setHoldLevel (float input)
     }
 }
 
-void EnvelopeVoiceManager::setAttackTime (float input)
+void EnvelopeVoiceManager::setAttackTime (double input)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
@@ -104,7 +103,7 @@ void EnvelopeVoiceManager::setAttackTime (float input)
     }
 }
 
-void EnvelopeVoiceManager::setHoldTime (float input)
+void EnvelopeVoiceManager::setHoldTime (double input)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
@@ -112,7 +111,7 @@ void EnvelopeVoiceManager::setHoldTime (float input)
     }
 }
 
-void EnvelopeVoiceManager::setReleaseTime (float input)
+void EnvelopeVoiceManager::setReleaseTime (double input)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
@@ -120,7 +119,7 @@ void EnvelopeVoiceManager::setReleaseTime (float input)
     }
 }
 
-void EnvelopeVoiceManager::setVelocitySensitivity (float input)
+void EnvelopeVoiceManager::setVelocitySensitivity (double input)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
@@ -128,10 +127,10 @@ void EnvelopeVoiceManager::setVelocitySensitivity (float input)
     }
 }
 
-void EnvelopeVoiceManager::setSampleRate (float input)
+void EnvelopeVoiceManager::reset (double inputSampleRate)
 {
     for (int index = 0; index < kMaxNumberOfVoices; ++index)
     {
-        mListOfEnvelopes[index]->setSampleRate (input);
+        mListOfEnvelopes[index]->setSampleRate (inputSampleRate);
     }
 }

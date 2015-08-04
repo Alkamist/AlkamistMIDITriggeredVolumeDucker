@@ -1,26 +1,16 @@
-/*
-  ==============================================================================
-
-    FloatParameter.h
-    Created: 29 Jul 2015 2:36:34pm
-    Author:  Corey
-
-  ==============================================================================
-*/
-
 #ifndef FLOATPARAMETER_H_INCLUDED
 #define FLOATPARAMETER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "LinearSmoothedValue.h"
-#include "SimpleOnePoleFilter.h"
+#include "LinearlySmoothedFloat.h"
 
 class AlkamistSidechainCompressorAudioProcessor;
 
 class FloatParameter : public AudioProcessorParameter
 {
 public:
-    FloatParameter (AlkamistSidechainCompressorAudioProcessor* inputProcessor, 
+
+    FloatParameter (AlkamistSidechainCompressorAudioProcessor* inputProcessor,
                     float defaultParameterValue,
                     float minimumParameterValue,
                     float maximumParameterValue,
@@ -28,40 +18,40 @@ public:
                     float inputSampleRate,
                     int inputBlockSize);
 
+    void processPerSample();
+    void reset (float inputSampleRate, int inputBlockSize);
+
+    // Getters
     inline float getDefaultValue() const override                         { return mDefaultValue; };
     inline String getName (int /*maximumStringLength*/) const override    { return mName; };
     inline String getLabel() const override                               { return String(); };
     inline float getValueForText (const String& text) const override      { return text.getFloatValue(); };
-    inline float getValue() const override                                
-    { 
-        mValue.processNextValue();
-        float output = mSimpleOnePoleFilter.getOutput(mValue.getCurrentValue());
-        return output;
-    };
-
-    inline float getMinimum() { return mMinimumValue; };
-    inline float getMaximum() { return mMaximumValue; };
-
-    String getText() override;
-    void setValue (float newValue) override; 
-
-    void initializeParameterSmoother (float inputSampleRate, int inputBlockSize);
-
+    inline float getValue() const override                                { return mLinearlySmoothedFloat.getCurrentValue(); };
+    inline float getMinimum() const                                       { return mMinimumValue; };
+    inline float getMaximum() const                                       { return mMaximumValue; };
     float getUnNormalizedValue();
-    void setNormalizedValue (float nonNormalizedValue);
-private:
-    AlkamistSidechainCompressorAudioProcessor* mParentProcessor;
-    float mDefaultValue;
-    LinearSmoothedValue mValue;
-    String mName;
+    float getUnNormalizedUnSmoothedValue();
+    String getText() override;
 
+    // Setters
+    void setValue (float newValue) override;
+    void setNormalizedValue (float nonNormalizedValue);
+
+private:
+
+    AlkamistSidechainCompressorAudioProcessor* mParentProcessor;
+
+    float mUnSmoothedParameterValue;
+    float mDefaultValue;
     float mMinimumValue;
     float mMaximumValue;
+    String mName;
+
     float mSampleRate;
 
-    SimpleOnePoleFilter mSimpleOnePoleFilter;
-
+    LinearlySmoothedFloat mLinearlySmoothedFloat;
     NormalisableRange<float> mNormalizableRange;
+
 };
 
 #endif  // FLOATPARAMETER_H_INCLUDED

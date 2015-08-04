@@ -132,7 +132,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\SimpleOnePoleFilter.cpp"/>
-    <ClCompile Include="..\..\Source\LinearSmoothedValue.cpp"/>
+    <ClCompile Include="..\..\Source\LinearlySmoothedFloat.cpp"/>
     <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp"/>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp"/>
     <ClCompile Include="..\..\Source\FloatParameter.cpp"/>
@@ -1272,7 +1272,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\SimpleOnePoleFilter.h"/>
-    <ClInclude Include="..\..\Source\LinearSmoothedValue.h"/>
+    <ClInclude Include="..\..\Source\LinearlySmoothedFloat.h"/>
     <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h"/>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h"/>
     <ClInclude Include="..\..\Source\FloatParameter.h"/>

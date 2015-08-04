@@ -30,25 +30,25 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 {
     // Cut off the note-off (velocity 0) and scale
     // to floating point.
-    float scaledVelocity = (velocity - 1) / 126.0;
+    double scaledVelocity = (velocity - 1) / 126.0;
 
     // Invert the floating point velocity so it goes
     // from 1 to 0.
-    float invertedVelocity = 1 - scaledVelocity;
+    double invertedVelocity = 1 - scaledVelocity;
 
     // Scale the velocity by the velocity sensitivity.
-    float adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01f;
+    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01f;
 
     // Convert the floating point velocity to logarithmic
     // scale.
-    float logarithmicVelocity = std::pow(10.0f, (-mHoldLevel / 20.0f) * (adjustedVelocity - 1));
+    double logarithmicVelocity = std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
 
     // Set the output.
     mScaleFactor = logarithmicVelocity;
 }
 
-float AHREnvelopeGenerator::calculateMultiplier(float startLevel, 
-                                                float endLevel, 
+double AHREnvelopeGenerator::calculateMultiplier(double startLevel, 
+                                                double endLevel, 
                                                 int lengthInSamples)
 {
     return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
@@ -59,7 +59,7 @@ void AHREnvelopeGenerator::processEnvelope()
     // Should we enter a stage?
     if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
     {
-        float msToSeconds = 0.001f;
+        double msToSeconds = 0.001f;
         ++mCurrentStage;
         mCurrentStageSampleIndex = 0;
 
