@@ -1,11 +1,11 @@
 #ifndef ENVELOPEVOICEMANAGER_H_INCLUDED
 #define ENVELOPEVOICEMANAGER_H_INCLUDED
 
+#include <deque>
+
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class AHREnvelopeGenerator;
-
-const int kMaxNumberOfVoices = 64;
+#include "AHREnvelopeGenerator.h"
 
 class EnvelopeVoiceManager
 {
@@ -15,7 +15,7 @@ public:
 
     void reset (double inputSampleRate);
     void processPerSample();
-    void startEnvelopeUsingAvailableVoice (const MidiMessage& inputMidiMessage);
+    void startNewEnvelope (const MidiMessage& inputMidiMessage);
 
     // Getters
     inline double getOutput() { return mOutput; };
@@ -31,7 +31,14 @@ private:
 
     double mOutput;
 
-    AHREnvelopeGenerator* mListOfEnvelopes[kMaxNumberOfVoices];
+    double mHoldLevel;
+    double mAttackTime;
+    double mHoldTime;
+    double mReleaseTime;
+    double mVelocitySensitivity;
+    double mSampleRate;
+
+    std::deque< ScopedPointer<AHREnvelopeGenerator> > mEnvelopeContainer;
 
 };
 

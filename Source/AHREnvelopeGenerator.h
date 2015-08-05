@@ -15,8 +15,9 @@ public:
     double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
 
     // Getters
-    inline double getOutput() { return mEnvelopeOutput; };
-    inline int getEnvelopeSampleIndex() { return mEnvelopeSampleIndex; };
+    inline double getOutput()                         { return mEnvelopeOutput; };
+    inline int getEnvelopeSampleIndex()               { return mEnvelopeSampleIndex; };
+    inline bool envelopeIsFinished()                  { return mEnvelopeIsFinished; };
 
     // Setters
     inline void setHoldLevel (double input)           { mHoldLevel = input; };
@@ -44,6 +45,7 @@ private:
     double mMultiplier;
     double mScaleFactor;
     int mEnvelopeSampleIndex;
+    bool mEnvelopeIsFinished;
 
 };
 

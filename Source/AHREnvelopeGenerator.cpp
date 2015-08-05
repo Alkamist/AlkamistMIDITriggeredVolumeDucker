@@ -3,23 +3,25 @@
 #include "AHREnvelopeGenerator.h"
 
 AHREnvelopeGenerator::AHREnvelopeGenerator()
-    : mHoldLevel (0.0f),
-      mAttackTime (0.1f),
-      mHoldTime (0.1f),
-      mReleaseTime (0.1f),
-      mVelocitySensitivity (1.0f),
-      mEnvelopeOutput (1.0f),
+    : mHoldLevel (0.0),
+      mAttackTime (0.1),
+      mHoldTime (0.1),
+      mReleaseTime (0.1),
+      mVelocitySensitivity (1.0),
+      mEnvelopeOutput (1.0),
       mSampleRate (44100),
       mCurrentStageSampleIndex (0),
       mNextStageSampleIndex (0),
       mCurrentStage (3),
-      mMultiplier (1.0f),
-      mScaleFactor (1.0f),
-      mEnvelopeSampleIndex (0)
+      mMultiplier (1.0),
+      mScaleFactor (1.0),
+      mEnvelopeSampleIndex (0),
+      mEnvelopeIsFinished (false)
 {}
 
 void AHREnvelopeGenerator::restartEnvelope()
 {
+    mEnvelopeIsFinished = false;
     mEnvelopeSampleIndex = 0;
     mCurrentStageSampleIndex = 0;
     mNextStageSampleIndex = 0;
@@ -37,7 +39,7 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     double invertedVelocity = 1 - scaledVelocity;
 
     // Scale the velocity by the velocity sensitivity.
-    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01f;
+    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01;
 
     // Convert the floating point velocity to logarithmic
     // scale.
@@ -59,7 +61,7 @@ void AHREnvelopeGenerator::processEnvelope()
     // Should we enter a stage?
     if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
     {
-        double msToSeconds = 0.001f;
+        double msToSeconds = 0.001;
         ++mCurrentStage;
         mCurrentStageSampleIndex = 0;
 
@@ -80,14 +82,14 @@ void AHREnvelopeGenerator::processEnvelope()
             case 1:
                 mNextStageSampleIndex = mHoldTime * msToSeconds * mSampleRate;
                 mEnvelopeOutput = mScaleFactor;
-                mMultiplier = 1.0f;
+                mMultiplier = 1.0;
                 break;
 
             // Release
             case 2:
                 mNextStageSampleIndex = mReleaseTime * msToSeconds * mSampleRate - 1;
                 mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                                   1.0f, 
+                                                   1.0, 
                                                    mNextStageSampleIndex);
                 break;
         }
@@ -96,9 +98,10 @@ void AHREnvelopeGenerator::processEnvelope()
     // Has the envelope finished?
     if (mCurrentStage == 3)
     {
+        mEnvelopeIsFinished = true;
         mCurrentStageSampleIndex = -1;
         mNextStageSampleIndex = 0;
-        mEnvelopeOutput = 1.0f;
+        mEnvelopeOutput = 1.0;
     }
     else
     {

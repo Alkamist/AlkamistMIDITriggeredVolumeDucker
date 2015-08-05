@@ -1,127 +1,169 @@
-#include "AHREnvelopeGenerator.h"
-
 #include "EnvelopeVoiceManager.h"
 
 EnvelopeVoiceManager::EnvelopeVoiceManager()
-    : mOutput (1.0f)
-{
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
-    {
-        mListOfEnvelopes[index] = new AHREnvelopeGenerator();
-    }
-}
+    : mOutput (1.0),
+      mHoldLevel (1.0),
+      mAttackTime (0.1),
+      mHoldTime (0.1),
+      mReleaseTime (0.1),
+      mVelocitySensitivity (1.0),
+      mSampleRate (44100.0)
+{}
 
 // This function returns a pointer to the envelope that has the
 // smallest output.
-AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (AHREnvelopeGenerator* inputArray[])
+AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (std::deque< ScopedPointer<AHREnvelopeGenerator> >& inputEnvelopeContainer)
 {
     AHREnvelopeGenerator* envelopeWithSmallestOutput;
-    double smallestOutput = 1.1f;
+    double smallestOutput = 1.1;
 
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = inputEnvelopeContainer.begin();
+        
+    while (dequeIterator != inputEnvelopeContainer.end())
     {
-        inputArray[index]->processEnvelope();
-        double currentArrayOutput = inputArray[index]->getOutput();
+        (*dequeIterator)->processEnvelope();
+        double currentEnvelopeOutput = (*dequeIterator)->getOutput();
 
-        if (currentArrayOutput <= smallestOutput)
+        if (currentEnvelopeOutput <= smallestOutput)
         {
-            smallestOutput = currentArrayOutput;
-            envelopeWithSmallestOutput = inputArray[index];
+            smallestOutput = currentEnvelopeOutput;
+            envelopeWithSmallestOutput = (*dequeIterator);
         }
+
+        ++dequeIterator;
     }
 
     return envelopeWithSmallestOutput;
 }
 
-// This function finds the envelope with the smallest output,
-// and then sets the voice manager's output to that
-// envelope's output.
 void EnvelopeVoiceManager::processPerSample()
 {  
-    AHREnvelopeGenerator* envelopeWithSmallestOutput = findEnvelopeWithSmallestOutput (mListOfEnvelopes);
-
-    mOutput = envelopeWithSmallestOutput->getOutput();
-}
-
-// This function returns a pointer to the envelope that is closest
-// to being done.
-AHREnvelopeGenerator* findMostCompleteEnvelope (AHREnvelopeGenerator* inputArray[])
-{
-    AHREnvelopeGenerator* mostCompleteEnvelope;
-    int largestEnvelopeSampleIndex = 0;
-
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    if (mEnvelopeContainer.empty() == false)
     {
-        double currentEnvelopeSampleIndex = inputArray[index]->getEnvelopeSampleIndex();
+        AHREnvelopeGenerator* envelopeWithSmallestOutput = findEnvelopeWithSmallestOutput (mEnvelopeContainer);
+        mOutput = envelopeWithSmallestOutput->getOutput();
 
-        if (currentEnvelopeSampleIndex >= largestEnvelopeSampleIndex)
+        if (mEnvelopeContainer.back()->envelopeIsFinished())
         {
-            largestEnvelopeSampleIndex = currentEnvelopeSampleIndex;
-            mostCompleteEnvelope = inputArray[index];
+            mEnvelopeContainer.pop_back();
         }
     }
-
-    return mostCompleteEnvelope;
+    else
+    {
+        mOutput = 1.0;
+    }
 }
 
-// This function starts an envelope using an available voice,
-// or restarts the most complete envelope if there isn't one.
-// It also sets the MIDI velocity scale factor of the envelope
-// that is being used.
-void EnvelopeVoiceManager::startEnvelopeUsingAvailableVoice (const MidiMessage& inputMidiMessage)
+void EnvelopeVoiceManager::startNewEnvelope (const MidiMessage& inputMidiMessage)
 {
-    AHREnvelopeGenerator* mostCompleteEnvelope = findMostCompleteEnvelope (mListOfEnvelopes);
+    mEnvelopeContainer.push_front (new AHREnvelopeGenerator());
 
-    mostCompleteEnvelope->restartEnvelope();
-    mostCompleteEnvelope->setVelocityScaleFactor (inputMidiMessage.getVelocity());
+    AHREnvelopeGenerator* newestEnvelope = mEnvelopeContainer.front();
+
+    // Initialize the new envelope.
+    newestEnvelope->setHoldLevel (mHoldLevel);
+    newestEnvelope->setAttackTime (mAttackTime);
+    newestEnvelope->setHoldTime (mHoldTime);
+    newestEnvelope->setReleaseTime (mReleaseTime);
+    newestEnvelope->setVelocitySensitivity (mVelocitySensitivity);
+    newestEnvelope->setSampleRate (mSampleRate);
+    newestEnvelope->restartEnvelope();
+    newestEnvelope->setVelocityScaleFactor (inputMidiMessage.getVelocity());
 }
 
 //=============================================================
-
 void EnvelopeVoiceManager::setHoldLevel (double input)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mHoldLevel = input;
+
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setHoldLevel (input);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setHoldLevel (input);
+            ++dequeIterator;
+        }
     }
 }
 
 void EnvelopeVoiceManager::setAttackTime (double input)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mAttackTime = input;
+
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setAttackTime (input);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setAttackTime (input);
+            ++dequeIterator;
+        }
     }
 }
 
 void EnvelopeVoiceManager::setHoldTime (double input)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mHoldTime = input;
+
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setHoldTime (input);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setHoldTime (input);
+            ++dequeIterator;
+        }
     }
 }
 
 void EnvelopeVoiceManager::setReleaseTime (double input)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mReleaseTime = input;
+
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setReleaseTime (input);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setReleaseTime (input);
+            ++dequeIterator;
+        }
     }
 }
 
 void EnvelopeVoiceManager::setVelocitySensitivity (double input)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mVelocitySensitivity = input;
+
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setVelocitySensitivity (input);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setVelocitySensitivity (input);
+            ++dequeIterator;
+        }
     }
 }
 
 void EnvelopeVoiceManager::reset (double inputSampleRate)
 {
-    for (int index = 0; index < kMaxNumberOfVoices; ++index)
+    mSampleRate = inputSampleRate;
+    
+    if (mEnvelopeContainer.empty() == false)
     {
-        mListOfEnvelopes[index]->setSampleRate (inputSampleRate);
+        std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
+        
+        while (dequeIterator != mEnvelopeContainer.end())
+        {
+            (*dequeIterator)->setSampleRate (inputSampleRate);
+            ++dequeIterator;
+        }
     }
 }

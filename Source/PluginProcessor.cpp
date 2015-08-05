@@ -111,7 +111,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
             if (currentMidiMessage.isNoteOn() 
                 && midiMessageSamplePosition == sample)
             {
-                mEnvelopeVoiceManager->startEnvelopeUsingAvailableVoice (currentMidiMessage);
+                mEnvelopeVoiceManager->startNewEnvelope (currentMidiMessage);
             }
         }
 
@@ -122,10 +122,10 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
 
         mEnvelopeVoiceManager->processPerSample();
 
-        float temporaryGain = mEnvelopeVoiceManager->getOutput();
+        float temporaryGain = (float) mEnvelopeVoiceManager->getOutput();
 
-        leftChannel[sample] = temporaryGain;
-        rightChannel[sample] = temporaryGain;
+        leftChannel[sample] *= temporaryGain;
+        rightChannel[sample] *= temporaryGain;
     }
 
     clearParameterChanges();
