@@ -1,6 +1,6 @@
 #include "PluginEditor.h"
 #include "FloatParameter.h"
-#include "AHREnvelopeGenerator.h"
+#include "EnvelopeVoiceManager.h"
 
 #include "PluginProcessor.h"
 
@@ -17,7 +17,7 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time", sampleRate, samplesPerBlock)); 
     addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time", sampleRate, samplesPerBlock));
 
-    mEnvelope = new AHREnvelopeGenerator();
+    mEnvelopeVoiceManager = new EnvelopeVoiceManager();
 
     reset();
 }
@@ -111,8 +111,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
             if (currentMidiMessage.isNoteOn() 
                 && midiMessageSamplePosition == sample)
             {
-                mEnvelope->setVelocityScaleFactor (currentMidiMessage.getVelocity());
-                mEnvelope->startEnvelope();
+                mEnvelopeVoiceManager->startNewEnvelope (currentMidiMessage);
             }
         }
 
@@ -121,12 +120,12 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
             handleParameterChanges();
         }
 
-        mEnvelope->processPerSample();
+        mEnvelopeVoiceManager->processPerSample();
 
-        float temporaryGain = (float) mEnvelope->getOutput();
+        float temporaryGain = (float) mEnvelopeVoiceManager->getOutput();
 
-        leftChannel[sample] = temporaryGain;
-        rightChannel[sample] = temporaryGain;
+        leftChannel[sample] *= temporaryGain;
+        rightChannel[sample] *= temporaryGain;
     }
 
     clearParameterChanges();
@@ -225,30 +224,30 @@ void AlkamistSidechainCompressorAudioProcessor::handleParameterChanges()
     if (holdLevel->needsToChange())  
     {
         holdLevel->processPerSample();
-        mEnvelope->setHoldLevel (holdLevel->getUnNormalizedSmoothedValue());
+        mEnvelopeVoiceManager->setHoldLevel (holdLevel->getUnNormalizedSmoothedValue());
     }
     if (attackTime->needsToChange())  
     {
         attackTime->processPerSample();
-        mEnvelope->setAttackTime (attackTime->getUnNormalizedSmoothedValue());
+        mEnvelopeVoiceManager->setAttackTime (attackTime->getUnNormalizedSmoothedValue());
     }
       
     if (holdTime->needsToChange())  
     {
         holdTime->processPerSample();
-        mEnvelope->setHoldTime (holdTime->getUnNormalizedSmoothedValue());
+        mEnvelopeVoiceManager->setHoldTime (holdTime->getUnNormalizedSmoothedValue());
     }
 
     if (releaseTime->needsToChange()) 
     {
         releaseTime->processPerSample();
-        mEnvelope->setReleaseTime (releaseTime->getUnNormalizedSmoothedValue());
+        mEnvelopeVoiceManager->setReleaseTime (releaseTime->getUnNormalizedSmoothedValue());
     }
 
     if (velocitySensitivity->needsToChange())   
     {
         velocitySensitivity->processPerSample();
-        mEnvelope->setVelocitySensitivity (velocitySensitivity->getUnNormalizedSmoothedValue());
+        mEnvelopeVoiceManager->setVelocitySensitivity (velocitySensitivity->getUnNormalizedSmoothedValue());
     }
 }
 
@@ -257,7 +256,7 @@ void AlkamistSidechainCompressorAudioProcessor::reset()
     double sampleRate = getSampleRate();
     int samplesPerBlock = getBlockSize();
 
-    mEnvelope->setSampleRate (sampleRate);
+    mEnvelopeVoiceManager->reset (sampleRate);
 
     // Parameters
     holdLevel->reset (sampleRate, samplesPerBlock);

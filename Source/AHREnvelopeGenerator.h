@@ -10,7 +10,6 @@ public:
     AHREnvelopeGenerator();
 
     void startEnvelope();
-    void processEnvelope();
     void processPerSample();
     void setVelocityScaleFactor (uint8 velocity);
     double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
