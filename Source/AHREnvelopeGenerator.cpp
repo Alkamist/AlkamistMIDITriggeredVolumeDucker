@@ -12,14 +12,14 @@ AHREnvelopeGenerator::AHREnvelopeGenerator()
       mSampleRate (44100),
       mCurrentStageSampleIndex (0),
       mNextStageSampleIndex (0),
-      mCurrentStage (3),
+      mCurrentStage (-1),
       mMultiplier (1.0),
       mScaleFactor (1.0),
       mEnvelopeSampleIndex (0),
       mEnvelopeIsFinished (false)
 {}
 
-void AHREnvelopeGenerator::restartEnvelope()
+void AHREnvelopeGenerator::startEnvelope()
 {
     mEnvelopeIsFinished = false;
     mEnvelopeSampleIndex = 0;
@@ -56,55 +56,61 @@ double AHREnvelopeGenerator::calculateMultiplier(double startLevel,
     return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
 }
 
-void AHREnvelopeGenerator::processEnvelope()
+void AHREnvelopeGenerator::performStateChange()
 {
-    // Should we enter a stage?
-    if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
+    double msToSeconds = 0.001;
+    ++mCurrentStage;
+    mCurrentStageSampleIndex = 0;
+
+    switch (mCurrentStage)
     {
-        double msToSeconds = 0.001;
-        ++mCurrentStage;
-        mCurrentStageSampleIndex = 0;
+    default:
+        break;
 
-        switch (mCurrentStage)
-        {
-            default:
-                break;
+    // Attack
+    case 0:
+        mNextStageSampleIndex = mAttackTime * msToSeconds * mSampleRate;
+        mMultiplier = calculateMultiplier (mEnvelopeOutput, 
+        mScaleFactor, 
+        mNextStageSampleIndex);
+        break;
 
-            // Attack
-            case 0:
-                mNextStageSampleIndex = mAttackTime * msToSeconds * mSampleRate;
-                mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                                   mScaleFactor, 
-                                                   mNextStageSampleIndex);
-                break;
+    // Hold
+    case 1:
+        mNextStageSampleIndex = mHoldTime * msToSeconds * mSampleRate;
+        mEnvelopeOutput = mScaleFactor;
+        mMultiplier = 1.0;
+        break;
 
-            // Hold
-            case 1:
-                mNextStageSampleIndex = mHoldTime * msToSeconds * mSampleRate;
-                mEnvelopeOutput = mScaleFactor;
-                mMultiplier = 1.0;
-                break;
+    // Release
+    case 2:
+        mNextStageSampleIndex = mReleaseTime * msToSeconds * mSampleRate - 1;
+        mMultiplier = calculateMultiplier (mEnvelopeOutput, 
+        1.0, 
+        mNextStageSampleIndex);
+        break;
 
-            // Release
-            case 2:
-                mNextStageSampleIndex = mReleaseTime * msToSeconds * mSampleRate - 1;
-                mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                                   1.0, 
-                                                   mNextStageSampleIndex);
-                break;
-        }
-    }
-
-    // Has the envelope finished?
-    if (mCurrentStage == 3)
-    {
+    // Finished
+    case 3:
         mEnvelopeIsFinished = true;
-        mCurrentStageSampleIndex = -1;
+        mCurrentStage = -1;
+        mCurrentStageSampleIndex = 0;
         mNextStageSampleIndex = 0;
         mEnvelopeOutput = 1.0;
+        break;
     }
-    else
+}
+
+void AHREnvelopeGenerator::processPerSample()
+{
+    if (!mEnvelopeIsFinished)
     {
+        // Should we enter a stage?
+        if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
+        {
+            performStateChange();
+        }
+
         mEnvelopeOutput *= mMultiplier;
         ++mCurrentStageSampleIndex;
         ++mEnvelopeSampleIndex;

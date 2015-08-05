@@ -9,8 +9,9 @@ public:
 
     AHREnvelopeGenerator();
 
-    void restartEnvelope();
+    void startEnvelope();
     void processEnvelope();
+    void processPerSample();
     void setVelocityScaleFactor (uint8 velocity);
     double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
 
@@ -29,15 +30,12 @@ public:
 
 private:
 
-    // Controls
     double mHoldLevel;
     double mAttackTime;
     double mHoldTime;
     double mReleaseTime;
     double mVelocitySensitivity;
     double mEnvelopeOutput;
-
-    // Members
     int mSampleRate;
     int mCurrentStageSampleIndex;
     int mNextStageSampleIndex;
@@ -46,6 +44,8 @@ private:
     double mScaleFactor;
     int mEnvelopeSampleIndex;
     bool mEnvelopeIsFinished;
+
+    void performStateChange();
 
 };
 

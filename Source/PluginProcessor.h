@@ -4,7 +4,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 class FloatParameter;
-class EnvelopeVoiceManager;
+class AHREnvelopeGenerator;
 
 //==============================================================================
 /**
@@ -69,7 +69,7 @@ private:
     void clearParameterChanges();
     bool mParameterChangeFlag;
 
-    EnvelopeVoiceManager* mEnvelopeVoiceManager;
+    AHREnvelopeGenerator* mEnvelope;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlkamistSidechainCompressorAudioProcessor)
 };

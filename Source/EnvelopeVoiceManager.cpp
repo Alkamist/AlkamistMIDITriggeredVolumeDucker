@@ -21,7 +21,7 @@ AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (std::deque< ScopedPointer<
         
     while (dequeIterator != inputEnvelopeContainer.end())
     {
-        (*dequeIterator)->processEnvelope();
+        (*dequeIterator)->processPerSample();
         double currentEnvelopeOutput = (*dequeIterator)->getOutput();
 
         if (currentEnvelopeOutput <= smallestOutput)
@@ -38,7 +38,7 @@ AHREnvelopeGenerator* findEnvelopeWithSmallestOutput (std::deque< ScopedPointer<
 
 void EnvelopeVoiceManager::processPerSample()
 {  
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         AHREnvelopeGenerator* envelopeWithSmallestOutput = findEnvelopeWithSmallestOutput (mEnvelopeContainer);
         mOutput = envelopeWithSmallestOutput->getOutput();
@@ -47,10 +47,6 @@ void EnvelopeVoiceManager::processPerSample()
         {
             mEnvelopeContainer.pop_back();
         }
-    }
-    else
-    {
-        mOutput = 1.0;
     }
 }
 
@@ -67,8 +63,8 @@ void EnvelopeVoiceManager::startNewEnvelope (const MidiMessage& inputMidiMessage
     newestEnvelope->setReleaseTime (mReleaseTime);
     newestEnvelope->setVelocitySensitivity (mVelocitySensitivity);
     newestEnvelope->setSampleRate (mSampleRate);
-    newestEnvelope->restartEnvelope();
     newestEnvelope->setVelocityScaleFactor (inputMidiMessage.getVelocity());
+    newestEnvelope->startEnvelope();
 }
 
 //=============================================================
@@ -76,7 +72,7 @@ void EnvelopeVoiceManager::setHoldLevel (double input)
 {
     mHoldLevel = input;
 
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
@@ -92,7 +88,7 @@ void EnvelopeVoiceManager::setAttackTime (double input)
 {
     mAttackTime = input;
 
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
@@ -108,7 +104,7 @@ void EnvelopeVoiceManager::setHoldTime (double input)
 {
     mHoldTime = input;
 
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
@@ -124,7 +120,7 @@ void EnvelopeVoiceManager::setReleaseTime (double input)
 {
     mReleaseTime = input;
 
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
@@ -140,7 +136,7 @@ void EnvelopeVoiceManager::setVelocitySensitivity (double input)
 {
     mVelocitySensitivity = input;
 
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
@@ -156,7 +152,7 @@ void EnvelopeVoiceManager::reset (double inputSampleRate)
 {
     mSampleRate = inputSampleRate;
     
-    if (mEnvelopeContainer.empty() == false)
+    if (!mEnvelopeContainer.empty())
     {
         std::deque< ScopedPointer<AHREnvelopeGenerator> >::iterator dequeIterator = mEnvelopeContainer.begin();
         
