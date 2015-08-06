@@ -15,11 +15,11 @@ public:
                     float minimumParameterValue,
                     float maximumParameterValue,
                     const String& parameterName,
-                    float inputSampleRate,
+                    double inputSampleRate,
                     int inputBlockSize);
 
     void processPerSample();
-    void reset (float inputSampleRate, int inputBlockSize);
+    void reset (double inputSampleRate, int inputBlockSize);
     inline void clearParameterChangeFlag() { mParameterChangeFlag = false; };
 
     // Getters
@@ -50,7 +50,7 @@ private:
     float mMaximumValue;
     String mName;
 
-    float mSampleRate;
+    double mSampleRate;
     bool mParameterChangeFlag;
 
     LinearlySmoothedFloat mLinearlySmoothedFloat;

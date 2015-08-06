@@ -3,8 +3,9 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "EnvelopeVoiceManager.h"
+
 class FloatParameter;
-class EnvelopeVoiceManager;
 
 //==============================================================================
 /**
@@ -69,7 +70,7 @@ private:
     void clearParameterChanges();
     bool mParameterChangeFlag;
 
-    EnvelopeVoiceManager* mEnvelopeVoiceManager;
+    EnvelopeVoiceManager mEnvelopeVoiceManager;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlkamistSidechainCompressorAudioProcessor)
 };

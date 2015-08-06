@@ -69,7 +69,7 @@ void AHREnvelopeGenerator::performStateChange()
 
     // Attack
     case 0:
-        mNextStageSampleIndex = mAttackTime * msToSeconds * mSampleRate;
+        mNextStageSampleIndex = (int) std::floor(mAttackTime * msToSeconds * mSampleRate);
         mMultiplier = calculateMultiplier (mEnvelopeOutput, 
         mScaleFactor, 
         mNextStageSampleIndex);
@@ -77,14 +77,14 @@ void AHREnvelopeGenerator::performStateChange()
 
     // Hold
     case 1:
-        mNextStageSampleIndex = mHoldTime * msToSeconds * mSampleRate;
+        mNextStageSampleIndex = (int) std::floor(mHoldTime * msToSeconds * mSampleRate);
         mEnvelopeOutput = mScaleFactor;
         mMultiplier = 1.0;
         break;
 
     // Release
     case 2:
-        mNextStageSampleIndex = mReleaseTime * msToSeconds * mSampleRate - 1;
+        mNextStageSampleIndex = (int) std::floor(mReleaseTime * msToSeconds * mSampleRate - 1);
         mMultiplier = calculateMultiplier (mEnvelopeOutput, 
         1.0, 
         mNextStageSampleIndex);

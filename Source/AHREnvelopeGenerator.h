@@ -34,7 +34,7 @@ private:
     double mReleaseTime;
     double mVelocitySensitivity;
     double mEnvelopeOutput;
-    int mSampleRate;
+    double mSampleRate;
     int mCurrentStageSampleIndex;
     int mNextStageSampleIndex;
     int mCurrentStage;

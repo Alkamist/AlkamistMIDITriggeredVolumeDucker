@@ -282,7 +282,7 @@ void MainEditorWindow::setNormalizedValueFromSlider(Slider* slider)
 {
     if (FloatParameter* parameter = getParameterFromSlider(slider))
     {
-        parameter->setNormalizedValue (slider->getValue());
+        parameter->setNormalizedValue ((float) slider->getValue());
     }
 }
 

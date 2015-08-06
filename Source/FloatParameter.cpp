@@ -7,7 +7,7 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
                                 float minimumParameterValue,
                                 float maximumParameterValue,
                                 const String& parameterName,
-                                float inputSampleRate,
+                                double inputSampleRate,
                                 int inputBlockSize)
     : mParentProcessor (inputProcessor),
       mUnSmoothedParameterValue (defaultParameterValue),
@@ -39,7 +39,7 @@ void FloatParameter::setValue (float inputValue)
 
 float FloatParameter::getUnNormalizedSmoothedValue()
 {
-    float currentValue = mLinearlySmoothedFloat.getCurrentValue();
+    float currentValue = (float) mLinearlySmoothedFloat.getCurrentValue();
     float unNormalizedValue = mNormalizableRange.convertFrom0to1 (currentValue);
     return unNormalizedValue;
 }
@@ -52,7 +52,7 @@ float FloatParameter::getUnNormalizedUnSmoothedValue()
 
 float FloatParameter::getNormalizedSmoothedValue()
 {
-    return mLinearlySmoothedFloat.getCurrentValue();
+    return (float) mLinearlySmoothedFloat.getCurrentValue();
 }
 
 void FloatParameter::setNormalizedValue (float nonNormalizedValue)
@@ -66,9 +66,9 @@ void FloatParameter::processPerSample()
     mLinearlySmoothedFloat.processPerSample();
 }
 
-void FloatParameter::reset (float inputSampleRate, int inputBlockSize)
+void FloatParameter::reset (double inputSampleRate, int inputBlockSize)
 {
     // Linear Parameter Ramp
-    float smoothingTimeInSeconds = (float) inputBlockSize / inputSampleRate;
+    double smoothingTimeInSeconds = ((double) inputBlockSize) / inputSampleRate;
     this->mLinearlySmoothedFloat.reset (inputSampleRate, smoothingTimeInSeconds);
 }
