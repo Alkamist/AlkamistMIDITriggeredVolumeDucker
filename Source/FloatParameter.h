@@ -2,7 +2,7 @@
 #define FLOATPARAMETER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "LinearlySmoothedFloat.h"
+#include "LinearlySmoothedDouble.h"
 
 class AlkamistSidechainCompressorAudioProcessor;
 
@@ -53,7 +53,7 @@ private:
     double mSampleRate;
     bool mParameterChangeFlag;
 
-    LinearlySmoothedFloat mLinearlySmoothedFloat;
+    LinearlySmoothedDouble mLinearlySmoothedDouble;
     NormalisableRange<float> mNormalizableRange;
 
 };

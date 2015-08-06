@@ -1,6 +1,6 @@
-#include "LinearlySmoothedFloat.h"
+#include "LinearlySmoothedDouble.h"
 
-LinearlySmoothedFloat::LinearlySmoothedFloat(double defaultValue)
+LinearlySmoothedDouble::LinearlySmoothedDouble(double defaultValue)
   : mCurrentValue (defaultValue),
     mTarget (defaultValue),
     mStep (0),
@@ -8,7 +8,7 @@ LinearlySmoothedFloat::LinearlySmoothedFloat(double defaultValue)
     mStepsToTarget (0)
 {}
 
-void LinearlySmoothedFloat::reset (double sampleRate, double fadeLengthSeconds)
+void LinearlySmoothedDouble::reset (double sampleRate, double fadeLengthSeconds)
 {
     jassert (sampleRate > 0 && fadeLengthSeconds >= 0);
     mStepsToTarget = (int) std::floor (fadeLengthSeconds * sampleRate);
@@ -16,7 +16,7 @@ void LinearlySmoothedFloat::reset (double sampleRate, double fadeLengthSeconds)
     mCountdown = 0;
 }
 
-void LinearlySmoothedFloat::setValue (double inputValue)
+void LinearlySmoothedDouble::setValue (double inputValue)
 {
     if (mTarget != inputValue)
     {
@@ -30,7 +30,7 @@ void LinearlySmoothedFloat::setValue (double inputValue)
     }
 }
 
-void LinearlySmoothedFloat::processPerSample()
+void LinearlySmoothedDouble::processPerSample()
 {
     if (mCountdown <= 0)
     {

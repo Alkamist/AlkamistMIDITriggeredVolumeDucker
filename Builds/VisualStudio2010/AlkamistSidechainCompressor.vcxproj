@@ -128,7 +128,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\LinearlySmoothedFloat.cpp"/>
+    <ClCompile Include="..\..\Source\LinearlySmoothedDouble.cpp"/>
     <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp"/>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp"/>
     <ClCompile Include="..\..\Source\FloatParameter.cpp"/>
@@ -1267,7 +1267,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     <ClCompile Include="..\..\..\..\Programming Documents\JUCE-master\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\LinearlySmoothedFloat.h"/>
+    <ClInclude Include="..\..\Source\LinearlySmoothedDouble.h"/>
     <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h"/>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h"/>
     <ClInclude Include="..\..\Source\FloatParameter.h"/>

@@ -1,13 +1,13 @@
-#ifndef LINEARLYSMOOTHEDFLOAT_H_INCLUDED
-#define LINEARLYSMOOTHEDFLOAT_H_INCLUDED
+#ifndef LINEARLYSMOOTHEDDOUBLE_H_INCLUDED
+#define LINEARLYSMOOTHEDDOUBLE_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-class LinearlySmoothedFloat
+class LinearlySmoothedDouble
 {
 public:
 
-    LinearlySmoothedFloat(double defaultValue);
+    LinearlySmoothedDouble(double defaultValue);
 
     void reset (double sampleRate, double fadeLengthSeconds);
     void processPerSample();
@@ -26,8 +26,8 @@ private:
     mutable int mCountdown;
     mutable int mStepsToTarget;
 
-    JUCE_DECLARE_NON_COPYABLE (LinearlySmoothedFloat)
+    JUCE_DECLARE_NON_COPYABLE (LinearlySmoothedDouble)
 
 };
 
-#endif  // LINEARSMOOTHEDVALUE_H_INCLUDED
+#endif  // LINEARLYSMOOTHEDDOUBLE_H_INCLUDED

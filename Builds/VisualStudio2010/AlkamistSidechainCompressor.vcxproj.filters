@@ -322,7 +322,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\LinearlySmoothedFloat.cpp">
+    <ClCompile Include="..\..\Source\LinearlySmoothedDouble.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\EnvelopeVoiceManager.cpp">
@@ -1599,7 +1599,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\LinearlySmoothedFloat.h">
+    <ClInclude Include="..\..\Source\LinearlySmoothedDouble.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\EnvelopeVoiceManager.h">
