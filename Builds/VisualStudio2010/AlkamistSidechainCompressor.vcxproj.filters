@@ -322,9 +322,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\SimpleOnePoleFilter.cpp">
-      <Filter>AlkamistSidechainCompressor\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\LinearlySmoothedFloat.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
@@ -1602,9 +1599,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\SimpleOnePoleFilter.h">
-      <Filter>AlkamistSidechainCompressor\Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\LinearlySmoothedFloat.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>

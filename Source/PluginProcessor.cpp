@@ -124,8 +124,8 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
 
         float temporaryGain = (float) mEnvelopeVoiceManager->getOutput();
 
-        leftChannel[sample] *= temporaryGain;
-        rightChannel[sample] *= temporaryGain;
+        leftChannel[sample] = temporaryGain;
+        rightChannel[sample] = temporaryGain;
     }
 
     clearParameterChanges();

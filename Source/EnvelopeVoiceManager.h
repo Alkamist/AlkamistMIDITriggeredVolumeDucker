@@ -1,8 +1,6 @@
 #ifndef ENVELOPEVOICEMANAGER_H_INCLUDED
 #define ENVELOPEVOICEMANAGER_H_INCLUDED
 
-#include <deque>
-
 #include "../JuceLibraryCode/JuceHeader.h"
 
 #include "AHREnvelopeGenerator.h"
@@ -37,8 +35,15 @@ private:
     double mReleaseTime;
     double mVelocitySensitivity;
     double mSampleRate;
+    
+    int mCurrentEnvelope;
+    bool mThereAreEnvelopesRunning;
 
-    std::deque< ScopedPointer<AHREnvelopeGenerator> > mEnvelopeContainer;
+    static const int mMaxNumberOfVoices = 16;
+
+    AHREnvelopeGenerator mEnvelopeContainer[mMaxNumberOfVoices];
+
+    AHREnvelopeGenerator* findEnvelopeWithSmallestOutput();
 
 };
 

@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="qZ6QKE" name="AlkamistSidechainCompressor" projectType="audioplug"
-              version="1.0.0" bundleIdentifier="com.yourcompany.AlkamistSidechainCompressor"
-              includeBinaryInAppConfig="1" buildVST="1" buildVST3="1" buildAU="0"
+              version="1.0.0" bundleIdentifier="com.AlkamistAudio.AlkamistSidechainCompressor"
+              includeBinaryInAppConfig="1" buildVST="1" buildVST3="0" buildAU="0"
               buildRTAS="0" buildAAX="0" pluginName="AlkamistSidechainCompressor"
-              pluginDesc="AlkamistSidechainCompressor" pluginManufacturer="yourcompany"
-              pluginManufacturerCode="Manu" pluginCode="Plug" pluginChannelConfigs="{1, 1}, {2, 2}"
+              pluginDesc="AlkamistSidechainCompressor" pluginManufacturer="Alkamist Audio"
+              pluginManufacturerCode="AlkA" pluginCode="AlSC" pluginChannelConfigs="{1, 1}, {2, 2}"
               pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="1"
               pluginSilenceInIsSilenceOut="1" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="AlkamistSidechainCompressorAU" pluginRTASCategory=""
-              aaxIdentifier="com.yourcompany.AlkamistSidechainCompressor" pluginAAXCategory="AAX_ePlugInCategory_Dynamics"
-              jucerVersion="3.2.0">
+              aaxIdentifier="com.AlkamistAudio.AlkamistSidechainCompressor"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="3.2.0"
+              companyName="Alkamist Audio">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
-      <FILE id="TRDslN" name="SimpleOnePoleFilter.cpp" compile="1" resource="0"
-            file="Source/SimpleOnePoleFilter.cpp"/>
-      <FILE id="N75OLx" name="SimpleOnePoleFilter.h" compile="0" resource="0"
-            file="Source/SimpleOnePoleFilter.h"/>
       <FILE id="i7tMu8" name="LinearlySmoothedFloat.cpp" compile="1" resource="0"
             file="Source/LinearlySmoothedFloat.cpp"/>
       <FILE id="bqbKEW" name="LinearlySmoothedFloat.h" compile="0" resource="0"
@@ -47,14 +44,15 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <VS2010 targetFolder="Builds/VisualStudio2010" vstFolder="c:\SDKs\vstsdk2.4"
+    <VS2010 targetFolder="Builds/VisualStudio2010" vstFolder="C:\SDKs\VST3 SDK"
             vst3Folder="c:\SDKs\VST3 SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="AlkamistSidechainCompressor"
                        postbuildCommand="copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;$(OutDir)\$(TargetName).vst&quot;&#10;copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(TargetFileName)&quot;"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="2" targetName="AlkamistSidechainCompressor"/>
+                       isDebug="0" optimisation="3" targetName="AlkamistSidechainCompressor"
+                       postbuildCommand="copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\Program Files\Steinberg\VSTPlugins\$(TargetFileName)&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="..\..\Programming Documents\JUCE-master\modules"/>

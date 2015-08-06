@@ -12,7 +12,6 @@ public:
     void startEnvelope();
     void processPerSample();
     void setVelocityScaleFactor (uint8 velocity);
-    double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
 
     // Getters
     inline double getOutput()                         { return mEnvelopeOutput; };
@@ -45,6 +44,7 @@ private:
     bool mEnvelopeIsFinished;
 
     void performStateChange();
+    double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
 
 };
 

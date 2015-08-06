@@ -2,6 +2,5 @@
 
 To do:
 -
-- Seriously revamp the way envelopes are being generated and managed,  
-  it is way too CPU-heavy right now.
 - Make the MIDI reception code trigger note-ons even when notes are overlapping.
+- Make sure parameters are being handled properly in every DAW.
