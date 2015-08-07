@@ -15,6 +15,7 @@ public:
                     float minimumParameterValue,
                     float maximumParameterValue,
                     const String& parameterName,
+                    const String& parameterLabel,
                     double inputSampleRate,
                     int inputBlockSize);
 
@@ -23,18 +24,18 @@ public:
     inline void clearParameterChangeFlag() { mParameterChangeFlag = false; };
 
     // Getters
-    inline float getDefaultValue() const override                         { return mDefaultValue; };
-    inline String getName (int /*maximumStringLength*/) const override    { return mName; };
-    inline String getLabel() const override                               { return String(); };
-    inline float getValueForText (const String& text) const override      { return text.getFloatValue(); };
-    inline float getValue() const override                                { return mUnSmoothedParameterValue; };
-    inline float getMinimum() const                                       { return mMinimumValue; };
-    inline float getMaximum() const                                       { return mMaximumValue; };
-    inline bool needsToChange() const                                     { return mParameterChangeFlag; };
+    inline float getDefaultValue() const override                           { return mDefaultValue; };
+    inline String getName (int /*maximumStringLength*/) const override      { return mName; };
+    inline String getLabel() const override                                 { return mLabel; };
+    inline float getValueForText (const String& inputString) const override { return inputString.getFloatValue(); };
+    inline float getValue() const override                                  { return mUnSmoothedParameterValue; };
+    inline float getMinimum() const                                         { return mMinimumValue; };
+    inline float getMaximum() const                                         { return mMaximumValue; };
+    inline bool needsToChange() const                                       { return mParameterChangeFlag; };
     float getUnNormalizedSmoothedValue();
     float getUnNormalizedUnSmoothedValue();
     float getNormalizedSmoothedValue();
-    String getText() override;
+    String getText() const override;
 
     // Setters
     void setValue (float newValue) override;
@@ -49,6 +50,7 @@ private:
     float mMinimumValue;
     float mMaximumValue;
     String mName;
+    String mLabel;
 
     double mSampleRate;
     bool mParameterChangeFlag;

@@ -10,11 +10,11 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     double sampleRate = getSampleRate();
     int samplesPerBlock = getBlockSize();
 
-    addParameter (holdLevel  = new FloatParameter (this, 1.0f, -60.0f, 0.0f, "Hold Level", sampleRate, samplesPerBlock));
-    addParameter (velocitySensitivity  = new FloatParameter (this, 100.0f, 0.0f, 100.0f, "Velocity Sensitivity", sampleRate, samplesPerBlock));
-    addParameter (attackTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Attack Time", sampleRate, samplesPerBlock));
-    addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time", sampleRate, samplesPerBlock)); 
-    addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time", sampleRate, samplesPerBlock));
+    addParameter (holdLevel  = new FloatParameter (this, 1.0f, -60.0f, 0.0f, "Hold Level", "dB", sampleRate, samplesPerBlock));
+    addParameter (velocitySensitivity  = new FloatParameter (this, 100.0f, 0.0f, 100.0f, "Velocity Sensitivity", "%", sampleRate, samplesPerBlock));
+    addParameter (attackTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Attack Time", "ms", sampleRate, samplesPerBlock));
+    addParameter (holdTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Hold Time", "ms", sampleRate, samplesPerBlock)); 
+    addParameter (releaseTime  = new FloatParameter (this, 0.0f, 0.1f, 200.0f, "Release Time", "ms", sampleRate, samplesPerBlock));
 
     reset();
 }

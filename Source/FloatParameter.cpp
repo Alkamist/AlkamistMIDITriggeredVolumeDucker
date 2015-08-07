@@ -7,6 +7,7 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
                                 float minimumParameterValue,
                                 float maximumParameterValue,
                                 const String& parameterName,
+                                const String& parameterLabel,
                                 double inputSampleRate,
                                 int inputBlockSize)
     : mParentProcessor (inputProcessor),
@@ -15,6 +16,7 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
       mMinimumValue (minimumParameterValue),
       mMaximumValue (maximumParameterValue),
       mName (parameterName),
+      mLabel (parameterLabel),
       mNormalizableRange (mMinimumValue, mMaximumValue),
       mLinearlySmoothedDouble (defaultParameterValue),
       mParameterChangeFlag (false)
@@ -22,7 +24,7 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
     reset (inputSampleRate, inputBlockSize);
 }
 
-String FloatParameter::getText()
+String FloatParameter::getText() const
 {
     float unNormalizedValue = mNormalizableRange.convertFrom0to1 (mUnSmoothedParameterValue);
     String outputString (unNormalizedValue);
