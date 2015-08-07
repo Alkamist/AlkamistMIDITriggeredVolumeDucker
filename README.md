@@ -1,4 +1,4 @@
-# AlkamistMIDITriggeredVolumeDucker
+# AlkamistSidechainCompressor
 
 To do:
 -
