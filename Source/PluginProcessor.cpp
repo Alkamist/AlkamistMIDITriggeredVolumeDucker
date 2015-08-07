@@ -93,9 +93,6 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
     MidiMessage currentMidiMessage;
     int midiMessageSamplePosition;
 
-    float* leftChannel = buffer.getWritePointer (0);
-    float* rightChannel = buffer.getWritePointer (1);
-
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
         MIDIMessagesIterator.setNextSamplePosition (sample);
@@ -119,10 +116,15 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
 
         mEnvelopeVoiceManager.processPerSample();
 
-        float temporaryGain = (float) mEnvelopeVoiceManager.getOutput();
+        if (mEnvelopeVoiceManager.thereAreEnvelopesRunning())
+        {
+            float temporaryGain = (float) mEnvelopeVoiceManager.getOutput();
 
-        leftChannel[sample] = temporaryGain;
-        rightChannel[sample] = temporaryGain;
+            for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+            {
+                buffer.getWritePointer (channel)[sample] = temporaryGain;
+            }
+        }
     }
 
     clearParameterChanges();

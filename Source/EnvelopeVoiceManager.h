@@ -14,6 +14,7 @@ public:
     void reset (double inputSampleRate);
     void processPerSample();
     void startNewEnvelope (const MidiMessage& inputMidiMessage);
+    inline bool thereAreEnvelopesRunning() { return mThereAreEnvelopesRunning; };
 
     // Getters
     inline double getOutput() { return mOutput; };
