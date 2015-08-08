@@ -24,9 +24,16 @@ FloatParameter::FloatParameter (AlkamistSidechainCompressorAudioProcessor* input
     reset (inputSampleRate, inputBlockSize);
 }
 
-String FloatParameter::getText() const
+String FloatParameter::getName (int maximumStringLength) const    
+{ 
+    int numberOfCharactersToDrop = mName.length() - maximumStringLength;
+
+    return mName.dropLastCharacters (numberOfCharactersToDrop); 
+};
+
+String FloatParameter::getText(float inputValue, int) const
 {
-    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (mUnSmoothedParameterValue);
+    float unNormalizedValue = mNormalizableRange.convertFrom0to1 (inputValue);
     String outputString (unNormalizedValue);
     return outputString;
 }
@@ -36,7 +43,7 @@ void FloatParameter::setValue (float inputValue)
     mUnSmoothedParameterValue = inputValue;
     mLinearlySmoothedDouble.setValue (inputValue);
     mParentProcessor->signalForParameterChange();
-    this->mParameterChangeFlag = true;
+    mParameterChangeFlag = true;
 }
 
 float FloatParameter::getUnNormalizedSmoothedValue()
@@ -60,7 +67,7 @@ float FloatParameter::getNormalizedSmoothedValue()
 void FloatParameter::setNormalizedValue (float nonNormalizedValue)
 {
     float newValue = mNormalizableRange.convertTo0to1 (nonNormalizedValue);
-    this->setValueNotifyingHost (newValue);
+    setValueNotifyingHost (newValue);
 }
 
 void FloatParameter::processPerSample()
@@ -72,5 +79,5 @@ void FloatParameter::reset (double inputSampleRate, int inputBlockSize)
 {
     // Linear Parameter Ramp
     double smoothingTimeInSeconds = ((double) inputBlockSize) / inputSampleRate;
-    this->mLinearlySmoothedDouble.reset (inputSampleRate, smoothingTimeInSeconds);
+    mLinearlySmoothedDouble.reset (inputSampleRate, smoothingTimeInSeconds);
 }

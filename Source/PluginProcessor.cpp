@@ -89,23 +89,32 @@ void AlkamistSidechainCompressorAudioProcessor::releaseResources()
 
 void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    bool MIDIBufferIsEmpty = midiMessages.isEmpty();
     MidiBuffer::Iterator MIDIMessagesIterator (midiMessages);
     MidiMessage currentMidiMessage;
-    int midiMessageSamplePosition;
+    int midiMessageSamplePosition = 0;
+
+    if (! MIDIBufferIsEmpty)
+    {
+        MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition);
+    }
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
-        MIDIMessagesIterator.setNextSamplePosition (sample);
-
-        // Is there at least one more MIDI message in the buffer?
-        if (MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition))
+        if (! MIDIBufferIsEmpty)
         {
-            // Is the message we got a note on and is it in the
-            // right place?
-            if (currentMidiMessage.isNoteOn() 
-                && midiMessageSamplePosition == sample)
+            bool alreadyHadNoteOn = false; 
+
+            if (sample == midiMessageSamplePosition)
             {
-                mEnvelopeVoiceManager.startNewEnvelope (currentMidiMessage);
+                if (currentMidiMessage.isNoteOn()
+                    && ! alreadyHadNoteOn)
+                {
+                    mEnvelopeVoiceManager.startNewEnvelope (currentMidiMessage);
+                    alreadyHadNoteOn = true;
+                }
+
+                MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition);
             }
         }
 

@@ -25,7 +25,6 @@ public:
 
     // Getters
     inline float getDefaultValue() const override                           { return mDefaultValue; };
-    inline String getName (int /*maximumStringLength*/) const override      { return mName; };
     inline String getLabel() const override                                 { return mLabel; };
     inline float getValueForText (const String& inputString) const override { return inputString.getFloatValue(); };
     inline float getValue() const override                                  { return mUnSmoothedParameterValue; };
@@ -35,7 +34,8 @@ public:
     float getUnNormalizedSmoothedValue();
     float getUnNormalizedUnSmoothedValue();
     float getNormalizedSmoothedValue();
-    String getText() const override;
+    String getName (int maximumStringLength) const override;
+    String getText(float inputValue, int) const override;
 
     // Setters
     void setValue (float newValue) override;
