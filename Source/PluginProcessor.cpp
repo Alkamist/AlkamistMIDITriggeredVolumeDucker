@@ -89,23 +89,24 @@ void AlkamistSidechainCompressorAudioProcessor::releaseResources()
 
 void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    bool MIDIBufferIsEmpty = midiMessages.isEmpty();
     MidiBuffer::Iterator MIDIMessagesIterator (midiMessages);
     MidiMessage currentMidiMessage;
     int midiMessageSamplePosition = 0;
 
-    if (! MIDIBufferIsEmpty)
+    if (! midiMessages.isEmpty())
     {
         MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition);
     }
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
     {
-        if (! MIDIBufferIsEmpty)
+        if (! midiMessages.isEmpty())
         {
-            bool alreadyHadNoteOn = false; 
+            bool midiBufferIsNotEmpty = true;
+            bool alreadyHadNoteOn = false;
 
-            if (sample == midiMessageSamplePosition)
+            while (sample == midiMessageSamplePosition
+                   && midiBufferIsNotEmpty)
             {
                 if (currentMidiMessage.isNoteOn()
                     && ! alreadyHadNoteOn)
@@ -114,7 +115,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
                     alreadyHadNoteOn = true;
                 }
 
-                MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition);
+                midiBufferIsNotEmpty = MIDIMessagesIterator.getNextEvent (currentMidiMessage, midiMessageSamplePosition);
             }
         }
 
