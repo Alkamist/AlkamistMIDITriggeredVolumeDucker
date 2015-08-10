@@ -10,7 +10,7 @@ LinearlySmoothedDouble::LinearlySmoothedDouble(double defaultValue)
 
 void LinearlySmoothedDouble::reset (double sampleRate, double fadeLengthSeconds)
 {
-    jassert (sampleRate > 0 && fadeLengthSeconds >= 0);
+    //jassert (sampleRate > 0 && fadeLengthSeconds >= 0);
     mStepsToTarget = (int) std::floor (fadeLengthSeconds * sampleRate);
     mCurrentValue = mTarget;
     mCountdown = 0;
