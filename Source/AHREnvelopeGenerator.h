@@ -3,6 +3,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+class EnvelopeVoiceManager;
+
 class AHREnvelopeGenerator
 {
 public:
@@ -19,14 +21,17 @@ public:
     inline bool envelopeIsFinished()                  { return mEnvelopeIsFinished; };
 
     // Setters
-    inline void setHoldLevel (double input)           { mHoldLevel = input; };
-    inline void setAttackTime (double input)          { mAttackTime = input; };
-    inline void setHoldTime (double input)            { mHoldTime = input; };
-    inline void setReleaseTime (double input)         { mReleaseTime = input; };
-    inline void setVelocitySensitivity (double input) { mVelocitySensitivity = input; };
-    inline void setSampleRate (double input)          { mSampleRate = input; };
+    inline void setHoldLevel (double input)                               { mHoldLevel = input; };
+    inline void setAttackTime (double input)                              { mAttackTime = input; };
+    inline void setHoldTime (double input)                                { mHoldTime = input; };
+    inline void setReleaseTime (double input)                             { mReleaseTime = input; };
+    inline void setVelocitySensitivity (double input)                     { mVelocitySensitivity = input; };
+    inline void setSampleRate (double input)                              { mSampleRate = input; };
+    inline void setVoiceManager (EnvelopeVoiceManager* inputVoiceManager) { mVoiceManager = inputVoiceManager; };
 
 private:
+
+    EnvelopeVoiceManager* mVoiceManager;
 
     double mHoldLevel;
     double mAttackTime;

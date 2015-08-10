@@ -1,5 +1,7 @@
 #include <cmath>
 
+#include "EnvelopeVoiceManager.h"
+
 #include "AHREnvelopeGenerator.h"
 
 AHREnvelopeGenerator::AHREnvelopeGenerator()
@@ -70,6 +72,7 @@ void AHREnvelopeGenerator::performStateChange()
     // Attack
     case 0:
         mNextStageSampleIndex = (int) std::floor (mAttackTime * msToSeconds * mSampleRate);
+        mEnvelopeOutput = mVoiceManager->getOutput();
         mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                            mScaleFactor, 
                                            mNextStageSampleIndex);

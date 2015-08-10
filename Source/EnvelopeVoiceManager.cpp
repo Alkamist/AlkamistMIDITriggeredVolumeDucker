@@ -10,7 +10,12 @@ EnvelopeVoiceManager::EnvelopeVoiceManager()
       mSampleRate (44100.0),
       mCurrentEnvelope (0),
       mThereAreEnvelopesRunning (false)
-{}
+{
+    for (int index = 0; index < mMaxNumberOfVoices; ++index)
+    {
+        mEnvelopeContainer[index].setVoiceManager (this);
+    }
+}
 
 void EnvelopeVoiceManager::processPerSample()
 {  

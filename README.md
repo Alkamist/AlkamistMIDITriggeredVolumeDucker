@@ -2,4 +2,5 @@
 
 To do:
 -
-- Experiment with the envelope generation a bit.
+- Brainstorm up a workflow using this plugin.
+- Improve code.
