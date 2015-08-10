@@ -132,7 +132,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
 
             for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
             {
-                buffer.getWritePointer (channel)[sample] = temporaryGain;
+                buffer.getWritePointer (channel)[sample] *= temporaryGain;
             }
         }
     }
