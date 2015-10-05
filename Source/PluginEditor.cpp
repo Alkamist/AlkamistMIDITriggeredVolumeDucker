@@ -12,7 +12,7 @@ AlkamistSidechainCompressorAudioProcessorEditor::AlkamistSidechainCompressorAudi
     // editor's size to whatever you need it to be.
     setSize (492, 250);
 
-    addAndMakeVisible(mMainEditorWindow = new MainEditorWindow(mParentProcessor));
+    addAndMakeVisible (mMainEditorWindow = new MainEditorWindow (mParentProcessor));
 }
 
 AlkamistSidechainCompressorAudioProcessorEditor::~AlkamistSidechainCompressorAudioProcessorEditor()

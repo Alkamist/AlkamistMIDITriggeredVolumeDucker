@@ -2,8 +2,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-
-#include "EnvelopeVoiceManager.h"
+#include "SidechainCompressorEnvelope.h"
 
 class FloatParameter;
 
@@ -53,24 +52,22 @@ public:
 
     //==============================================================================
 
-    void parameterChange (FloatParameter* parameterThatWasChanged);
-
-    //==============================================================================
-
-    void reset();
-    inline void signalForParameterChange() { mParameterChangeFlag = true; };
+    void reset (double inputSampleRate, int inputBlockSize);
 
     FloatParameter* holdLevel;
     FloatParameter* velocitySensitivity;
     FloatParameter* attackTime;
     FloatParameter* holdTime;
     FloatParameter* releaseTime;
+    
 private:
-    void handleParameterChanges();
-    void clearParameterChanges();
-    bool mParameterChangeFlag;
 
-    EnvelopeVoiceManager mEnvelopeVoiceManager;
+    void bufferParameters();
+    void sendParameterBuffers();
+    void clearParameterChanges();
+
+    SidechainCompressorEnvelope mSidechainCompressorEnvelope;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlkamistSidechainCompressorAudioProcessor)
 };

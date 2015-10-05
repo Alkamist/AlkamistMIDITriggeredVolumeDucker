@@ -14,18 +14,14 @@
               companyName="Alkamist Audio">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
+      <FILE id="oc5bjz" name="SidechainCompressorEnvelope.cpp" compile="1"
+            resource="0" file="Source/SidechainCompressorEnvelope.cpp"/>
+      <FILE id="AfDkbH" name="SidechainCompressorEnvelope.h" compile="0"
+            resource="0" file="Source/SidechainCompressorEnvelope.h"/>
       <FILE id="i7tMu8" name="LinearlySmoothedDouble.cpp" compile="1" resource="0"
             file="Source/LinearlySmoothedDouble.cpp"/>
       <FILE id="bqbKEW" name="LinearlySmoothedDouble.h" compile="0" resource="0"
             file="Source/LinearlySmoothedDouble.h"/>
-      <FILE id="GwTI4t" name="EnvelopeVoiceManager.cpp" compile="1" resource="0"
-            file="Source/EnvelopeVoiceManager.cpp"/>
-      <FILE id="m8mVpW" name="EnvelopeVoiceManager.h" compile="0" resource="0"
-            file="Source/EnvelopeVoiceManager.h"/>
-      <FILE id="ZrADFG" name="AHREnvelopeGenerator.cpp" compile="1" resource="0"
-            file="Source/AHREnvelopeGenerator.cpp"/>
-      <FILE id="gXO0xR" name="AHREnvelopeGenerator.h" compile="0" resource="0"
-            file="Source/AHREnvelopeGenerator.h"/>
       <FILE id="sEY1Qy" name="FloatParameter.cpp" compile="1" resource="0"
             file="Source/FloatParameter.cpp"/>
       <FILE id="qNorVS" name="FloatParameter.h" compile="0" resource="0"
@@ -47,10 +43,10 @@
     <VS2010 targetFolder="Builds/VisualStudio2010" vstFolder="C:\SDKs\VST3 SDK"
             vst3Folder="c:\SDKs\VST3 SDK">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+        <CONFIGURATION name="Debug" winWarningLevel="2" generateManifest="1" winArchitecture="x64"
                        isDebug="1" optimisation="1" targetName="AlkamistSidechainCompressor"
                        postbuildCommand="copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;$(OutDir)\$(TargetName).vst&quot;&#10;copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(TargetFileName)&quot;"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+        <CONFIGURATION name="Release" winWarningLevel="2" generateManifest="1" winArchitecture="x64"
                        isDebug="0" optimisation="3" targetName="AlkamistSidechainCompressor"
                        postbuildCommand=""/>
       </CONFIGURATIONS>
@@ -61,9 +57,6 @@
         <MODULEPATH id="juce_data_structures" path="..\..\Programming Documents\JUCE-master\modules"/>
         <MODULEPATH id="juce_gui_basics" path="..\..\Programming Documents\JUCE-master\modules"/>
         <MODULEPATH id="juce_gui_extra" path="..\..\Programming Documents\JUCE-master\modules"/>
-        <MODULEPATH id="juce_cryptography" path="..\..\Programming Documents\JUCE-master\modules"/>
-        <MODULEPATH id="juce_video" path="..\..\Programming Documents\JUCE-master\modules"/>
-        <MODULEPATH id="juce_opengl" path="..\..\Programming Documents\JUCE-master\modules"/>
         <MODULEPATH id="juce_audio_basics" path="..\..\Programming Documents\JUCE-master\modules"/>
         <MODULEPATH id="juce_audio_devices" path="..\..\Programming Documents\JUCE-master\modules"/>
         <MODULEPATH id="juce_audio_formats" path="..\..\Programming Documents\JUCE-master\modules"/>
@@ -79,14 +72,11 @@
     <MODULES id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_core" showAllCode="1" useLocalCopy="0"/>
-    <MODULES id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_events" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULES id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
-    <MODULES id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
-    <MODULES id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
 </JUCERPROJECT>

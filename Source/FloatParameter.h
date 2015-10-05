@@ -1,17 +1,16 @@
 #ifndef FLOATPARAMETER_H_INCLUDED
 #define FLOATPARAMETER_H_INCLUDED
 
+#include <vector>
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LinearlySmoothedDouble.h"
-
-class AlkamistSidechainCompressorAudioProcessor;
 
 class FloatParameter : public AudioProcessorParameter
 {
 public:
 
-    FloatParameter (AlkamistSidechainCompressorAudioProcessor* inputProcessor,
-                    float defaultParameterValue,
+    FloatParameter (float defaultParameterValue,
                     float minimumParameterValue,
                     float maximumParameterValue,
                     const String& parameterName,
@@ -19,31 +18,33 @@ public:
                     double inputSampleRate,
                     int inputBlockSize);
 
-    void processPerSample();
+    void bufferParameter();
     void reset (double inputSampleRate, int inputBlockSize);
-    inline void clearParameterChangeFlag() { mParameterChangeFlag = false; };
 
-    // Getters
+    inline bool parameterChangedThisBlock()                                 { return mParameterChangedThisBlock; };
+    void clearParameterChange();
+
+    inline bool parameterNeedsToSendFlatBuffer()                            { return mParameterNeedsToSendFlatBuffer; };
+    inline void setFlagForSendingFlatBuffer (bool input)                    { mParameterNeedsToSendFlatBuffer = input; };
+
+    inline float getMinimum() const                                         { return mMinimumValue; };
+    inline float getMaximum() const                                         { return mMaximumValue; };
+    float getUnNormalizedUnSmoothedValue();
+    std::vector<float> getUnNormalizedSmoothedBuffer();
+    std::vector<float> getNormalizedSmoothedBuffer();
+    void setNormalizedValue (float nonNormalizedValue);
+
     inline float getDefaultValue() const override                           { return mDefaultValue; };
     inline String getLabel() const override                                 { return mLabel; };
     inline float getValueForText (const String& inputString) const override { return inputString.getFloatValue(); };
     inline float getValue() const override                                  { return mUnSmoothedParameterValue; };
-    inline float getMinimum() const                                         { return mMinimumValue; };
-    inline float getMaximum() const                                         { return mMaximumValue; };
-    inline bool needsToChange() const                                       { return mParameterChangeFlag; };
-    float getUnNormalizedSmoothedValue();
-    float getUnNormalizedUnSmoothedValue();
-    float getNormalizedSmoothedValue();
     String getName (int maximumStringLength) const override;
     String getText(float inputValue, int) const override;
-
-    // Setters
     void setValue (float newValue) override;
-    void setNormalizedValue (float nonNormalizedValue);
 
 private:
 
-    AlkamistSidechainCompressorAudioProcessor* mParentProcessor;
+    std::vector<float> mParameterBuffer;
 
     float mUnSmoothedParameterValue;
     float mDefaultValue;
@@ -53,7 +54,10 @@ private:
     String mLabel;
 
     double mSampleRate;
-    bool mParameterChangeFlag;
+    int mBlockSize;
+    bool mParameterChangedThisBlock;
+    bool mParameterWasReset;
+    bool mParameterNeedsToSendFlatBuffer;
 
     LinearlySmoothedDouble mLinearlySmoothedDouble;
     NormalisableRange<float> mNormalizableRange;
