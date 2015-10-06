@@ -40,7 +40,7 @@ void EnvelopeManager::processBlock (AudioSampleBuffer& inputAudioBuffer, MidiBuf
         for (int sample = 0; sample < mBlockSize; ++sample)
         {
             float temporaryGain = mOutputBuffer[sample];
-            channelData[sample] = temporaryGain;
+            channelData[sample] *= temporaryGain;
         }
     }
 }

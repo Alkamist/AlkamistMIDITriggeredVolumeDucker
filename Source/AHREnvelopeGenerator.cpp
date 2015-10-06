@@ -2,6 +2,8 @@
 
 #include "AHREnvelopeGenerator.h"
 
+const double msToSeconds = 0.001;
+
 AHREnvelopeGenerator::AHREnvelopeGenerator()
     : mEnvelopeOutput (1.0),
       mStartingLevel (1.0),
@@ -17,7 +19,6 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
 void AHREnvelopeGenerator::startEnvelope()
 {
     mEnvelopeIsFinished = false;
-    mEnvelopeSampleIndex = 0;
     mCurrentStageSampleIndex = 0;
     mNextStageSampleIndex = 0;
     mCurrentStage = -1;
@@ -44,16 +45,31 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     mScaleFactor = logarithmicVelocity;
 }
 
-double AHREnvelopeGenerator::calculateMultiplier(double startLevel, 
-                                                 double endLevel, 
-                                                 int lengthInSamples)
+/*
+double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
+                                                  double endLevel, 
+                                                  unsigned int lengthInSamples)
 {
     return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
+}
+*/
+
+double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
+                                                  double endLevel, 
+                                                  unsigned int lengthInSamples)
+{
+    if (startLevel > endLevel)
+    {
+        return 1.0 / (1.0 + (std::log(startLevel / endLevel)) / (lengthInSamples));
+    }
+    else
+    {
+        return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
+    }
 }
 
 void AHREnvelopeGenerator::performStateChange()
 {
-    double msToSeconds = 0.001;
     ++mCurrentStage;
     mCurrentStageSampleIndex = 0;
 
@@ -65,22 +81,25 @@ void AHREnvelopeGenerator::performStateChange()
     // Attack
     case 0:
         mNextStageSampleIndex = int (mAttackTime * msToSeconds * mSampleRate);
+        //mNextStageSampleIndex = 9;
         mEnvelopeOutput = std::max (mStartingLevel, mScaleFactor);
         mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                            mScaleFactor, 
-                                           mNextStageSampleIndex + 2);
+                                           mNextStageSampleIndex);
         break;
 
     // Hold
     case 1:
         mNextStageSampleIndex = int (mHoldTime * msToSeconds * mSampleRate);
+        //mNextStageSampleIndex = 9;
         mEnvelopeOutput = mScaleFactor;
         mMultiplier = 1.0;
         break;
 
     // Release
     case 2:
-        mNextStageSampleIndex = int (mReleaseTime * msToSeconds * mSampleRate - 1);
+        mNextStageSampleIndex = int (mReleaseTime * msToSeconds * mSampleRate);
+        //mNextStageSampleIndex = 9;
         mMultiplier = calculateMultiplier (mEnvelopeOutput, 
                                            1.0, 
                                            mNextStageSampleIndex);
@@ -93,13 +112,14 @@ void AHREnvelopeGenerator::performStateChange()
         mCurrentStageSampleIndex = 0;
         mNextStageSampleIndex = 0;
         mEnvelopeOutput = 1.0;
+        mMultiplier = 1.0;
         break;
     }
 }
 
 void AHREnvelopeGenerator::processSample()
 {
-    if (!mEnvelopeIsFinished)
+    if (! mEnvelopeIsFinished)
     {
         // Should we enter a stage?
         if (mCurrentStageSampleIndex >= mNextStageSampleIndex)
@@ -109,6 +129,5 @@ void AHREnvelopeGenerator::processSample()
 
         mEnvelopeOutput *= mMultiplier;
         ++mCurrentStageSampleIndex;
-        ++mEnvelopeSampleIndex;
     }
 }

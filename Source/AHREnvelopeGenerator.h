@@ -43,13 +43,14 @@ private:
     int mCurrentStageSampleIndex;
     int mNextStageSampleIndex;
     int mCurrentStage;
+
     double mMultiplier;
     double mScaleFactor;
-    int mEnvelopeSampleIndex;
+
     bool mEnvelopeIsFinished;
 
     void performStateChange();
-    double calculateMultiplier(double startLevel, double endLevel, int lengthInSamples);
+    double calculateMultiplier(double startLevel, double endLevel, unsigned int lengthInSamples);
 
 };
 
