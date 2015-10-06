@@ -47,9 +47,12 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
 
     addAndMakeVisible (attackTimeSlider = new Slider ("Attack Time Slider"));
     attackTimeSlider->setRange (0.1, 200, 0.1);
-    attackTimeSlider->setSliderStyle (Slider::LinearVertical);
+    attackTimeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     attackTimeSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     attackTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
+    attackTimeSlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
+    attackTimeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
+    attackTimeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
     attackTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     attackTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
     attackTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
@@ -57,9 +60,12 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
 
     addAndMakeVisible (holdTimeSlider = new Slider ("Hold Time Slider"));
     holdTimeSlider->setRange (0.1, 200, 0.1);
-    holdTimeSlider->setSliderStyle (Slider::LinearVertical);
+    holdTimeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     holdTimeSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     holdTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
+    holdTimeSlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
+    holdTimeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
+    holdTimeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
     holdTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     holdTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
     holdTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
@@ -67,9 +73,12 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
 
     addAndMakeVisible (releaseTimeSlider = new Slider ("Release Time Slider"));
     releaseTimeSlider->setRange (0.1, 200, 0.1);
-    releaseTimeSlider->setSliderStyle (Slider::LinearVertical);
+    releaseTimeSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseTimeSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     releaseTimeSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
+    releaseTimeSlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
+    releaseTimeSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
+    releaseTimeSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
     releaseTimeSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     releaseTimeSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
     releaseTimeSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
@@ -117,9 +126,12 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
 
     addAndMakeVisible (velocitySensitivitySlider = new Slider ("Velocity Sensitivity Slider"));
     velocitySensitivitySlider->setRange (0, 100, 0.1);
-    velocitySensitivitySlider->setSliderStyle (Slider::LinearVertical);
+    velocitySensitivitySlider->setSliderStyle (Slider::RotaryVerticalDrag);
     velocitySensitivitySlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     velocitySensitivitySlider->setColour (Slider::thumbColourId, Colour (0xff909090));
+    velocitySensitivitySlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
+    velocitySensitivitySlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
+    velocitySensitivitySlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
     velocitySensitivitySlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
     velocitySensitivitySlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
     velocitySensitivitySlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
@@ -140,7 +152,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     setAllSliderRanges();
     //[/UserPreSize]
 
-    setSize (492, 250);
+    setSize (272, 272);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -205,16 +217,16 @@ void MainEditorWindow::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    holdLevelSlider->setBounds (0, 40, 104, 208);
-    attackTimeSlider->setBounds (224, 40, 88, 208);
-    holdTimeSlider->setBounds (312, 40, 88, 208);
-    releaseTimeSlider->setBounds (400, 40, 88, 208);
-    holdLevelLabel->setBounds (0, 0, 104, 32);
-    attackTimeLabel->setBounds (224, 0, 88, 32);
-    holdTimeLabel->setBounds (312, 0, 88, 32);
-    releaseTimeLabel->setBounds (400, 0, 88, 32);
-    velocitySensitivitySlider->setBounds (96, 40, 88, 208);
-    velocitySensitivityLabel->setBounds (88, 0, 108, 32);
+    holdLevelSlider->setBounds (8, 40, 80, 232);
+    attackTimeSlider->setBounds (96, 176, 80, 96);
+    holdTimeSlider->setBounds (184, 40, 80, 96);
+    releaseTimeSlider->setBounds (184, 176, 80, 96);
+    holdLevelLabel->setBounds (0, 0, 96, 32);
+    attackTimeLabel->setBounds (96, 136, 80, 32);
+    holdTimeLabel->setBounds (184, 0, 80, 32);
+    releaseTimeLabel->setBounds (184, 136, 80, 32);
+    velocitySensitivitySlider->setBounds (96, 40, 80, 96);
+    velocitySensitivityLabel->setBounds (80, 0, 112, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -362,59 +374,63 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component, public Timer" constructorParams="AlkamistSidechainCompressorAudioProcessor&amp; inputProcessor"
                  variableInitialisers="mParentProcessor (&amp;inputProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="492" initialHeight="250">
+                 fixedSize="1" initialWidth="272" initialHeight="272">
   <BACKGROUND backgroundColour="ff323232"/>
   <SLIDER name="Hold Level Slider" id="840f7ca9f9570c56" memberName="holdLevelSlider"
-          virtualName="" explicitFocusOrder="0" pos="0 40 104 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="8 40 80 232" thumbcol="ff909090"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="-60" max="0" int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack Time Slider" id="21744834f18397a5" memberName="attackTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="224 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="96 176 80 96" thumbcol="ff909090"
+          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
-          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Hold Time Slider" id="88e6d901167994f4" memberName="holdTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="312 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="184 40 80 96" thumbcol="ff909090"
+          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
-          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Release Time Slider" id="9a3aaeae16ed6240" memberName="releaseTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="400 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="184 176 80 96" thumbcol="ff909090"
+          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
-          style="LinearVertical" textBoxPos="TextBoxAbove" textBoxEditable="1"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Hold Level Label" id="5e33c499a463e95f" memberName="holdLevelLabel"
-         virtualName="" explicitFocusOrder="0" pos="0 0 104 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="0 0 96 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Hold&#10;Level (dB)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Attack Time Label" id="e19faf81366d6dbe" memberName="attackTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="224 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="96 136 80 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Attack&#10;Time (ms)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Hold Time Label" id="b454a4d7a5c910a1" memberName="holdTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="312 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="184 0 80 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Hold &#10;Time (ms)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Release Time Label" id="c8bb41d45518e62c" memberName="releaseTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="400 0 88 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="184 136 80 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Release &#10;Time (ms)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <SLIDER name="Velocity Sensitivity Slider" id="251d2e1cb79c769a" memberName="velocitySensitivitySlider"
-          virtualName="" explicitFocusOrder="0" pos="96 40 88 208" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="96 40 80 96" thumbcol="ff909090"
+          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
-          min="0" max="100" int="0.10000000000000001" style="LinearVertical"
+          min="0" max="100" int="0.10000000000000001" style="RotaryVerticalDrag"
           textBoxPos="TextBoxAbove" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="Velocity Sensitivity Label" id="afa0301e5e3991a1" memberName="velocitySensitivityLabel"
-         virtualName="" explicitFocusOrder="0" pos="88 0 108 32" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="80 0 112 32" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Velocity&#10;Sensitivity (%)"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>

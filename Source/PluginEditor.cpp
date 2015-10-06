@@ -10,7 +10,7 @@ AlkamistSidechainCompressorAudioProcessorEditor::AlkamistSidechainCompressorAudi
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (492, 250);
+    setSize (272, 272);
 
     addAndMakeVisible (mMainEditorWindow = new MainEditorWindow (mParentProcessor));
 }
