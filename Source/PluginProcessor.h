@@ -2,7 +2,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "SidechainCompressorEnvelope.h"
+#include "EnvelopeManager.h"
 
 class FloatParameter;
 
@@ -66,7 +66,7 @@ private:
     void sendParameterBuffers();
     void clearParameterChanges();
 
-    SidechainCompressorEnvelope mSidechainCompressorEnvelope;
+    EnvelopeManager mEnvelopeManager;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AlkamistSidechainCompressorAudioProcessor)

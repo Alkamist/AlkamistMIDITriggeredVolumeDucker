@@ -90,7 +90,7 @@ void AlkamistSidechainCompressorAudioProcessor::processBlock (AudioSampleBuffer&
     bufferParameters();
     sendParameterBuffers();
 
-    mSidechainCompressorEnvelope.processBlock (buffer, midiMessages);
+    mEnvelopeManager.processBlock (buffer, midiMessages);
 
     clearParameterChanges();
 
@@ -191,7 +191,31 @@ void AlkamistSidechainCompressorAudioProcessor::sendParameterBuffers()
     if (holdLevel->parameterChangedThisBlock()
         || holdLevel->parameterNeedsToSendFlatBuffer())
     {
-        mSidechainCompressorEnvelope.setHoldLevel (holdLevel->getUnNormalizedSmoothedBuffer());
+        mEnvelopeManager.setHoldLevel (holdLevel->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (velocitySensitivity->parameterChangedThisBlock()
+        || velocitySensitivity->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setVelocitySensitivity (velocitySensitivity->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (attackTime->parameterChangedThisBlock()
+        || attackTime->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setAttackTime (attackTime->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (holdTime->parameterChangedThisBlock()
+        || holdTime->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setHoldTime (holdTime->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (releaseTime->parameterChangedThisBlock()
+        || releaseTime->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setReleaseTime (releaseTime->getUnNormalizedSmoothedBuffer());
     }
 }
 
@@ -206,7 +230,7 @@ void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
 
 void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, int inputBlockSize)
 {
-    mSidechainCompressorEnvelope.reset (inputSampleRate, inputBlockSize);
+    mEnvelopeManager.reset (inputSampleRate, inputBlockSize);
 
     // Parameters
     holdLevel->reset (inputSampleRate, inputBlockSize);

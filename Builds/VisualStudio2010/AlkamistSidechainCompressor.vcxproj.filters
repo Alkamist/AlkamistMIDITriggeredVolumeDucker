@@ -286,7 +286,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\SidechainCompressorEnvelope.cpp">
+    <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\EnvelopeManager.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\LinearlySmoothedDouble.cpp">
@@ -1485,7 +1488,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\SidechainCompressorEnvelope.h">
+    <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\EnvelopeManager.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\LinearlySmoothedDouble.h">

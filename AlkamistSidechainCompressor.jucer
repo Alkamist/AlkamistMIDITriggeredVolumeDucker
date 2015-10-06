@@ -14,10 +14,14 @@
               companyName="Alkamist Audio">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
-      <FILE id="oc5bjz" name="SidechainCompressorEnvelope.cpp" compile="1"
-            resource="0" file="Source/SidechainCompressorEnvelope.cpp"/>
-      <FILE id="AfDkbH" name="SidechainCompressorEnvelope.h" compile="0"
-            resource="0" file="Source/SidechainCompressorEnvelope.h"/>
+      <FILE id="ukuogv" name="AHREnvelopeGenerator.cpp" compile="1" resource="0"
+            file="Source/AHREnvelopeGenerator.cpp"/>
+      <FILE id="bpHhAF" name="AHREnvelopeGenerator.h" compile="0" resource="0"
+            file="Source/AHREnvelopeGenerator.h"/>
+      <FILE id="oc5bjz" name="EnvelopeManager.cpp" compile="1" resource="0"
+            file="Source/EnvelopeManager.cpp"/>
+      <FILE id="AfDkbH" name="EnvelopeManager.h" compile="0" resource="0"
+            file="Source/EnvelopeManager.h"/>
       <FILE id="i7tMu8" name="LinearlySmoothedDouble.cpp" compile="1" resource="0"
             file="Source/LinearlySmoothedDouble.cpp"/>
       <FILE id="bqbKEW" name="LinearlySmoothedDouble.h" compile="0" resource="0"
