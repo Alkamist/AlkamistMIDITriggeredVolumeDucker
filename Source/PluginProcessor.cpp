@@ -238,6 +238,12 @@ void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, i
     attackTime->reset (inputSampleRate, inputBlockSize);
     holdTime->reset (inputSampleRate, inputBlockSize);
     releaseTime->reset (inputSampleRate, inputBlockSize);
+
+    holdLevel->signalForParameterChange();
+    velocitySensitivity->signalForParameterChange();
+    attackTime->signalForParameterChange();
+    holdTime->signalForParameterChange();
+    releaseTime->signalForParameterChange();
 }
 //==============================================================================
 // This creates new instances of the plugin..
