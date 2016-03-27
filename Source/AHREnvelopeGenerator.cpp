@@ -18,8 +18,10 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
 
 double AHREnvelopeGenerator::getOutput()                                
 {
-    return mEnvelopeOutput;
+    //return mEnvelopeOutput;
     //return std::pow(10.0, (-mHoldLevel / 20.0) * (mEnvelopeOutput - 1));
+
+    return std::pow(10.0, 3.0 * (mEnvelopeOutput - 1));
 }
 
 void AHREnvelopeGenerator::startEnvelope()
@@ -41,44 +43,18 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     double invertedVelocity = 1 - scaledVelocity;
 
     // Scale the velocity by the velocity sensitivity.
-    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01;
+    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01; 
+
+    NormalisableRange<double> normalizedHoldLevel (0.0, -60.0);
+
+    double outputScaleFactor = 1.0 - (normalizedHoldLevel.convertTo0to1 (mHoldLevel) * (1.0 - adjustedVelocity));
 
     // Convert the floating point velocity to logarithmic
     // scale.
     //double logarithmicVelocity = std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
 
     // Set the output.
-    mScaleFactor = adjustedVelocity;
-}
-
-/*
-double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
-                                                  double endLevel, 
-                                                  unsigned int lengthInSamples)
-{
-    return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
-}
-*/
-
-/*double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
-                                                  double endLevel, 
-                                                  unsigned int lengthInSamples)
-{
-    if (startLevel > endLevel)
-    {
-        return 1.0 / (1.0 + (std::log(startLevel / endLevel)) / (lengthInSamples));
-    }
-    else
-    {
-        return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
-    }
-}*/
-
-double AHREnvelopeGenerator::calculateLinearAdder (double startLevel, 
-                                                   double endLevel, 
-                                                   unsigned int lengthInSamples)
-{
-    return (endLevel - startLevel) / lengthInSamples;
+    mScaleFactor = outputScaleFactor;
 }
 
 void AHREnvelopeGenerator::performStateChange()
@@ -93,12 +69,22 @@ void AHREnvelopeGenerator::performStateChange()
 
     // Attack
     case 0:
+    {
         mNextStageSampleIndex = int (mAttackTime * msToSeconds * mSampleRate);
         mEnvelopeOutput = std::max (mStartingLevel, mScaleFactor);
-        mAdder = calculateLinearAdder (mEnvelopeOutput, 
-                                       mScaleFactor, 
-                                       mNextStageSampleIndex);
+
+        mBezierCurve.setPointA (0.0, 1.0);
+
+        NormalisableRange<double> pointBScaleFactor (2.1, 4.0);
+
+        mBezierCurve.setPointB (mNextStageSampleIndex / pointBScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
+
+        mBezierCurve.setPointC (31.0 * mNextStageSampleIndex / 32.0, mScaleFactor);
+
+        mBezierCurve.setPointD (mNextStageSampleIndex, mScaleFactor);
+
         break;
+    }
 
     // Hold
     case 1:
@@ -109,15 +95,21 @@ void AHREnvelopeGenerator::performStateChange()
 
     // Release
     case 2:
+    {
         mNextStageSampleIndex = int (mReleaseTime * msToSeconds * mSampleRate);
 
-        mBezierCurve.setPoint1 (0.0, mScaleFactor);
+        mBezierCurve.setPointA (0.0, mScaleFactor);
 
-        mBezierCurve.setPoint2 (mNextStageSampleIndex / 8, mScaleFactor + ((1.0 - mScaleFactor) / 1.0));
+        mBezierCurve.setPointB (mNextStageSampleIndex / 32.0, mScaleFactor);
 
-        mBezierCurve.setPoint3 (mNextStageSampleIndex, 1.0);
+        NormalisableRange<double> pointCScaleFactor (8.0, 1.1);
+
+        mBezierCurve.setPointC (mNextStageSampleIndex / pointCScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
+
+        mBezierCurve.setPointD (mNextStageSampleIndex, 1.0);
 
         break;
+    }
 
     // Finished
     case 3:
@@ -148,7 +140,7 @@ void AHREnvelopeGenerator::processSample()
 
         // Attack
         case 0:
-            mEnvelopeOutput += mAdder;
+            mEnvelopeOutput = mBezierCurve.getOutput (mCurrentStageSampleIndex);
             break;
 
         // Hold

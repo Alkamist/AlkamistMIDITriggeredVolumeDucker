@@ -15,20 +15,26 @@ public:
 
     double getOutput (int inputSampleNumber);
 
-    inline void setPoint1 (double inputXValue, double inputYValue) { mPoint1.xValue = inputXValue;
-                                                                     mPoint1.yValue = inputYValue; };
+    inline void setPointA (double inputXValue, double inputYValue) { mPointA.xValue = inputXValue;
+                                                                     mPointA.yValue = inputYValue; };
 
-    inline void setPoint2 (double inputXValue, double inputYValue) { mPoint2.xValue = inputXValue;
-                                                                     mPoint2.yValue = inputYValue; };
+    inline void setPointB (double inputXValue, double inputYValue) { mPointB.xValue = inputXValue;
+                                                                     mPointB.yValue = inputYValue; };
 
-    inline void setPoint3 (double inputXValue, double inputYValue) { mPoint3.xValue = inputXValue;
-                                                                     mPoint3.yValue = inputYValue; };
+    inline void setPointC (double inputXValue, double inputYValue) { mPointC.xValue = inputXValue;
+                                                                     mPointC.yValue = inputYValue; };
+
+    inline void setPointD (double inputXValue, double inputYValue) { mPointD.xValue = inputXValue;
+                                                                     mPointD.yValue = inputYValue; };
 
 private:
 
-    BezierPoint mPoint1;
-    BezierPoint mPoint2;
-    BezierPoint mPoint3;
+    BezierPoint mPointA;
+    BezierPoint mPointB;
+    BezierPoint mPointC;
+    BezierPoint mPointD;
+
+    BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue);
 
 };
 

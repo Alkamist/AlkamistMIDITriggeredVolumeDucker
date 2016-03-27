@@ -3,7 +3,7 @@
 BezierCurve::BezierCurve()
 {}
 
-BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue)
+BezierPoint BezierCurve::LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue)
 {
     BezierPoint outputPoint;
 
@@ -35,12 +35,20 @@ double BezierCurve::getOutput (int inputSampleNumber)
 {
     BezierPoint pointAB;
     BezierPoint pointBC;
+    BezierPoint pointCD;
+    BezierPoint pointABBC;
+    BezierPoint pointBCCD;
     BezierPoint outputPoint;
 
-    pointAB = LinearInterpolate (mPoint1, mPoint2, inputSampleNumber * mPoint2.xValue / mPoint3.xValue);
-    pointBC = LinearInterpolate (mPoint2, mPoint3, mPoint2.xValue + inputSampleNumber * (mPoint3.xValue - mPoint2.xValue) / mPoint3.xValue);
+    double totalNumberOfSamples = mPointD.xValue;
 
-    outputPoint = LinearInterpolate (pointAB, pointBC, inputSampleNumber);
+    pointAB = LinearInterpolate (mPointA, mPointB, inputSampleNumber * mPointB.xValue / totalNumberOfSamples);
+    pointBC = LinearInterpolate (mPointB, mPointC, mPointB.xValue + inputSampleNumber * (mPointC.xValue - mPointB.xValue) / totalNumberOfSamples);
+    pointCD = LinearInterpolate (mPointC, mPointD, mPointC.xValue + inputSampleNumber * (mPointD.xValue - mPointC.xValue) / totalNumberOfSamples);
+    pointABBC = LinearInterpolate (pointAB, pointBC, inputSampleNumber * (mPointC.xValue - mPointA.xValue) / totalNumberOfSamples);
+    pointBCCD = LinearInterpolate (pointBC, pointCD, mPointB.xValue + inputSampleNumber * (mPointD.xValue - mPointB.xValue) / totalNumberOfSamples);
+
+    outputPoint = LinearInterpolate (pointABBC, pointBCCD, inputSampleNumber);
 
     return outputPoint.yValue;
 }
