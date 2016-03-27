@@ -111,11 +111,11 @@ void AHREnvelopeGenerator::performStateChange()
     case 2:
         mNextStageSampleIndex = int (mReleaseTime * msToSeconds * mSampleRate);
 
-        mQuadraticBezierCurve.setPoint1 (0.0, mScaleFactor);
+        mBezierCurve.setPoint1 (0.0, mScaleFactor);
 
-        mQuadraticBezierCurve.setPoint2 (mNextStageSampleIndex / 8, mScaleFactor + ((1.0 - mScaleFactor) / 1.0));
+        mBezierCurve.setPoint2 (mNextStageSampleIndex / 8, mScaleFactor + ((1.0 - mScaleFactor) / 1.0));
 
-        mQuadraticBezierCurve.setPoint3 (mNextStageSampleIndex, 1.0);
+        mBezierCurve.setPoint3 (mNextStageSampleIndex, 1.0);
 
         break;
 
@@ -158,7 +158,7 @@ void AHREnvelopeGenerator::processSample()
 
         // Release
         case 2:
-            mEnvelopeOutput = mQuadraticBezierCurve.getOutput (mCurrentStageSampleIndex);
+            mEnvelopeOutput = mBezierCurve.getOutput (mCurrentStageSampleIndex);
             break;
         }
 

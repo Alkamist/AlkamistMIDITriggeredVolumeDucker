@@ -1,5 +1,5 @@
-#ifndef QUADRATICBEZIERCURVE_H_INCLUDED
-#define QUADRATICBEZIERCURVE_H_INCLUDED
+#ifndef BEZIERCURVE_H_INCLUDED
+#define BEZIERCURVE_H_INCLUDED
 
 struct BezierPoint
 {
@@ -7,11 +7,11 @@ struct BezierPoint
     double yValue;
 };
 
-class QuadraticBezierCurve
+class BezierCurve
 {
 public:
 
-    QuadraticBezierCurve();
+    BezierCurve();
 
     double getOutput (int inputSampleNumber);
 
@@ -32,4 +32,4 @@ private:
 
 };
 
-#endif  // QUADRATICBEZIERCURVE_H_INCLUDED
+#endif // BEZIERCURVE_H_INCLUDED

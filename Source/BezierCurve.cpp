@@ -1,6 +1,6 @@
-#include "QuadraticBezierCurve.h"
+#include "BezierCurve.h"
 
-QuadraticBezierCurve::QuadraticBezierCurve()
+BezierCurve::BezierCurve()
 {}
 
 BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue)
@@ -31,7 +31,7 @@ BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& poi
     return outputPoint;
 }*/
 
-double QuadraticBezierCurve::getOutput (int inputSampleNumber)
+double BezierCurve::getOutput (int inputSampleNumber)
 {
     BezierPoint pointAB;
     BezierPoint pointBC;
