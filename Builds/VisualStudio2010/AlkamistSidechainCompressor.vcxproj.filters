@@ -289,6 +289,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\QuadraticBezierCurve.cpp">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClCompile>
@@ -1527,6 +1530,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\QuadraticBezierCurve.h">
+      <Filter>AlkamistSidechainCompressor\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h">
       <Filter>AlkamistSidechainCompressor\Source</Filter>
     </ClInclude>

@@ -16,6 +16,12 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
     mBlockSize = inputBlockSize;
 }
 
+double AHREnvelopeGenerator::getOutput()                                
+{
+    return mEnvelopeOutput;
+    //return std::pow(10.0, (-mHoldLevel / 20.0) * (mEnvelopeOutput - 1));
+}
+
 void AHREnvelopeGenerator::startEnvelope()
 {
     mEnvelopeIsFinished = false;
@@ -39,10 +45,10 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 
     // Convert the floating point velocity to logarithmic
     // scale.
-    double logarithmicVelocity = std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
+    //double logarithmicVelocity = std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
 
     // Set the output.
-    mScaleFactor = logarithmicVelocity;
+    mScaleFactor = adjustedVelocity;
 }
 
 /*
@@ -54,7 +60,7 @@ double AHREnvelopeGenerator::calculateMultiplier (double startLevel,
 }
 */
 
-double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
+/*double AHREnvelopeGenerator::calculateMultiplier (double startLevel, 
                                                   double endLevel, 
                                                   unsigned int lengthInSamples)
 {
@@ -66,6 +72,13 @@ double AHREnvelopeGenerator::calculateMultiplier (double startLevel,
     {
         return 1.0 + (std::log(endLevel / startLevel)) / (lengthInSamples);
     }
+}*/
+
+double AHREnvelopeGenerator::calculateLinearAdder (double startLevel, 
+                                                   double endLevel, 
+                                                   unsigned int lengthInSamples)
+{
+    return (endLevel - startLevel) / lengthInSamples;
 }
 
 void AHREnvelopeGenerator::performStateChange()
@@ -81,28 +94,29 @@ void AHREnvelopeGenerator::performStateChange()
     // Attack
     case 0:
         mNextStageSampleIndex = int (mAttackTime * msToSeconds * mSampleRate);
-        //mNextStageSampleIndex = 9;
         mEnvelopeOutput = std::max (mStartingLevel, mScaleFactor);
-        mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                           mScaleFactor, 
-                                           mNextStageSampleIndex);
+        mAdder = calculateLinearAdder (mEnvelopeOutput, 
+                                       mScaleFactor, 
+                                       mNextStageSampleIndex);
         break;
 
     // Hold
     case 1:
         mNextStageSampleIndex = int (mHoldTime * msToSeconds * mSampleRate);
-        //mNextStageSampleIndex = 9;
         mEnvelopeOutput = mScaleFactor;
-        mMultiplier = 1.0;
+        mAdder = 0.0;
         break;
 
     // Release
     case 2:
         mNextStageSampleIndex = int (mReleaseTime * msToSeconds * mSampleRate);
-        //mNextStageSampleIndex = 9;
-        mMultiplier = calculateMultiplier (mEnvelopeOutput, 
-                                           1.0, 
-                                           mNextStageSampleIndex);
+
+        mQuadraticBezierCurve.setPoint1 (0.0, mScaleFactor);
+
+        mQuadraticBezierCurve.setPoint2 (mNextStageSampleIndex / 8, mScaleFactor + ((1.0 - mScaleFactor) / 1.0));
+
+        mQuadraticBezierCurve.setPoint3 (mNextStageSampleIndex, 1.0);
+
         break;
 
     // Finished
@@ -112,7 +126,6 @@ void AHREnvelopeGenerator::performStateChange()
         mCurrentStageSampleIndex = 0;
         mNextStageSampleIndex = 0;
         mEnvelopeOutput = 1.0;
-        mMultiplier = 1.0;
         break;
     }
 }
@@ -127,7 +140,28 @@ void AHREnvelopeGenerator::processSample()
             performStateChange();
         }
 
-        mEnvelopeOutput *= mMultiplier;
+        switch (mCurrentStage)
+        {
+        default:
+            mEnvelopeOutput = 1.0;
+            break;
+
+        // Attack
+        case 0:
+            mEnvelopeOutput += mAdder;
+            break;
+
+        // Hold
+        case 1:
+            mEnvelopeOutput = mScaleFactor;
+            break;
+
+        // Release
+        case 2:
+            mEnvelopeOutput = mQuadraticBezierCurve.getOutput (mCurrentStageSampleIndex);
+            break;
+        }
+
         ++mCurrentStageSampleIndex;
     }
 }

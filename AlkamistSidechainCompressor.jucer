@@ -14,6 +14,10 @@
               companyName="Alkamist Audio" pluginIsMidiEffectPlugin="0">
   <MAINGROUP id="qAep2B" name="AlkamistSidechainCompressor">
     <GROUP id="{D77974E3-02B5-D911-6353-0BAAB62FDF22}" name="Source">
+      <FILE id="Q2KToQ" name="QuadraticBezierCurve.cpp" compile="1" resource="0"
+            file="Source/QuadraticBezierCurve.cpp"/>
+      <FILE id="wY6S5e" name="QuadraticBezierCurve.h" compile="0" resource="0"
+            file="Source/QuadraticBezierCurve.h"/>
       <FILE id="ukuogv" name="AHREnvelopeGenerator.cpp" compile="1" resource="0"
             file="Source/AHREnvelopeGenerator.cpp"/>
       <FILE id="bpHhAF" name="AHREnvelopeGenerator.h" compile="0" resource="0"

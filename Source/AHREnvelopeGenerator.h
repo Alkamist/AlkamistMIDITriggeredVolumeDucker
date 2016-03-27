@@ -2,6 +2,7 @@
 #define AHRENVELOPEGENERATOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "QuadraticBezierCurve.h"
 
 class AHREnvelopeGenerator
 {
@@ -14,7 +15,7 @@ public:
     void processSample();
 
     // Getters
-    inline double getOutput()                         { return mEnvelopeOutput; };
+    double getOutput();
     inline bool envelopeIsFinished()                  { return mEnvelopeIsFinished; };
 
     // Setters
@@ -44,13 +45,16 @@ private:
     int mNextStageSampleIndex;
     int mCurrentStage;
 
-    double mMultiplier;
+    double mAdder;
     double mScaleFactor;
 
     bool mEnvelopeIsFinished;
 
     void performStateChange();
-    double calculateMultiplier(double startLevel, double endLevel, unsigned int lengthInSamples);
+    //double calculateLogarithmicMultiplier (double startLevel, double endLevel, unsigned int lengthInSamples);
+    double calculateLinearAdder (double startLevel, double endLevel, unsigned int lengthInSamples);
+
+    QuadraticBezierCurve mQuadraticBezierCurve;
 
 };
 

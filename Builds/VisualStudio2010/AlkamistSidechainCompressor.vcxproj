@@ -128,6 +128,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\QuadraticBezierCurve.cpp"/>
     <ClCompile Include="..\..\Source\AHREnvelopeGenerator.cpp"/>
     <ClCompile Include="..\..\Source\EnvelopeManager.cpp"/>
     <ClCompile Include="..\..\Source\LinearlySmoothedDouble.cpp"/>
@@ -1243,6 +1244,7 @@ copy /Y &quot;$(OutDir)\$(TargetFileName)&quot; &quot;C:\VSTPluginsDebug\$(Targe
     <ClCompile Include="..\..\..\..\Programming Documents\JUCE-master\modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\QuadraticBezierCurve.h"/>
     <ClInclude Include="..\..\Source\AHREnvelopeGenerator.h"/>
     <ClInclude Include="..\..\Source\EnvelopeManager.h"/>
     <ClInclude Include="..\..\Source\LinearlySmoothedDouble.h"/>
