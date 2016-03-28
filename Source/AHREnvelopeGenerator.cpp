@@ -19,8 +19,9 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
 double AHREnvelopeGenerator::getOutput()                                
 {
     //return mEnvelopeOutput;
-    //return std::pow(10.0, (-mHoldLevel / 20.0) * (mEnvelopeOutput - 1));
 
+    // Simplified from:
+    // std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
     return std::pow(10.0, 3.0 * (mEnvelopeOutput - 1));
 }
 
@@ -38,20 +39,9 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     // to floating point.
     double scaledVelocity = (velocity - 1) / 126.0;
 
-    // Invert the floating point velocity so it goes
-    // from 1 to 0.
-    double invertedVelocity = 1 - scaledVelocity;
-
-    // Scale the velocity by the velocity sensitivity.
-    double adjustedVelocity = invertedVelocity * mVelocitySensitivity * 0.01; 
-
+    NormalisableRange<double> skewedVelocity (0.0, 1.0, 0.007874, 0.25);
     NormalisableRange<double> normalizedHoldLevel (0.0, -60.0);
-
-    double outputScaleFactor = 1.0 - (normalizedHoldLevel.convertTo0to1 (mHoldLevel) * (1.0 - adjustedVelocity));
-
-    // Convert the floating point velocity to logarithmic
-    // scale.
-    //double logarithmicVelocity = std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
+    double outputScaleFactor = 1.0 - (normalizedHoldLevel.convertTo0to1 (mHoldLevel) * skewedVelocity.convertFrom0to1 (scaledVelocity));
 
     // Set the output.
     mScaleFactor = outputScaleFactor;
@@ -75,8 +65,9 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, 1.0);
 
-        NormalisableRange<double> pointBScaleFactor (2.1, 4.0);
-
+        // Point B changes position based on the scale factor;
+        // this changes the shape of the curve.
+        NormalisableRange<double> pointBScaleFactor (2.1, 4.0, 0.001, 2.0);
         mBezierCurve.setPointB (mNextStageSampleIndex / pointBScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
         mBezierCurve.setPointC (31.0 * mNextStageSampleIndex / 32.0, mScaleFactor);
@@ -102,8 +93,9 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointB (mNextStageSampleIndex / 32.0, mScaleFactor);
 
-        NormalisableRange<double> pointCScaleFactor (8.0, 1.1);
-
+        // Point C changes position based on the scale factor;
+        // this changes the shape of the curve.
+        NormalisableRange<double> pointCScaleFactor (8.0, 1.1, 0.001, 2.0);
         mBezierCurve.setPointC (mNextStageSampleIndex / pointCScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, 1.0);
