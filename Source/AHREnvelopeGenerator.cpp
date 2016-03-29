@@ -18,11 +18,11 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
 
 double AHREnvelopeGenerator::getOutput()                                
 {
-    //return mEnvelopeOutput;
+    return mEnvelopeOutput;
 
     // Simplified from:
     // std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
-    return std::pow(10.0, 3.0 * (mEnvelopeOutput - 1));
+    //return std::pow(10.0, 3.0 * (mEnvelopeOutput - 1));
 }
 
 void AHREnvelopeGenerator::startEnvelope()
@@ -37,9 +37,15 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 {
     // Cut off the note-off (velocity 0) and scale
     // to floating point.
-    double scaledVelocity = (velocity - 1) / 126.0;
+    //double scaledVelocity = (velocity - 1) / 126.0;
 
-    NormalisableRange<double> skewedVelocity (0.0, 1.0, 0.007874, 0.25);
+    int velocityThreshold = 64 - 1;
+
+    if (velocity < velocityThreshold) { velocity = velocityThreshold; }
+
+    double scaledVelocity = (velocity - velocityThreshold) / (127.0 - velocityThreshold);
+
+    NormalisableRange<double> skewedVelocity (0.0, 1.0, 0.007874, 0.5);
     NormalisableRange<double> normalizedHoldLevel (0.0, -60.0);
     double outputScaleFactor = 1.0 - (normalizedHoldLevel.convertTo0to1 (mHoldLevel) * skewedVelocity.convertFrom0to1 (scaledVelocity));
 
