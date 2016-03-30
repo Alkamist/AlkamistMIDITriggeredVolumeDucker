@@ -55,11 +55,11 @@ public:
     void reset (double inputSampleRate, int inputBlockSize);
 
     FloatParameter* holdLevel;
-    FloatParameter* velocitySensitivity;
     FloatParameter* attackTime;
-    FloatParameter* holdTime;
     FloatParameter* releaseTime;
-    
+    FloatParameter* velocityThreshold;
+    FloatParameter* velocitySkew;
+
 private:
 
     void bufferParameters();

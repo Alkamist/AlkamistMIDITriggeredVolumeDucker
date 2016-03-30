@@ -13,9 +13,9 @@ void EnvelopeManager::reset (double inputSampleRate, int inputBlockSize)
     mOutputBuffer.resize (inputBlockSize);
     mHoldLevel.resize (inputBlockSize);
     mAttackTime.resize (inputBlockSize);
-    mHoldTime.resize (inputBlockSize);
     mReleaseTime.resize (inputBlockSize);
-    mVelocitySensitivity.resize (inputBlockSize);
+    mVelocityThreshold.resize (inputBlockSize);
+    mVelocitySkew.resize (inputBlockSize);
 
     if (! mEnvelopeContainer.empty())
     {
@@ -132,9 +132,10 @@ void EnvelopeManager::startNewEnvelope (MidiMessage& inputMIDIMessage)
 
     freshEnvelope.setHoldLevel (mHoldLevel[mCurrentSampleInBlock]);
     freshEnvelope.setAttackTime (mAttackTime[mCurrentSampleInBlock]);
-    freshEnvelope.setHoldTime (mHoldTime[mCurrentSampleInBlock]);
     freshEnvelope.setReleaseTime (mReleaseTime[mCurrentSampleInBlock]);
-    freshEnvelope.setVelocitySensitivity (mVelocitySensitivity[mCurrentSampleInBlock]);
+    freshEnvelope.setVelocityThreshold (mVelocityThreshold[mCurrentSampleInBlock]);
+    freshEnvelope.setVelocitySkew (mVelocitySkew[mCurrentSampleInBlock]);
+
     freshEnvelope.setVelocityScaleFactor (inputMIDIMessage.getVelocity());
 
     freshEnvelope.setStartingLevel (mLastOutputSample);

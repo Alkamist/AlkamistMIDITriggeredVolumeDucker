@@ -72,14 +72,14 @@ private:
     //==============================================================================
     ScopedPointer<Slider> holdLevelSlider;
     ScopedPointer<Slider> attackTimeSlider;
-    ScopedPointer<Slider> holdTimeSlider;
     ScopedPointer<Slider> releaseTimeSlider;
     ScopedPointer<Label> holdLevelLabel;
     ScopedPointer<Label> attackTimeLabel;
-    ScopedPointer<Label> holdTimeLabel;
     ScopedPointer<Label> releaseTimeLabel;
-    ScopedPointer<Slider> velocitySensitivitySlider;
-    ScopedPointer<Label> velocitySensitivityLabel;
+    ScopedPointer<Slider> velocityThresholdSlider;
+    ScopedPointer<Slider> velocitySkewSlider;
+    ScopedPointer<Label> velocityThresholdLabel;
+    ScopedPointer<Label> velocitySkewLabel;
 
 
     //==============================================================================

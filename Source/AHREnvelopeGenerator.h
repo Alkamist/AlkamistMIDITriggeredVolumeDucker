@@ -19,12 +19,13 @@ public:
     inline bool envelopeIsFinished()                  { return mEnvelopeIsFinished; };
 
     // Setters
-    inline void setHoldLevel (double input)           { mHoldLevel = input; };
-    inline void setAttackTime (double input)          { mAttackTime = input; };
-    inline void setHoldTime (double input)            { mHoldTime = input; };
-    inline void setReleaseTime (double input)         { mReleaseTime = input; };
-    inline void setVelocitySensitivity (double input) { mVelocitySensitivity = input; };
-    inline void setStartingLevel (double input)       { mStartingLevel = input; };
+    inline void setHoldLevel (double input)         { mHoldLevel = input; };
+    inline void setAttackTime (double input)        { mAttackTime = input; };
+    inline void setReleaseTime (double input)       { mReleaseTime = input; };
+    inline void setVelocityThreshold (double input) { mVelocityThreshold = input; };
+    inline void setVelocitySkew (double input)      { mVelocitySkew = input; };
+
+    inline void setStartingLevel (double input)     { mStartingLevel = input; };
     void setVelocityScaleFactor (uint8 velocity);
 
 private:
@@ -33,7 +34,8 @@ private:
     double mAttackTime;
     double mHoldTime;
     double mReleaseTime;
-    double mVelocitySensitivity;
+    double mVelocityThreshold;
+    double mVelocitySkew;
 
     double mEnvelopeOutput;
     double mStartingLevel;
@@ -45,14 +47,11 @@ private:
     int mNextStageSampleIndex;
     int mCurrentStage;
 
-    double mAdder;
     double mScaleFactor;
 
     bool mEnvelopeIsFinished;
 
     void performStateChange();
-    //double calculateLogarithmicMultiplier (double startLevel, double endLevel, unsigned int lengthInSamples);
-    double calculateLinearAdder (double startLevel, double endLevel, unsigned int lengthInSamples);
 
     BezierCurve mBezierCurve;
 

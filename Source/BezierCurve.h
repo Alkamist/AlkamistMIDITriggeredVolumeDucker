@@ -29,12 +29,12 @@ public:
 
 private:
 
+    BezierPoint getPointOnCurve (double timeIndex);
+
     BezierPoint mPointA;
     BezierPoint mPointB;
     BezierPoint mPointC;
     BezierPoint mPointD;
-
-    BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue);
 
 };
 
