@@ -5,34 +5,6 @@
 BezierCurve::BezierCurve()
 {}
 
-/*BezierPoint BezierCurve::LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double inputXValue)
-{
-    BezierPoint outputPoint;
-
-    outputPoint.xValue = inputXValue;
-
-    // This is the algebra that combines the two equations.
-    //(outputPoint.xValue - pointA.xValue) / (pointB.xValue - pointA.xValue) = timeIndex;
-    //(outputPoint.yValue - pointA.yValue) / (pointB.yValue - pointA.yValue) = timeIndex;
-    //(outputPoint.xValue - pointA.xValue) / (pointB.xValue - pointA.xValue) = (outputPoint.yValue - pointA.yValue) / (pointB.yValue - pointA.yValue);
-
-    outputPoint.yValue = ( (outputPoint.xValue - pointA.xValue) * (pointB.yValue - pointA.yValue) / (pointB.xValue - pointA.xValue) )
-                         + pointA.yValue;
-
-    return outputPoint;
-}*/
-
-// This is what the interpolation would be like if we needed time to be a factor.
-/*BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double timeIndex)
-{
-    BezierPoint outputPoint;
-
-    outputPoint.xValue = pointA.xValue + (pointB.xValue - pointA.xValue) * timeIndex;
-    outputPoint.yValue = pointA.yValue + (pointB.yValue - pointA.yValue) * timeIndex;
-
-    return outputPoint;
-}*/
-
 BezierPoint LinearInterpolate (const BezierPoint& pointA, const BezierPoint& pointB, const double timeIndex)
 {
     BezierPoint outputPoint;
@@ -63,7 +35,16 @@ BezierPoint BezierCurve::getPointOnCurve (double timeIndex)
     return outputPoint;
 }
 
-double BezierCurve::getOutput (int inputSampleNumber)
+// This is a binary search algorithm that we
+// need to use to find the Y value that 
+// corresponds with our given X value.
+// inputXValue is the target value here.
+// This function only works if the Bezier curve
+// does not have multiple Y values for any
+// given X value, so make sure that the
+// control points of the Bezier curve stay
+// inside the bounds of the end points.
+double BezierCurve::getOutput (double inputXValue)
 {
     double totalNumberOfSamples = mPointD.xValue;
     double xTolerance = 1.0 / totalNumberOfSamples;
@@ -74,38 +55,16 @@ double BezierCurve::getOutput (int inputSampleNumber)
 
     double currentXValue = getPointOnCurve (currentPositionInTime).xValue;
 
-    while (abs (inputSampleNumber - currentXValue) > xTolerance)
+    while (std::abs (inputXValue - currentXValue) > xTolerance)
     {
-        if (inputSampleNumber > currentXValue)
+        if (inputXValue > currentXValue)
             lowerBound = currentPositionInTime;
         else
             upperBound = currentPositionInTime;
 
-        currentPositionInTime = (lowerBound + upperBound) / 2.0;
+        currentPositionInTime = (lowerBound + upperBound) * 0.5;
         currentXValue = getPointOnCurve (currentPositionInTime).xValue;
     }
 
     return getPointOnCurve (currentPositionInTime).yValue;
 }
-
-/*double BezierCurve::getOutput (int inputSampleNumber)
-{
-    BezierPoint pointAB;
-    BezierPoint pointBC;
-    BezierPoint pointCD;
-    BezierPoint pointABBC;
-    BezierPoint pointBCCD;
-    BezierPoint outputPoint;
-
-    double totalNumberOfSamples = mPointD.xValue;
-
-    pointAB = LinearInterpolate (mPointA, mPointB, inputSampleNumber * mPointB.xValue / totalNumberOfSamples);
-    pointBC = LinearInterpolate (mPointB, mPointC, mPointB.xValue + inputSampleNumber * (mPointC.xValue - mPointB.xValue) / totalNumberOfSamples);
-    pointCD = LinearInterpolate (mPointC, mPointD, mPointC.xValue + inputSampleNumber * (mPointD.xValue - mPointC.xValue) / totalNumberOfSamples);
-    pointABBC = LinearInterpolate (pointAB, pointBC, inputSampleNumber * (mPointC.xValue - mPointA.xValue) / totalNumberOfSamples);
-    pointBCCD = LinearInterpolate (pointBC, pointCD, mPointB.xValue + inputSampleNumber * (mPointD.xValue - mPointB.xValue) / totalNumberOfSamples);
-
-    outputPoint = LinearInterpolate (pointABBC, pointBCCD, inputSampleNumber);
-
-    return outputPoint.yValue;
-}*/

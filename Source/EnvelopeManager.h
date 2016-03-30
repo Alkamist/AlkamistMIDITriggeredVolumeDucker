@@ -19,8 +19,6 @@ public:
     inline void setHoldLevel (const std::vector<float>& input)         { mHoldLevel = input; };
     inline void setAttackTime (const std::vector<float>& input)        { mAttackTime = input; };
     inline void setReleaseTime (const std::vector<float>& input)       { mReleaseTime = input; };
-    inline void setVelocityThreshold (const std::vector<float>& input) { mVelocityThreshold = input; };
-    inline void setVelocitySkew (const std::vector<float>& input)      { mVelocitySkew = input; };
 
 private:
 
@@ -39,8 +37,6 @@ private:
     std::vector<float> mHoldLevel;
     std::vector<float> mAttackTime;
     std::vector<float> mReleaseTime;
-    std::vector<float> mVelocityThreshold;
-    std::vector<float> mVelocitySkew;
 
     std::vector<AHREnvelopeGenerator> mEnvelopeContainer;
 

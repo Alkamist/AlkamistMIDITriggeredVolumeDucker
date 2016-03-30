@@ -57,8 +57,6 @@ public:
     FloatParameter* holdLevel;
     FloatParameter* attackTime;
     FloatParameter* releaseTime;
-    FloatParameter* velocityThreshold;
-    FloatParameter* velocitySkew;
 
 private:
 

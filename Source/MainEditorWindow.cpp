@@ -107,58 +107,12 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     releaseTimeLabel->setColour (TextEditor::textColourId, Colours::black);
     releaseTimeLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (velocityThresholdSlider = new Slider ("Velocity Threshold Slider"));
-    velocityThresholdSlider->setRange (1, 127, 1);
-    velocityThresholdSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    velocityThresholdSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    velocityThresholdSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
-    velocityThresholdSlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
-    velocityThresholdSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
-    velocityThresholdSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
-    velocityThresholdSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
-    velocityThresholdSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
-    velocityThresholdSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
-    velocityThresholdSlider->addListener (this);
-
-    addAndMakeVisible (velocitySkewSlider = new Slider ("Velocity Skew Slider"));
-    velocitySkewSlider->setRange (0.01, 1, 0.01);
-    velocitySkewSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    velocitySkewSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
-    velocitySkewSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
-    velocitySkewSlider->setColour (Slider::trackColourId, Colour (0x7fdddddd));
-    velocitySkewSlider->setColour (Slider::rotarySliderFillColourId, Colour (0x7fdddddd));
-    velocitySkewSlider->setColour (Slider::rotarySliderOutlineColourId, Colour (0x66dddddd));
-    velocitySkewSlider->setColour (Slider::textBoxTextColourId, Colour (0xffdddddd));
-    velocitySkewSlider->setColour (Slider::textBoxBackgroundColourId, Colour (0xff4a4a4a));
-    velocitySkewSlider->setColour (Slider::textBoxHighlightColourId, Colour (0x40e4e4e4));
-    velocitySkewSlider->addListener (this);
-
-    addAndMakeVisible (velocityThresholdLabel = new Label ("Velocity Threshold Label",
-                                                           TRANS("Velocity\n"
-                                                           "Threshold")));
-    velocityThresholdLabel->setFont (Font (15.00f, Font::plain));
-    velocityThresholdLabel->setJustificationType (Justification::centred);
-    velocityThresholdLabel->setEditable (false, false, false);
-    velocityThresholdLabel->setColour (Label::textColourId, Colour (0xffdddddd));
-    velocityThresholdLabel->setColour (TextEditor::textColourId, Colours::black);
-    velocityThresholdLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
-    addAndMakeVisible (velocitySkewLabel = new Label ("Velocity Skew Label",
-                                                      TRANS("Velocity\n"
-                                                      "Skew")));
-    velocitySkewLabel->setFont (Font (15.00f, Font::plain));
-    velocitySkewLabel->setJustificationType (Justification::centred);
-    velocitySkewLabel->setEditable (false, false, false);
-    velocitySkewLabel->setColour (Label::textColourId, Colour (0xffdddddd));
-    velocitySkewLabel->setColour (TextEditor::textColourId, Colours::black);
-    velocitySkewLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
 
     //[UserPreSize]
     setAllSliderRanges();
     //[/UserPreSize]
 
-    setSize (272, 296);
+    setSize (184, 296);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -171,12 +125,6 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
 
     releaseTimeSlider->setVelocityModeParameters(0.45, 1, 0.05, true);
     releaseTimeSlider->setDoubleClickReturnValue(true, 0.1);
-
-    velocityThresholdSlider->setVelocityModeParameters(0.45, 1, 0.05, true);
-    velocityThresholdSlider->setDoubleClickReturnValue(true, 0.1);
-
-    velocitySkewSlider->setVelocityModeParameters(0.45, 1, 0.05, true);
-    velocitySkewSlider->setDoubleClickReturnValue(true, 0.1);
 
     updateAllSliderValues();
 
@@ -196,10 +144,6 @@ MainEditorWindow::~MainEditorWindow()
     holdLevelLabel = nullptr;
     attackTimeLabel = nullptr;
     releaseTimeLabel = nullptr;
-    velocityThresholdSlider = nullptr;
-    velocitySkewSlider = nullptr;
-    velocityThresholdLabel = nullptr;
-    velocitySkewLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -225,14 +169,10 @@ void MainEditorWindow::resized()
 
     holdLevelSlider->setBounds (8, 56, 80, 240);
     attackTimeSlider->setBounds (96, 56, 80, 96);
-    releaseTimeSlider->setBounds (184, 56, 80, 96);
+    releaseTimeSlider->setBounds (96, 200, 80, 96);
     holdLevelLabel->setBounds (0, 0, 96, 48);
     attackTimeLabel->setBounds (96, 0, 80, 48);
-    releaseTimeLabel->setBounds (184, 0, 80, 48);
-    velocityThresholdSlider->setBounds (93, 201, 80, 96);
-    velocitySkewSlider->setBounds (181, 201, 80, 96);
-    velocityThresholdLabel->setBounds (93, 145, 80, 48);
-    velocitySkewLabel->setBounds (181, 145, 80, 48);
+    releaseTimeLabel->setBounds (96, 144, 80, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -258,16 +198,6 @@ void MainEditorWindow::sliderValueChanged (Slider* sliderThatWasMoved)
         //[UserSliderCode_releaseTimeSlider] -- add your slider handling code here..
         //[/UserSliderCode_releaseTimeSlider]
     }
-    else if (sliderThatWasMoved == velocityThresholdSlider)
-    {
-        //[UserSliderCode_velocityThresholdSlider] -- add your slider handling code here..
-        //[/UserSliderCode_velocityThresholdSlider]
-    }
-    else if (sliderThatWasMoved == velocitySkewSlider)
-    {
-        //[UserSliderCode_velocitySkewSlider] -- add your slider handling code here..
-        //[/UserSliderCode_velocitySkewSlider]
-    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
@@ -292,8 +222,6 @@ void MainEditorWindow::setAllSliderRanges()
     setSliderRange (holdLevelSlider);
     setSliderRange (attackTimeSlider);
     setSliderRange (releaseTimeSlider);
-    setSliderRange (velocityThresholdSlider);
-    setSliderRange (velocitySkewSlider);
 }
 
 void MainEditorWindow::setNormalizedValueFromSlider(Slider* slider)
@@ -319,8 +247,6 @@ void MainEditorWindow::updateAllSliderValues()
     updateSliderValue (holdLevelSlider);
     updateSliderValue (attackTimeSlider);
     updateSliderValue (releaseTimeSlider);
-    updateSliderValue (velocityThresholdSlider);
-    updateSliderValue (velocitySkewSlider);
 }
 
 void MainEditorWindow::timerCallback()
@@ -355,12 +281,6 @@ FloatParameter* MainEditorWindow::getParameterFromSlider (const Slider* slider) 
     if (slider == releaseTimeSlider)
         return mParentProcessor->releaseTime;
 
-    if (slider == velocityThresholdSlider)
-        return mParentProcessor->velocityThreshold;
-
-    if (slider == velocitySkewSlider)
-        return mParentProcessor->velocitySkew;
-
     return nullptr;
 }
 
@@ -380,7 +300,7 @@ BEGIN_JUCER_METADATA
                  parentClasses="public Component, public Timer" constructorParams="AlkamistSidechainCompressorAudioProcessor&amp; inputProcessor"
                  variableInitialisers="mParentProcessor (&amp;inputProcessor)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="272" initialHeight="296">
+                 fixedSize="1" initialWidth="184" initialHeight="296">
   <BACKGROUND backgroundColour="ff323232"/>
   <SLIDER name="Hold Level Slider" id="840f7ca9f9570c56" memberName="holdLevelSlider"
           virtualName="" explicitFocusOrder="0" pos="8 56 80 240" thumbcol="ff909090"
@@ -396,7 +316,7 @@ BEGIN_JUCER_METADATA
           style="RotaryVerticalDrag" textBoxPos="TextBoxAbove" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Release Time Slider" id="9a3aaeae16ed6240" memberName="releaseTimeSlider"
-          virtualName="" explicitFocusOrder="0" pos="184 56 80 96" thumbcol="ff909090"
+          virtualName="" explicitFocusOrder="0" pos="96 200 80 96" thumbcol="ff909090"
           trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
           min="0.10000000000000001" max="200" int="0.10000000000000001"
@@ -413,30 +333,8 @@ BEGIN_JUCER_METADATA
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="Release Time Label" id="c8bb41d45518e62c" memberName="releaseTimeLabel"
-         virtualName="" explicitFocusOrder="0" pos="184 0 80 48" textCol="ffdddddd"
+         virtualName="" explicitFocusOrder="0" pos="96 144 80 48" textCol="ffdddddd"
          edTextCol="ff000000" edBkgCol="0" labelText="Release &#10;Time &#10;(ms)"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
-  <SLIDER name="Velocity Threshold Slider" id="db8f69d18df2970f" memberName="velocityThresholdSlider"
-          virtualName="" explicitFocusOrder="0" pos="93 201 80 96" thumbcol="ff909090"
-          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
-          min="1" max="127" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <SLIDER name="Velocity Skew Slider" id="8279527c5190b7ca" memberName="velocitySkewSlider"
-          virtualName="" explicitFocusOrder="0" pos="181 201 80 96" thumbcol="ff909090"
-          trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
-          textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
-          min="0.01" max="1" int="0.01" style="RotaryVerticalDrag" textBoxPos="TextBoxAbove"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="Velocity Threshold Label" id="cd6cc2a111f826c0" memberName="velocityThresholdLabel"
-         virtualName="" explicitFocusOrder="0" pos="93 145 80 48" textCol="ffdddddd"
-         edTextCol="ff000000" edBkgCol="0" labelText="Velocity&#10;Threshold"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="Velocity Skew Label" id="eb198a0a090cbb8b" memberName="velocitySkewLabel"
-         virtualName="" explicitFocusOrder="0" pos="181 145 80 48" textCol="ffdddddd"
-         edTextCol="ff000000" edBkgCol="0" labelText="Velocity&#10;Skew"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>

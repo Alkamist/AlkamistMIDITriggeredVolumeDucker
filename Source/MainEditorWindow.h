@@ -76,10 +76,6 @@ private:
     ScopedPointer<Label> holdLevelLabel;
     ScopedPointer<Label> attackTimeLabel;
     ScopedPointer<Label> releaseTimeLabel;
-    ScopedPointer<Slider> velocityThresholdSlider;
-    ScopedPointer<Slider> velocitySkewSlider;
-    ScopedPointer<Label> velocityThresholdLabel;
-    ScopedPointer<Label> velocitySkewLabel;
 
 
     //==============================================================================

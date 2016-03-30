@@ -13,7 +13,7 @@ public:
 
     BezierCurve();
 
-    double getOutput (int inputSampleNumber);
+    double getOutput (double inputXValue);
 
     inline void setPointA (double inputXValue, double inputYValue) { mPointA.xValue = inputXValue;
                                                                      mPointA.yValue = inputYValue; };

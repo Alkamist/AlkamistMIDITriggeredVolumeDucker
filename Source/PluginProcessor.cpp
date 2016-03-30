@@ -11,8 +11,6 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     addParameter (holdLevel  = new FloatParameter (1.0f, -60.0f, 0.0f, "Gain Reduction", "dB", sampleRate, blockSize));
     addParameter (attackTime  = new FloatParameter (0.0f, 0.1f, 200.0f, "Attack Time", "ms", sampleRate, blockSize)); 
     addParameter (releaseTime  = new FloatParameter (0.0f, 0.1f, 500.0f, "Release Time", "ms", sampleRate, blockSize));
-    addParameter (velocityThreshold  = new FloatParameter (0.0f, 1.0f, 127.0f, "Velocity Threshold", "", sampleRate, blockSize));
-    addParameter (velocitySkew  = new FloatParameter (1.0f, 0.01f, 1.0f, "Velocity Skew", "", sampleRate, blockSize));
 
     reset (sampleRate, blockSize);
 }
@@ -126,12 +124,6 @@ void AlkamistSidechainCompressorAudioProcessor::getStateInformation (MemoryBlock
     xmlPointer = xmlRoot.createNewChildElement ("ReleaseTime");
     xmlPointer->addTextElement (String (releaseTime->getUnNormalizedUnSmoothedValue()));
 
-    xmlPointer = xmlRoot.createNewChildElement ("VelocityThreshold");
-    xmlPointer->addTextElement (String (velocityThreshold->getUnNormalizedUnSmoothedValue()));
-
-    xmlPointer = xmlRoot.createNewChildElement ("VelocitySkew");
-    xmlPointer->addTextElement (String (velocitySkew->getUnNormalizedUnSmoothedValue()));
-
     // Use this helper function to stuff it into the binary blob and return it.
     copyXmlToBinary (xmlRoot, destData);
 }
@@ -162,16 +154,6 @@ void AlkamistSidechainCompressorAudioProcessor::setStateInformation (const void*
                 String text = xmlChildPointer->getAllSubText();
                 releaseTime->setNormalizedValue (text.getFloatValue());
             }
-            if(xmlChildPointer->hasTagName("VelocityThreshold"))
-            {
-                String text = xmlChildPointer->getAllSubText();
-                velocityThreshold->setNormalizedValue (text.getFloatValue());
-            }
-            if(xmlChildPointer->hasTagName("VelocitySkew"))
-            {
-                String text = xmlChildPointer->getAllSubText();
-                velocitySkew->setNormalizedValue (text.getFloatValue());
-            }
         }
     }
 }
@@ -182,8 +164,6 @@ void AlkamistSidechainCompressorAudioProcessor::bufferParameters()
     holdLevel->bufferParameter();
     attackTime->bufferParameter();
     releaseTime->bufferParameter();
-    velocityThreshold->bufferParameter();
-    velocitySkew->bufferParameter();
 }
 
 void AlkamistSidechainCompressorAudioProcessor::sendParameterBuffers()
@@ -205,18 +185,6 @@ void AlkamistSidechainCompressorAudioProcessor::sendParameterBuffers()
     {
         mEnvelopeManager.setReleaseTime (releaseTime->getUnNormalizedSmoothedBuffer());
     }
-
-    if (velocityThreshold->parameterChangedThisBlock()
-        || releaseTime->parameterNeedsToSendFlatBuffer())
-    {
-        mEnvelopeManager.setVelocityThreshold (velocityThreshold->getUnNormalizedSmoothedBuffer());
-    }
-
-    if (velocitySkew->parameterChangedThisBlock()
-        || releaseTime->parameterNeedsToSendFlatBuffer())
-    {
-        mEnvelopeManager.setVelocitySkew (velocitySkew->getUnNormalizedSmoothedBuffer());
-    }
 }
 
 void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
@@ -224,8 +192,6 @@ void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
     holdLevel->clearParameterChange();
     attackTime->clearParameterChange();
     releaseTime->clearParameterChange();
-    velocityThreshold->clearParameterChange();
-    velocitySkew->clearParameterChange();
 }
 
 void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, int inputBlockSize)
@@ -236,14 +202,10 @@ void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, i
     holdLevel->reset (inputSampleRate, inputBlockSize);
     attackTime->reset (inputSampleRate, inputBlockSize);
     releaseTime->reset (inputSampleRate, inputBlockSize);
-    velocityThreshold->reset (inputSampleRate, inputBlockSize);
-    velocitySkew->reset (inputSampleRate, inputBlockSize);
 
     holdLevel->signalForParameterChange();
     attackTime->signalForParameterChange();
     releaseTime->signalForParameterChange();
-    velocityThreshold->signalForParameterChange();
-    velocitySkew->signalForParameterChange();
 }
 //==============================================================================
 // This creates new instances of the plugin..
