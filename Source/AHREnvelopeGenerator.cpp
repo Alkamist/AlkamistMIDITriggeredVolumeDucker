@@ -38,32 +38,12 @@ void AHREnvelopeGenerator::startEnvelope()
 
 void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 {
-    // Establish a normalized hold level to work with.
     NormalisableRange<double> normalizableRangeForHoldLevel (0.0, -60.0);
     double normalizedHoldLevel = normalizableRangeForHoldLevel.convertTo0to1 (mHoldLevel);
 
-    // Establish how the velocity threshold should change
-    // based on the hold level.
-    NormalisableRange<double> holdLevelToVelocityThreshold (50, 1.0, 1.0, 1.3);
-    int holdLevelAsVelocityThreshold = int (holdLevelToVelocityThreshold.convertFrom0to1 (normalizedHoldLevel));
+    double scaledVelocity = velocity / 127.0;
 
-    // Set the velocity threshold and cut values below it off.
-    int velocityThreshold = holdLevelAsVelocityThreshold - 1;
-    if (velocity < velocityThreshold) { velocity = velocityThreshold; }
-
-    // Re-scale the velocity based on the threshold.
-    double scaledVelocity = (velocity - velocityThreshold) / (127.0 - velocityThreshold);
-
-    // Establish how the velocity values should be skewed
-    // based on the hold level.
-    NormalisableRange<double> normalizableRangeForVelocitySkew (0.90, 0.25, 0.001, 3.0);
-    double holdLevelAsVelocitySkew = normalizableRangeForVelocitySkew.convertFrom0to1 (normalizedHoldLevel);
-
-    NormalisableRange<double> normalizableRangeForSkewedVelocity (0.0, 1.0, 0.007874, holdLevelAsVelocitySkew);
-    double scaledVelocityAsSkewedVelocity = normalizableRangeForSkewedVelocity.convertFrom0to1 (scaledVelocity);
-
-    // Set the output.
-    double outputScaleFactor = 1.0 - (normalizedHoldLevel * scaledVelocityAsSkewedVelocity);
+    double outputScaleFactor = 1.0 - (normalizedHoldLevel * scaledVelocity);
     mScaleFactor = outputScaleFactor;
 }
 
@@ -87,13 +67,10 @@ void AHREnvelopeGenerator::performStateChange()
 
         // Point B changes position based on the scale factor.
         // This changes the shape of the curve.
-        NormalisableRange<double> pointBScaleFactor (0.99, 0.25, 0.001, 0.5);
+        NormalisableRange<double> pointBScaleFactor (0.99, 0.5);
         mBezierCurve.setPointB (mNextStageSampleIndex * pointBScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
-        // Point C changes position based on the scale factor.
-        // This changes the shape of the curve.
-        NormalisableRange<double> pointCScaleFactor (0.95, 0.85);
-        mBezierCurve.setPointC (mNextStageSampleIndex * pointCScaleFactor.convertFrom0to1 (mScaleFactor), mScaleFactor);
+        mBezierCurve.setPointC (mNextStageSampleIndex * 0.95, mScaleFactor);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, mScaleFactor);
 
@@ -113,14 +90,11 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, mScaleFactor);
     
-        // Point B changes position based on the scale factor.
-        // This changes the shape of the curve.
-        NormalisableRange<double> pointBScaleFactor (0.05, 0.15);
-        mBezierCurve.setPointB (mNextStageSampleIndex * pointBScaleFactor.convertFrom0to1 (mScaleFactor), mScaleFactor);
+        mBezierCurve.setPointB (mNextStageSampleIndex * 0.05, mScaleFactor);
 
         // Point C changes position based on the scale factor.
         // This changes the shape of the curve.
-        NormalisableRange<double> pointCScaleFactor (0.01, 0.75, 0.001, 0.5);
+        NormalisableRange<double> pointCScaleFactor (0.01, 0.5);
         mBezierCurve.setPointC (mNextStageSampleIndex * pointCScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, 1.0);
