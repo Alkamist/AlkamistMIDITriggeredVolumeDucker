@@ -24,8 +24,8 @@ double AHREnvelopeGenerator::getOutput()
 
     // This outputs logarithmcally scaled values.
     // Simplified from:
-    // std::pow(10.0, (-mHoldLevel / 20.0) * (adjustedVelocity - 1));
-    return std::pow(10.0, 3.0 * (mEnvelopeOutput - 1));
+    // std::pow(10.0, (-maxHoldLevel / 20.0) * (adjustedVelocity - 1));
+    return std::pow(10.0, 1.5 * (mEnvelopeOutput - 1));
 }
 
 void AHREnvelopeGenerator::startEnvelope()
@@ -38,7 +38,7 @@ void AHREnvelopeGenerator::startEnvelope()
 
 void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
 {
-    NormalisableRange<double> normalizableRangeForHoldLevel (0.0, -60.0);
+    NormalisableRange<double> normalizableRangeForHoldLevel (0.0, -30.0);
     double normalizedHoldLevel = normalizableRangeForHoldLevel.convertTo0to1 (mHoldLevel);
 
     double scaledVelocity = velocity / 127.0;
@@ -65,9 +65,10 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, 1.0);
 
-        // Point B changes position based on the scale factor.
+        // Point B used to change position based on the scale factor.
         // This changes the shape of the curve.
-        NormalisableRange<double> pointBScaleFactor (0.99, 0.5);
+        // It went big to small.
+        NormalisableRange<double> pointBScaleFactor (0.05, 0.05);
         mBezierCurve.setPointB (mNextStageSampleIndex * pointBScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
         mBezierCurve.setPointC (mNextStageSampleIndex * 0.95, mScaleFactor);
@@ -90,11 +91,11 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, mScaleFactor);
     
-        mBezierCurve.setPointB (mNextStageSampleIndex * 0.05, mScaleFactor);
+        mBezierCurve.setPointB (mNextStageSampleIndex * 0.2, mScaleFactor);
 
         // Point C changes position based on the scale factor.
         // This changes the shape of the curve.
-        NormalisableRange<double> pointCScaleFactor (0.01, 0.5);
+        NormalisableRange<double> pointCScaleFactor (0.2, 0.2);
         mBezierCurve.setPointC (mNextStageSampleIndex * pointCScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, 1.0);

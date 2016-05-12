@@ -8,7 +8,7 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     double sampleRate = getSampleRate();
     int blockSize = getBlockSize();
 
-    addParameter (holdLevel  = new FloatParameter (1.0f, -60.0f, 0.0f, "Gain Reduction", "dB", sampleRate, blockSize));
+    addParameter (holdLevel  = new FloatParameter (1.0f, -30.0f, 0.0f, "Gain Reduction", "dB", sampleRate, blockSize));
     addParameter (attackTime  = new FloatParameter (0.0f, 0.1f, 200.0f, "Attack Time", "ms", sampleRate, blockSize)); 
     addParameter (releaseTime  = new FloatParameter (0.0f, 0.1f, 500.0f, "Release Time", "ms", sampleRate, blockSize));
 

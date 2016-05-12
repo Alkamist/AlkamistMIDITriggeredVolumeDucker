@@ -36,7 +36,7 @@ MainEditorWindow::MainEditorWindow (AlkamistSidechainCompressorAudioProcessor& i
     //[/Constructor_pre]
 
     addAndMakeVisible (holdLevelSlider = new Slider ("Hold Level Slider"));
-    holdLevelSlider->setRange (-60, 0, 0.01);
+    holdLevelSlider->setRange (-30, 0, 0.01);
     holdLevelSlider->setSliderStyle (Slider::LinearVertical);
     holdLevelSlider->setTextBoxStyle (Slider::TextBoxAbove, false, 80, 20);
     holdLevelSlider->setColour (Slider::thumbColourId, Colour (0xff909090));
@@ -306,7 +306,7 @@ BEGIN_JUCER_METADATA
           virtualName="" explicitFocusOrder="0" pos="8 56 80 240" thumbcol="ff909090"
           trackcol="7fdddddd" rotarysliderfill="7fdddddd" rotaryslideroutline="66dddddd"
           textboxtext="ffdddddd" textboxbkgd="ff4a4a4a" textboxhighlight="40e4e4e4"
-          min="-60" max="0" int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove"
+          min="-30" max="0" int="0.01" style="LinearVertical" textBoxPos="TextBoxAbove"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="Attack Time Slider" id="21744834f18397a5" memberName="attackTimeSlider"
           virtualName="" explicitFocusOrder="0" pos="96 56 80 96" thumbcol="ff909090"
