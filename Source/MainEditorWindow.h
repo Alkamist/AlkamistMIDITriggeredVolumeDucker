@@ -76,6 +76,14 @@ private:
     ScopedPointer<Label> holdLevelLabel;
     ScopedPointer<Label> attackTimeLabel;
     ScopedPointer<Label> releaseTimeLabel;
+    ScopedPointer<Slider> releaseBottomWeightSlider;
+    ScopedPointer<Label> releaseBottomWeightLabel;
+    ScopedPointer<Slider> releaseTopWeightSlider;
+    ScopedPointer<Label> releaseTopWeightLabel;
+    ScopedPointer<Slider> attackBottomWeightSlider;
+    ScopedPointer<Label> attackBottomWeightLabel;
+    ScopedPointer<Slider> attackTopWeightSlider;
+    ScopedPointer<Label> attackTopWeightLabel;
 
 
     //==============================================================================

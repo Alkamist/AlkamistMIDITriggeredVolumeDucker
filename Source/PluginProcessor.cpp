@@ -11,6 +11,10 @@ AlkamistSidechainCompressorAudioProcessor::AlkamistSidechainCompressorAudioProce
     addParameter (holdLevel  = new FloatParameter (1.0f, -30.0f, 0.0f, "Gain Reduction", "dB", sampleRate, blockSize));
     addParameter (attackTime  = new FloatParameter (0.0f, 0.1f, 200.0f, "Attack Time", "ms", sampleRate, blockSize)); 
     addParameter (releaseTime  = new FloatParameter (0.0f, 0.1f, 500.0f, "Release Time", "ms", sampleRate, blockSize));
+    addParameter (attackBottomWeight  = new FloatParameter (0.0f, 0.01f, 0.99f, "Attack Bottom Weight", "", sampleRate, blockSize));
+    addParameter (attackTopWeight  = new FloatParameter (1.0f, 0.01f, 0.99f, "Attack Top Weight", "", sampleRate, blockSize));
+    addParameter (releaseBottomWeight  = new FloatParameter (0.0f, 0.01f, 0.99f, "Release Bottom Weight", "", sampleRate, blockSize));
+    addParameter (releaseTopWeight  = new FloatParameter (1.0f, 0.01f, 0.99f, "Release Top Weight", "", sampleRate, blockSize));
 
     reset (sampleRate, blockSize);
 }
@@ -124,6 +128,18 @@ void AlkamistSidechainCompressorAudioProcessor::getStateInformation (MemoryBlock
     xmlPointer = xmlRoot.createNewChildElement ("ReleaseTime");
     xmlPointer->addTextElement (String (releaseTime->getUnNormalizedUnSmoothedValue()));
 
+    xmlPointer = xmlRoot.createNewChildElement ("AttackBottomWeight");
+    xmlPointer->addTextElement (String (attackBottomWeight->getUnNormalizedUnSmoothedValue()));
+
+    xmlPointer = xmlRoot.createNewChildElement ("AttackTopWeight");
+    xmlPointer->addTextElement (String (attackTopWeight->getUnNormalizedUnSmoothedValue()));
+
+    xmlPointer = xmlRoot.createNewChildElement ("ReleaseBottomWeight");
+    xmlPointer->addTextElement (String (releaseBottomWeight->getUnNormalizedUnSmoothedValue()));
+
+    xmlPointer = xmlRoot.createNewChildElement ("ReleaseTopWeight");
+    xmlPointer->addTextElement (String (releaseTopWeight->getUnNormalizedUnSmoothedValue()));
+
     // Use this helper function to stuff it into the binary blob and return it.
     copyXmlToBinary (xmlRoot, destData);
 }
@@ -154,6 +170,26 @@ void AlkamistSidechainCompressorAudioProcessor::setStateInformation (const void*
                 String text = xmlChildPointer->getAllSubText();
                 releaseTime->setNormalizedValue (text.getFloatValue());
             }
+            if(xmlChildPointer->hasTagName("AttackBottomWeight"))
+            {
+                String text = xmlChildPointer->getAllSubText();
+                attackBottomWeight->setNormalizedValue (text.getFloatValue());
+            }
+            if(xmlChildPointer->hasTagName("AttackTopWeight"))
+            {
+                String text = xmlChildPointer->getAllSubText();
+                attackTopWeight->setNormalizedValue (text.getFloatValue());
+            }
+            if(xmlChildPointer->hasTagName("ReleaseBottomWeight"))
+            {
+                String text = xmlChildPointer->getAllSubText();
+                releaseBottomWeight->setNormalizedValue (text.getFloatValue());
+            }
+            if(xmlChildPointer->hasTagName("ReleaseTopWeight"))
+            {
+                String text = xmlChildPointer->getAllSubText();
+                releaseTopWeight->setNormalizedValue (text.getFloatValue());
+            }
         }
     }
 }
@@ -164,6 +200,10 @@ void AlkamistSidechainCompressorAudioProcessor::bufferParameters()
     holdLevel->bufferParameter();
     attackTime->bufferParameter();
     releaseTime->bufferParameter();
+    attackBottomWeight->bufferParameter();
+    attackTopWeight->bufferParameter();
+    releaseBottomWeight->bufferParameter();
+    releaseTopWeight->bufferParameter();
 }
 
 void AlkamistSidechainCompressorAudioProcessor::sendParameterBuffers()
@@ -185,6 +225,30 @@ void AlkamistSidechainCompressorAudioProcessor::sendParameterBuffers()
     {
         mEnvelopeManager.setReleaseTime (releaseTime->getUnNormalizedSmoothedBuffer());
     }
+
+    if (attackBottomWeight->parameterChangedThisBlock()
+        || attackBottomWeight->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setAttackBottomWeight (attackBottomWeight->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (attackTopWeight->parameterChangedThisBlock()
+        || attackTopWeight->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setAttackTopWeight (attackTopWeight->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (releaseBottomWeight->parameterChangedThisBlock()
+        || releaseBottomWeight->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setReleaseBottomWeight (releaseBottomWeight->getUnNormalizedSmoothedBuffer());
+    }
+
+    if (releaseTopWeight->parameterChangedThisBlock()
+        || releaseTopWeight->parameterNeedsToSendFlatBuffer())
+    {
+        mEnvelopeManager.setReleaseTopWeight (releaseTopWeight->getUnNormalizedSmoothedBuffer());
+    }
 }
 
 void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
@@ -192,6 +256,10 @@ void AlkamistSidechainCompressorAudioProcessor::clearParameterChanges()
     holdLevel->clearParameterChange();
     attackTime->clearParameterChange();
     releaseTime->clearParameterChange();
+    attackBottomWeight->clearParameterChange();
+    attackTopWeight->clearParameterChange();
+    releaseBottomWeight->clearParameterChange();
+    releaseTopWeight->clearParameterChange();
 }
 
 void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, int inputBlockSize)
@@ -202,10 +270,18 @@ void AlkamistSidechainCompressorAudioProcessor::reset (double inputSampleRate, i
     holdLevel->reset (inputSampleRate, inputBlockSize);
     attackTime->reset (inputSampleRate, inputBlockSize);
     releaseTime->reset (inputSampleRate, inputBlockSize);
+    attackBottomWeight->reset (inputSampleRate, inputBlockSize);
+    attackTopWeight->reset (inputSampleRate, inputBlockSize);
+    releaseBottomWeight->reset (inputSampleRate, inputBlockSize);
+    releaseTopWeight->reset (inputSampleRate, inputBlockSize);
 
     holdLevel->signalForParameterChange();
     attackTime->signalForParameterChange();
     releaseTime->signalForParameterChange();
+    attackBottomWeight->signalForParameterChange();
+    attackTopWeight->signalForParameterChange();
+    releaseBottomWeight->signalForParameterChange();
+    releaseTopWeight->signalForParameterChange();
 }
 //==============================================================================
 // This creates new instances of the plugin..

@@ -65,13 +65,9 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, 1.0);
 
-        // Point B used to change position based on the scale factor.
-        // This changes the shape of the curve.
-        // It went big to small.
-        NormalisableRange<double> pointBScaleFactor (0.05, 0.05);
-        mBezierCurve.setPointB (mNextStageSampleIndex * pointBScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
+        mBezierCurve.setPointB (mNextStageSampleIndex * mAttackTopWeight, 1.0);
 
-        mBezierCurve.setPointC (mNextStageSampleIndex * 0.95, mScaleFactor);
+        mBezierCurve.setPointC (mNextStageSampleIndex * mAttackBottomWeight, mScaleFactor);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, mScaleFactor);
 
@@ -91,12 +87,9 @@ void AHREnvelopeGenerator::performStateChange()
 
         mBezierCurve.setPointA (0.0, mScaleFactor);
     
-        mBezierCurve.setPointB (mNextStageSampleIndex * 0.2, mScaleFactor);
+        mBezierCurve.setPointB (mNextStageSampleIndex * mReleaseBottomWeight, mScaleFactor);
 
-        // Point C changes position based on the scale factor.
-        // This changes the shape of the curve.
-        NormalisableRange<double> pointCScaleFactor (0.2, 0.2);
-        mBezierCurve.setPointC (mNextStageSampleIndex * pointCScaleFactor.convertFrom0to1 (mScaleFactor), 1.0);
+        mBezierCurve.setPointC (mNextStageSampleIndex * mReleaseTopWeight, 1.0);
 
         mBezierCurve.setPointD (mNextStageSampleIndex, 1.0);
 

@@ -16,9 +16,13 @@ public:
     void processBlock (AudioSampleBuffer& inputAudioBuffer, MidiBuffer& inputMIDIBuffer);
 
     // Setters:
-    inline void setHoldLevel (const std::vector<float>& input)         { mHoldLevel = input; };
-    inline void setAttackTime (const std::vector<float>& input)        { mAttackTime = input; };
-    inline void setReleaseTime (const std::vector<float>& input)       { mReleaseTime = input; };
+    inline void setHoldLevel (const std::vector<float>& input)           { mHoldLevel = input; };
+    inline void setAttackTime (const std::vector<float>& input)          { mAttackTime = input; };
+    inline void setReleaseTime (const std::vector<float>& input)         { mReleaseTime = input; };
+    inline void setAttackBottomWeight (const std::vector<float>& input)  { mAttackBottomWeight = input; };
+    inline void setAttackTopWeight (const std::vector<float>& input)     { mAttackTopWeight = input; };
+    inline void setReleaseBottomWeight (const std::vector<float>& input) { mReleaseBottomWeight = input; };
+    inline void setReleaseTopWeight (const std::vector<float>& input)    { mReleaseTopWeight = input; };
 
 private:
 
@@ -37,6 +41,10 @@ private:
     std::vector<float> mHoldLevel;
     std::vector<float> mAttackTime;
     std::vector<float> mReleaseTime;
+    std::vector<float> mAttackBottomWeight;
+    std::vector<float> mAttackTopWeight;
+    std::vector<float> mReleaseBottomWeight;
+    std::vector<float> mReleaseTopWeight;
 
     std::vector<AHREnvelopeGenerator> mEnvelopeContainer;
 

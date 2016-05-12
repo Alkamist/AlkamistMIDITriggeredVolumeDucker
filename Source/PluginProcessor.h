@@ -57,6 +57,10 @@ public:
     FloatParameter* holdLevel;
     FloatParameter* attackTime;
     FloatParameter* releaseTime;
+    FloatParameter* attackBottomWeight;
+    FloatParameter* attackTopWeight;
+    FloatParameter* releaseBottomWeight;
+    FloatParameter* releaseTopWeight;
 
 private:
 

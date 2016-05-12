@@ -14,6 +14,10 @@ void EnvelopeManager::reset (double inputSampleRate, int inputBlockSize)
     mHoldLevel.resize (inputBlockSize);
     mAttackTime.resize (inputBlockSize);
     mReleaseTime.resize (inputBlockSize);
+    mAttackBottomWeight.resize (inputBlockSize);
+    mAttackTopWeight.resize (inputBlockSize);
+    mReleaseBottomWeight.resize (inputBlockSize);
+    mReleaseTopWeight.resize (inputBlockSize);
 
     if (! mEnvelopeContainer.empty())
     {
@@ -131,6 +135,10 @@ void EnvelopeManager::startNewEnvelope (MidiMessage& inputMIDIMessage)
     freshEnvelope.setHoldLevel (mHoldLevel[mCurrentSampleInBlock]);
     freshEnvelope.setAttackTime (mAttackTime[mCurrentSampleInBlock]);
     freshEnvelope.setReleaseTime (mReleaseTime[mCurrentSampleInBlock]);
+    freshEnvelope.setAttackBottomWeight (mAttackBottomWeight[mCurrentSampleInBlock]);
+    freshEnvelope.setAttackTopWeight (mAttackTopWeight[mCurrentSampleInBlock]);
+    freshEnvelope.setReleaseBottomWeight (mReleaseBottomWeight[mCurrentSampleInBlock]);
+    freshEnvelope.setReleaseTopWeight (mReleaseTopWeight[mCurrentSampleInBlock]);
 
     freshEnvelope.setVelocityScaleFactor (inputMIDIMessage.getVelocity());
 
