@@ -19,13 +19,7 @@ void AHREnvelopeGenerator::reset (double inputSampleRate, int inputBlockSize)
 
 double AHREnvelopeGenerator::getOutput()                                
 {
-    // This outputs linearly scaled values.
-    //return mEnvelopeOutput;
-
-    // This outputs logarithmcally scaled values.
-    // Simplified from:
-    // std::pow(10.0, (-maxHoldLevel / 20.0) * (adjustedVelocity - 1));
-    return std::pow(10.0, 1.5 * (mEnvelopeOutput - 1));
+    return mEnvelopeOutput;
 }
 
 void AHREnvelopeGenerator::startEnvelope()
@@ -44,7 +38,13 @@ void AHREnvelopeGenerator::setVelocityScaleFactor (uint8 velocity)
     double scaledVelocity = velocity / 127.0;
 
     double outputScaleFactor = 1.0 - (normalizedHoldLevel * scaledVelocity);
-    mScaleFactor = outputScaleFactor;
+
+    // This outputs logarithmcally scaled values.
+    // Simplified from:
+    // std::pow(10.0, (-maxHoldLevel / 20.0) * (adjustedVelocity - 1));
+    double logarithmicScaleFactor = std::pow(10.0, 1.5 * (outputScaleFactor - 1));
+
+    mScaleFactor = logarithmicScaleFactor;
 }
 
 void AHREnvelopeGenerator::performStateChange()
